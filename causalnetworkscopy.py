@@ -13,7 +13,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 #plt.style.use('ggplot')
 import sklearn
-import geopandas as gp
+# import geopandas as gp
 import matplotlib.cm as cm
 
 import tigramite
@@ -78,8 +78,7 @@ mkts_dict['Conakry'] = bissau_dict['CombinedAverage']
 senegal_file = 'pricedata/SenegalRice10MarketsPrices2007to2020.csv'
 border_file = 'pricedata/SurroundingMarketsSenegalPrices.csv'
 international_file = 'pricedata/GEIWS_international_rice.csv'
-fao_senegal_rice_prices, fao_border_rice_prices, fao_international_rice_prices = GEIWS_prices(senegal_file),
-                                     GEIWS_prices(border_file), GEIWS_prices(international_file)
+fao_senegal_rice_prices, fao_border_rice_prices, fao_international_rice_prices = GEIWS_prices(senegal_file),GEIWS_prices(border_file), GEIWS_prices(international_file)
 for df in fao_senegal_rice_prices, fao_border_rice_prices, fao_international_rice_prices:
     for column in df.columns:
         series = df[column]
@@ -93,7 +92,7 @@ for df in fao_senegal_rice_prices, fao_border_rice_prices, fao_international_ric
 #        
         
 
-plt.plot(fao_senegal_prices.Dakar, label = 'fao')
+plt.plot(fao_senegal_rice_prices.Dakar, label = 'fao')
 plt.plot(senegal_mkts_dict['Dakar'].dropna(), label = 'WFP')
 plt.legend()
 plt.show() 
@@ -694,14 +693,14 @@ enviro_index = 4
 
 
 #subtract by rolling mean
-window = 3
-rolling_mean = test_df.rolling(window).mean()
-test_df = test_df - rolling_mean
+def subtract_rolling_mean(df, window_size = 3):
+    rolling_mean = df.rolling(window_size).mean()
+    adjust_df = df - rolling_mean
+    return adjust_df
 
 # handle seasonality by subtracting monthly mean
 def adjust_seasonality(df):
-    for x in range(len(df)):
-        
+    for x in range(len(df.columns)):
         m = df.iloc[:,x].index.month
         mon_avg = []
         months = [i + 1 for i in range(12)]
@@ -723,8 +722,14 @@ mssng = 99999
 test_df = test_df.iloc[: , : clip_index].copy().fillna(mssng)
 t2 = test_df.copy()
 
+# import millet
+senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
+millet_prices = GEIWS_prices(senegal_millet_file)
+millet_prices = adjust_seasonality( subtract_rolling_mean( millet_prices ) )
 
-study_data = test_df
+
+
+study_data = millet_prices
 
 # give custom NAN value for tigramite to interpret
 mssng = 99999
@@ -733,7 +738,7 @@ study_data = study_data.copy().fillna(mssng)
 
 
     
-dataframe = pp.DataFrame(test_df.values, var_names= test_df.columns, missing_flag = mssng)
+dataframe = pp.DataFrame(study_data.values, var_names= study_data.columns, missing_flag = mssng)
 tp.plot_timeseries(dataframe)
 parcorr = ParCorr(significance='analytic')
 
@@ -758,14 +763,14 @@ pcmci.print_significant_links(
         p_matrix = results['p_matrix'], 
         q_matrix = q_matrix,
         val_matrix = results['val_matrix'],
-        alpha_level = 0.01)
+        alpha_level = 0.05)
 
-link_matrix = pcmci.return_significant_links(pq_matrix = results['p_matrix'],
-                        val_matrix=results['val_matrix'], alpha_level=0.01)['link_matrix']
+link_matrix = pcmci.return_significant_links(pq_matrix = q_matrix,
+                        val_matrix=results['val_matrix'], alpha_level=0.05)['link_matrix']
 tp.plot_graph(
     val_matrix=results['val_matrix'],
     link_matrix=link_matrix,
-    var_names=test_df.columns,
+    var_names=study_data.columns,
     link_colorbar_label='cross-MCI',
     node_colorbar_label='auto-MCI',
     )
