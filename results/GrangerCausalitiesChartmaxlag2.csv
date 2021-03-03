@@ -1,0 +1,18 @@
+,markets caused,causes,is_caused_by
+Dakar,"Tambacounda, Bakel, Zigiunchor, Kolda, Kaolack, ",0.29411764705882354,0.11764705882352941
+Saint-Louis,"Dagana, Bakel, Kolda, ",0.17647058823529413,0.35294117647058826
+Dagana,"Saint-Louis, Kayes, Tambacounda, Bakel, Farafenni, Basse Santa su, ",0.35294117647058826,0.6470588235294118
+Nouakchott,"Touba, Bisseau, Conakry, ",0.17647058823529413,0.0
+Kayes,"Saint-Louis, Dagana, Tambacounda, Bakel, Kolda, Diaobe, ",0.35294117647058826,0.17647058823529413
+Tambacounda,"Saint-Louis, Dagana, Diaobe, ",0.17647058823529413,0.35294117647058826
+Touba,"Dagana, Kayes, Tambacounda, Bakel, Diaobe, Conakry, ",0.35294117647058826,0.23529411764705882
+Bakel,"Dakar, Saint-Louis, Dagana, ",0.17647058823529413,0.35294117647058826
+Banjul,"Zigiunchor, ",0.058823529411764705,0.0
+Farafenni,,0.0,0.11764705882352941
+Zigiunchor,"Dagana, Farafenni, ",0.11764705882352941,0.23529411764705882
+Kolda,"Saint-Louis, Dagana, ",0.11764705882352941,0.23529411764705882
+Basse Santa su,"Dagana, Zigiunchor, ",0.11764705882352941,0.058823529411764705
+Diaobe,"Dakar, Dagana, Kayes, Tambacounda, Touba, Bakel, Kaolack, ",0.4117647058823529,0.17647058823529413
+Bisseau,"Dagana, Touba, Kolda, ",0.17647058823529413,0.058823529411764705
+Conakry,"Saint-Louis, Dagana, Tambacounda, Touba, ",0.23529411764705882,0.11764705882352941
+Kaolack,"Zigiunchor, ",0.058823529411764705,0.11764705882352941

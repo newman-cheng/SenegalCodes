@@ -1,0 +1,816 @@
+Country,Market,Commodity,Price Type,Year,Month,Price,Unit,Currency,Data Source
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,6,250,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,7,250,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,8,250,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,9,250,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,10,250,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,11,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2007,12,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,1,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,2,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,3,375,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,4,375,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,5,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,6,400,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,7,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,8,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,9,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,10,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,11,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2008,12,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,1,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,2,425,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,3,440,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,4,425,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,5,400,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,6,425,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,7,400,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,8,400,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,9,400,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,10,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,11,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2009,12,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,1,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,2,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,3,300,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,4,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,5,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,6,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,7,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,8,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,9,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,10,350,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,11,370,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2010,12,375,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,1,385,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,2,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,3,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,4,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,5,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,6,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,7,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,8,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,9,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,10,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,11,433,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2011,12,400,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,1,420,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,2,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,3,450,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,4,417,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,5,500,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,6,500,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,7,600,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,8,600,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,9,600,KG,XOF,WFP Guinea- Bissau
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2012,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,1,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,2,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,3,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,4,600,KG,XOF,GNB WFP CO
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,5,600,KG,XOF,GNB WFP CO
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,6,600,KG,XOF,GNB WFP CO
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,7,500,KG,XOF,GNB WFP CO
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,8,600,KG,XOF,GNB WFP CO
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,9,600,KG,XOF,GNB WFP CO
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,10,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,11,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2013,12,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,1,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,2,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,3,570,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,4,550,KG,XOF,WFP - GW
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,5,600,KG,XOF,WFP - GW
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,6,590,KG,XOF,WFP - GW
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,7,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,8,600,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,9,600,KG,XOF,WFP - GW
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,10,600,KG,XOF,WFP - GW
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,11,600,KG,XOF,WFP - GW
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2014,12,600,KG,XOF,INE
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,1,402.3333,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,2,381,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,3,356.6667,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,4,375.6667,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,8,500,KG,XOF,INE
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,9,425,KG,XOF,INE
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2015,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,8,470,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,9,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,10,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,11,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2016,12,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,1,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,2,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,3,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,4,440,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,5,460,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,6,447,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,7,425,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,8,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,9,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,10,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,11,446,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2017,12,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,1,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,2,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,3,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,4,389,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,5,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,6,450,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,7,450,KG,XOF,PAM GNB
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,8,450,KG,XOF,PAM GNB
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,9,500,KG,XOF,PAM GNB
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,10,350,KG,XOF,PAM GNB
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,11,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2018,12,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,1,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,2,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,3,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,4,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,5,350,KG,XOF,PAM
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,6,450,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,7,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,8,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,9,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,10,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,11,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2019,12,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,1,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,2,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,3,353,KG,XOF,National Institute of Statistics
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,4,325,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,5,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,6,343,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,8,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,9,375,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,10,333,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,11,400,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bandim,Rice (imported),Retail,2020,12,400,KG,XOF,WFP
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2007,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2008,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2009,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2010,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2011,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2012,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2013,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2014,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2015,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2016,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2017,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2018,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,10,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,11,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2019,12,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,1,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,2,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,3,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,4,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,5,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,6,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,7,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,8,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,9,,KG,XOF,
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,10,375,KG,XOF,WFP
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,11,375,KG,XOF,WFP
+Guinea-Bissau,Bissau-Pefine,Rice (imported),Retail,2020,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2007,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2008,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2009,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2010,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2011,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2012,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2013,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2014,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2015,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2016,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2017,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2018,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,8,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,9,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,10,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,11,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2019,12,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,1,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,2,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,3,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,4,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,5,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,6,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,7,,KG,XOF,
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,8,375,KG,XOF,WFP
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,9,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,10,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,11,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Caracol,Rice (imported),Retail,2020,12,350,KG,XOF,WFP
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2007,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2008,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2009,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2010,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2011,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2012,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2013,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2014,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2015,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2016,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2017,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2018,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,8,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,9,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,10,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,11,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2019,12,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,1,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,2,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,3,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,4,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,5,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,6,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,7,,KG,XOF,
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,8,350,KG,XOF,WFP
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,9,300,KG,XOF,WFP
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,10,350,KG,XOF,WFP
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,11,350,KG,XOF,WFP
+Guinea-Bissau,Mercado Central-Bissau-Velho,Rice (imported),Retail,2020,12,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2007,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2008,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2009,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2010,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2011,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2012,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2013,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2014,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2015,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2016,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2017,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2018,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,8,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,9,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,10,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,11,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2019,12,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,1,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,2,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,3,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,4,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,5,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,6,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,7,,KG,XOF,
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,8,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,9,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,10,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,11,350,KG,XOF,WFP
+Guinea-Bissau,Bissau-Bairro Militar,Rice (imported),Retail,2020,12,350,KG,XOF,WFP

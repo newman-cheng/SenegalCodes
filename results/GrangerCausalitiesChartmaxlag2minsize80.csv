@@ -1,0 +1,18 @@
+Country,Market,markets caused,causes,is_caused_by
+Senegal,Zigiunchor,,0.0,2.0
+Senegal,Touba,"Kayes, Tambacounda, Bakel, Diaobe, Conakry, ",5.0,4.0
+Senegal,Tambacounda,"Saint-Louis, Diaobe, ",2.0,5.0
+Senegal,Saint-Louis,"Bakel, Kolda, ",2.0,5.0
+Senegal,Kolda,"Saint-Louis, ",1.0,4.0
+Senegal,Kaolack,"Zigiunchor, ",1.0,2.0
+Senegal,Diaobe,"Dakar, Kayes, Tambacounda, Touba, Bakel, Kaolack, ",6.0,3.0
+Senegal,Dakar,"Tambacounda, Bakel, Zigiunchor, Kolda, Kaolack, ",5.0,2.0
+Senegal,Dagana,,0.0,0.0
+Senegal,Bakel,"Dakar, Saint-Louis, ",2.0,5.0
+Mauritania,Nouakchott,"Touba, Bisseau, Conakry, ",3.0,0.0
+Mali,Kayes,"Saint-Louis, Tambacounda, Bakel, Kolda, Diaobe, ",5.0,2.0
+Guinea Bissau,Bisseau,"Touba, Kolda, ",2.0,1.0
+Guinea,Conakry,"Saint-Louis, Tambacounda, Touba, ",3.0,2.0
+Gambia,Farafenni,,0.0,0.0
+Gambia,Basse Santa su,,0.0,0.0
+Gambia,Banjul,,0.0,0.0
