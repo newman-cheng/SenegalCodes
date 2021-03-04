@@ -16,6 +16,8 @@ from tigramite import data_processing as pp
 from tigramite import plotting as tp
 from tigramite.pcmci import PCMCI
 from tigramite.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
+import networkx as nx
+import networkx.drawing.layout as lyt
 
 from pandas.plotting import lag_plot
 
@@ -23,9 +25,7 @@ from import_files import wfp_prices, GEIWS_prices, exchange_rates, get_ndvi_ts, 
 
 
 
-# price imports
-
-
+# RICE price imports
 #----- prices from WFP data, senegal markets
 wfp_imported_rice_path = '/Users/Mitchell/SenegalAnalyses/codes/pricedata/WFP_Senegal_importedrice.csv'
 senegal_wfp_dataframe, senegal_mkts_dict = wfp_prices(wfp_imported_rice_path, minimum_size = 0)
@@ -49,6 +49,7 @@ bissau_df, bissau_dict = wfp_prices(bissau_path, minimum_size = 0, combine = Tru
 mkts_dict['Bisseau'] = bissau_dict['CombinedAverage']
 
 
+
 conakry_path = '/Users/Mitchell/SenegalAnalyses/codes/pricedata/GuineaConakryAllMarkets.csv'
 conakry_df, conakry_dict = wfp_prices(conakry_path, minimum_size = 0, combine = True)
 mkts_dict['Conakry'] = bissau_dict['CombinedAverage']
@@ -62,32 +63,21 @@ for df in fao_senegal_rice_prices, fao_border_rice_prices, fao_international_ric
     for column in df.columns:
         series = df[column]
         mkts_dict[column] = series
-#        if column not in list(mkts_dict.keys()):
-#            
-#        else:
-##            average previous and new series
-#            mkts_dict[column] = pd.concat((mkts_dict[column], series), axis = 1).mean(axis=1,skipna = True)
-#            
-#        
-        
 
-fao_market_sample =  ['Dakar', 'Saint-Louis', 'Dagana','Nouakchott','Kayes','Tambacounda','Touba','Bakel',
-                     'Banjul','Farafenni', 'Zigiunchor','Kolda', 'Basse Santa su', 'Diaobe', 'Bisseau','Conakry', 'Kaolack']
-
-fao_market_countries = ['Senegal', 'Senegal', 'Senegal','Mauritania','Mali','Senegal','Senegal','Senegal',
-                       'Gambia','Gambia','Senegal', 'Senegal','Gambia','Senegal','Guinea Bissau','Guinea','Senegal']
-tuples = list(zip(*[fao_market_countries , fao_market_sample]))
-mIndex = pd.MultiIndex.from_tuples(tuples, names=["Country", "Market"])
     
 s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,12,31)
-test_df = sample2_dataframe.copy()[s:e]
-t = test_df.copy()
-#        global test_df
-#    whether or not to add environmental variables to analysis
-add_enviro = False
-#number of environmental indices added to end of df
-enviro_index = 4
+minimum_size = 140
+sample_dict = {x : mkts_dict[x] for x in mkts_dict.keys() if len(mkts_dict[x][s:e].dropna()) >= minimum_size}
 
+rice_dataframe = pd.concat( list(sample_dict.values()), axis = 1)
+rice_dataframe.columns = list(sample_dict.keys())
+
+
+
+# -----------import millet---------
+senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
+millet_prices = GEIWS_prices(senegal_millet_file)
+#  -------------------------------
 
 #subtract by rolling mean
 def subtract_rolling_mean(df, window_size = 3):
@@ -109,34 +99,31 @@ def adjust_seasonality(df):
         df.iloc[:,x] = df.iloc[:,x] - month_series.values
     return df
     
-    
 
-#for x in range(len(test_df.columns[:-enviro_index])):
-#    test_df.iloc[:,x] = test_df.iloc[:,x] - test_df.iloc[:,x].shift(1)
-#remove environemtal variables if applicable
-clip_index = -enviro_index if add_enviro == False else None
+
+
+
+# ------------------OPTIONS-------------
+# select data for study
+study_data = rice_dataframe
+# whether or not to run BH FDR algorithm reducing false positives
+FDR_bool = True
+# mimimum and maximum lag to look for 
+min_lag, max_lag  = 1,3
+# ------------------------------
+
+# give custom NAN value for tigramite to , and adjust for seasonality and take rolling mean
 mssng = 99999
-test_df = test_df.iloc[: , : clip_index].copy().fillna(mssng)
-t2 = test_df.copy()
+adjusted_study_data  = adjust_seasonality( subtract_rolling_mean(study_data.copy()) )[s:e]
+t = adjusted_study_data.copy()
+adjusted_study_data.fillna(mssng)
 
-# import millet
-senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
-millet_prices = GEIWS_prices(senegal_millet_file)
-millet_prices = subtract_rolling_mean( adjust_seasonality(millet_prices ) )
-
-
-
-study_data = millet_prices
-
-# give custom NAN value for tigramite to interpret
-mssng = 99999
-study_data = study_data.copy().fillna(mssng)
 
 
 
     
-dataframe = pp.DataFrame(study_data.values, var_names= study_data.columns, missing_flag = mssng)
-tp.plot_timeseries(dataframe)
+dataframe = pp.DataFrame(adjusted_study_data.values, var_names= adjusted_study_data.columns, missing_flag = mssng)
+# tp.plot_timeseries(dataframe)
 parcorr = ParCorr(significance='analytic')
 
 gpdc = GPDC(significance='analytic', gp_params=None)
@@ -151,7 +138,7 @@ pcmci = PCMCI(
     cond_ind_test=parcorr,
     verbosity=1)
 #
-min_lag, max_lag  = 1,6
+
 results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None)
 #
 q_matrix = pcmci.get_corrected_pvalues(p_matrix=results['p_matrix'], fdr_method='fdr_bh')
@@ -162,12 +149,13 @@ pcmci.print_significant_links(
         val_matrix = results['val_matrix'],
         alpha_level = 0.05)
 
-link_matrix = pcmci.return_significant_links(pq_matrix = results['p_matrix'],
+pq_matrix = q_matrix if FDR_bool == True else results['p_matrix']
+link_matrix = pcmci.return_significant_links(pq_matrix = pq_matrix,
                         val_matrix=results['val_matrix'], alpha_level=0.05)['link_matrix']
 tp.plot_graph(
     val_matrix=results['val_matrix'],
     link_matrix=link_matrix,
-    var_names=study_data.columns,
+    var_names=adjusted_study_data.columns,
     link_colorbar_label='cross-MCI',
     node_colorbar_label='auto-MCI',
     )

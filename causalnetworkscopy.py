@@ -355,7 +355,7 @@ def calculate_precip_causalities(precip_dict, mkts_dict, maxlag = 5):
             
         
 #        dictionary with markets from FAO diagram
-sample_dict = { key : mkts_dict[key] for key in fao_market_sample}   
+
 
 
 
