@@ -725,7 +725,7 @@ t2 = test_df.copy()
 # import millet
 senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
 millet_prices = GEIWS_prices(senegal_millet_file)
-millet_prices = adjust_seasonality( subtract_rolling_mean( millet_prices ) )
+millet_prices = subtract_rolling_mean( adjust_seasonality(millet_prices ) )
 
 
 
@@ -765,7 +765,7 @@ pcmci.print_significant_links(
         val_matrix = results['val_matrix'],
         alpha_level = 0.05)
 
-link_matrix = pcmci.return_significant_links(pq_matrix = q_matrix,
+link_matrix = pcmci.return_significant_links(pq_matrix = results['p_matrix'],
                         val_matrix=results['val_matrix'], alpha_level=0.05)['link_matrix']
 tp.plot_graph(
     val_matrix=results['val_matrix'],
