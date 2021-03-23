@@ -10,13 +10,12 @@ Created on Thu Mar  4 11:00:51 2021
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib
 import pandas as pd
+import tigramite
 from tigramitecustom import data_processing as pp
 from tigramitecustom import plotting as tp
 from tigramitecustom.pcmci import PCMCI
 from tigramitecustom.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
-import matplotlib.cm as cm
 import networkx as nx
 import networkx.drawing.layout as lyt
 from pandas.plotting import lag_plot
@@ -29,7 +28,7 @@ from scipy.stats import normaltest
 from statsmodels.graphics.gofplots import qqplot
 
 from import_files import wfp_prices, GEIWS_prices, exchange_rates, get_ndvi_ts, get_precip_ts, get_flood_ts, get_enviro_ts
-import geopandas as gp
+
 
 def get_rice_dict():
     # RICE price imports
@@ -75,17 +74,14 @@ def get_rice_dict():
             
     return mkts_dict, fao_mkts_dict
 
-def get_enviro_df(monthly_dev = True):
+def get_enviro_df():
     ndvi_file = 'envirodata/NDVItwoRiceZones.csv'
-    ndvi_dict =  get_enviro_ts(ndvi_file, 'NDVI',split_date = 'True', monthly_dev = monthly_dev)
+    ndvi_dict =  get_enviro_ts(ndvi_file, 'NDVI',split_date = 'True')
     precip_file = 'envirodata/ChirpsMonthlySumsRiceZones.csv'
-    precip_dict = get_enviro_ts(precip_file, 'precip', date_format = '%m_%d_%Y', monthly_dev  = monthly_dev)
+    precip_dict = get_enviro_ts(precip_file, 'precip', date_format = '%m_%d_%Y')
     
-#    enviro_dict =  {**ndvi_dict, **precip_dict}
-#    
-#    enviro_df = pd.DataFrame.from_dict(enviro_dict)
-    enviro_df = pd.concat(list(ndvi_dict.values()) + list(precip_dict.values()), axis = 1)
-    enviro_df.columns = list(ndvi_dict.keys()) + list(precip_dict.keys())
+    enviro_dict =  {**ndvi_dict, **precip_dict}
+    enviro_df = subtract_rolling_mean(pd.DataFrame.from_dict(enviro_dict))
     return enviro_df
 
 
@@ -93,7 +89,7 @@ mkts_dict, fao_mkts_dict = get_rice_dict()
     
 study_markets =  ['Dakar', 'Saint-Louis', 'Dagana','Nouakchott','Kayes','Tambacounda','Touba','Bakel',
             'Banjul','Farafenni', 'Zigiunchor','Kolda', 'Basse Santa su', 'Diaobe', 'Bisseau','Conakry', 'Kaolack', 'Bangkok','Mumbai','SãoPaulo']
-s,e = pd.Timestamp(2000,1,1) , pd.Timestamp(2020,12,31)
+s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,12,31)
 def get_rice_df(mkts_dict, study_markets, min_size , s,e ):
     # dict with only fao GEIWS markets
     sample_dict = {x : mkts_dict[x] for x in mkts_dict.keys() if 
@@ -106,37 +102,13 @@ def get_rice_df(mkts_dict, study_markets, min_size , s,e ):
     
     return rice_dataframe
 minimum_size = 160
-rice_dataframe = get_rice_df(fao_mkts_dict, None, minimum_size, s, e)
+rice_dataframe = get_rice_df(fao_mkts_dict, None, 160, s, e)
 
 
 # -----------import millet---------
 senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
 millet_prices = GEIWS_prices(senegal_millet_file)
 #  -------------------------------
-
-#------------ WFP Prices from Mamina-----------
-month_resample = True
-rice_dict = {}
-millet_dict = {}
-mamina_price  = pd.read_csv('pricedata/MaminaData.csv')
-mamina_price.index = mamina_price.DEPARTEMENT
-for mkt in mamina_price.index.drop_duplicates():
-    select_data = mamina_price.loc[mkt]
-    select_data.index = pd.to_datetime(select_data.DATE, format = '%d-%b-%y')
-    millet_ts = select_data['MIL_DETAIL']
-    rice_ts =  select_data['RIZ_IMP_BR ORD.']
-    
-    if month_resample == True:
-        dt_index = pd.date_range(start=s, end=e, freq = 'MS')
-        millet_ts = millet_ts.resample('MS').median().reindex(dt_index)
-        rice_ts = rice_ts.resample('MS').median().reindex(dt_index)
-    
-    millet_dict[mkt] = millet_ts
-    rice_dict[mkt] = rice_ts
-rice_dataframe = pd.DataFrame.from_dict()
-millet_dataframe = pd.DataFrame.from_dict()
-
-
 
 
 #subtract by rolling mean
@@ -287,117 +259,6 @@ def fit_distribution(dataframe):
     print ('............................................')
     print (results)
     
-    
-def plot_map(link_matrix,  names, variable, save= False):
-    #upload coordinates
-    global coord_df
-    coord_df = pd.read_csv('/Users/Mitchell/SenegalAnalyses/SenegalCodes/shapedata/citycoordinates.csv')
-    coord_df.index = coord_df['City Name']
-    coord_df = coord_df[['Lat','Lon']]
-    
-    
-    country_gdf = gp.read_file('/Users/Mitchell/SenegalAnalyses/SenegalCodes/shapedata/WestAfricaADMN0/wca_adm0.shp')
-    country_gdf = country_gdf.to_crs('epsg:4326')
-    country_gdf.index = country_gdf['admin0Name']
-    select_country_idx = ['Senegal','Gambia','Guinea','Guinea Bissau','Mauritania','Mali']
-    select_countries = country_gdf.loc[select_country_idx]
-    
-    #    plot map
-    fig1, ax1 = plt.subplots(1,1,figsize = (12,15))
-    
-    
-    vmin, vmax = 0.0, 0.25
-    cmap = 'Reds'
-    
-    #blue: 607dab
-    #grey: '#bfbfbf'
-    select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black")
-                   
-    matplotlib.rcParams['font.size'] = 12
-    global  G
-    G = nx.DiGraph()
-    edit_dict = {'SouhternRainfedArea_NDVI' : 'NDVI',
-                'SouhternRainfedArea_precip':'precip',
-                'NorthernRiverValley_NDVI':'NDVI',
-                'NorthernRiverValley_precip' : 'precip'}
-#    names = [edit_dict[name] if name in edit_dict.keys() else name for name in names]
-    for i , node_name in enumerate(names):
-    #    G.add_node((i,{'name':node_name}))
-        G.add_node(i,name = node_name, influenced_by = 0)
-        
-        
-    #make N^2 matrix
-    n_connections = 0
-    all_tau_link = np.max(link_matrix, axis = 2)
-    for i in range(all_tau_link.shape[0]):
-        for j in range(all_tau_link.shape[1]):
-            icausesj = all_tau_link[i,j]
-            i_name = names[i]
-            j_name = names[j]
-            if icausesj and i_name != j_name:
-#                print(names[i],' causes ' , names[j])
-                G.add_edge(i , j)
-                G.nodes[i]['influenced_by'] += 1
-                n_connections +=1 
-                
-    scale_factor = 200
-    position_dict = {}
-    for i in range(len(names)):   
-        name = names[i].replace('ã','a')
-        lon, lat = coord_df.loc[name].Lon, coord_df.loc[name].Lat
-        position_dict[i] = np.array([lon, lat])
-       
-
-    lons, lats = [float(val[0]) for val in position_dict.values()] , [float(val[1]) for val in position_dict.values()]
-    buffer = 1
-    min_lon, max_lon = min(lons) - buffer, max(lons) + buffer
-    min_lat, max_lat = min(lats) - buffer,  max(lats) + buffer
-    ax1.set_ylim(min_lat, max_lat)
-    ax1.set_xlim(min_lon, max_lon)
-    ax1.axis('on')
-        
-    # ax.set_title('Arrow represents causation, circle size represents relative importance of market')
-
-#    pos = nx.spring_layout(G)
-#    c = nx.drawing.layout.circular_layout(G)
-    
-    influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1) - 100
-    print(influenced_arr)
-    label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
-#    change enviro vars to better names:
-    
-    nx.draw(G, node_size = influenced_arr , with_labels = False, pos = position_dict, arrowsize = 30, alpha = 0.85,  ax = ax1)
-#    nx.draw_networkx_labels(G, pos = position_dict, labels = label_dict)
-#    print(n_connections , ' Connections')
-    #G = nx.Graph()
-  
-   
-    
-    
-    texts = []
-    for x, y, label in zip(lons, lats, names):
-        texts.append(ax1.text(x , y , label, fontsize = 14, ))# fontweight = 'bold'))
-
-    ax1.set_title(variable + " Causation Map")
-
-    
-    #    patch_col = axs[0].collections[0]
-    #    pts = ax2.scatter(x_data, y_data, marker='s', c=data[x_data, y_data])
-#    norm = matplotlib.colors.Normalize(vmin = vmin, vmax = vmax)
-#    cmap = 'Reds'
-#    m = cm.ScalarMappable(norm=norm, cmap=cmap)
-#    m.set_array(gdf['Number Market Causes'])
-    #    p = cm.ScalarMappable( norm = norm, cmap='Reds')
-    #    cb = fig2.colorbar(p, ax = axs, shrink=0.5)
-    
-#    fig1.colorbar(m, ax = ax1, orientation = 'horizontal', label = "%" ,shrink = 0.5, pad = 0.01)
-    
-    #plt.tightlayout()
-    if save:
-        plt.savefig('figures/TigramiteMap{}.png'.format(variable), dpi = 200, bbox_inches = 'tight')
-    plt.show()
-        
-    
 def test_distribution(dataframe, t = None):
     def print_res(p, alpha):
         print('p = ', p)
@@ -415,8 +276,7 @@ def test_distribution(dataframe, t = None):
     plt.hist(corrected, bins = 15)
     plt.suptitle(t)
     plt.show()
-    qqplot(corrected, line = '45')
-    plt.suptitle(t + ' qq Plot')
+    qqplot(corrected)
     plt.show()
     # test raw values
     print("Raw Data:")
@@ -429,8 +289,8 @@ def test_distribution(dataframe, t = None):
     # print_res(p, alpha)
     
     
-# test_distribution(rice_dataframe , t='Rice')
-# test_distribution(millet_prices, t = 'Millet')
+#test_distribution(rice_dataframe , t='Rice')
+#test_distribution(millet_prices, t = 'Millet')
 # test_distribution()
 
 
@@ -448,7 +308,7 @@ def test_distribution(dataframe, t = None):
 
 
 
-def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = False):
+def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro):
     # ------------------OPTIONS-------------
     # --select data for study
     if commodity.lower() == 'millet':
@@ -466,13 +326,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     
     # give custom NAN value for tigramite to , and adjust for seasonality and take rolling mean
     mssng = 99999
-
-#    adjusted_study_data  = subtract_rolling_mean( study_data.copy())[s:e]
     adjusted_study_data  = subtract_rolling_mean( adjust_seasonality(study_data.copy()))[s:e]
-#    adjusted_study_data  = take_first_diff( adjust_seasonality(study_data.copy()))[s:e]
-    
-    global t
-    t = adjusted_study_data
     
     
     check_stationarity(adjusted_study_data)
@@ -481,53 +335,44 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     
     
     
+    
+    
     # seasonal Adjustment  
     
     # lean_season = [5,6,7,8,9,10]
     # harvest_season = [1,2,3,4,11,12]
     # month_mask = filter_months(adjusted_study_data, harvest_season, missing_flag = mssng)
-    enviro_indices = None
+    
+    
+    
     if add_enviro:
         enviro_df = get_enviro_df()[s:e].fillna(mssng)
         filled_data = pd.concat([filled_data, enviro_df], axis = 1)
-        enviro_indices = [filled_data.columns.get_loc(x) for x in enviro_df.columns ]
     
-
-#   if using month and year conditions in the system
-    m_y_indices = None
-    if m_y_conditioning:
-        min_lag = 0
-        filled_data = study_data.copy()[s:e]
-#        if adding environmental variables
-        if add_enviro:
-            enviro_df = get_enviro_df(monthly_dev = False)[s:e]
-            filled_data = pd.concat([filled_data, enviro_df], axis = 1)
-            enviro_indices = [filled_data.columns.get_loc(x) for x in enviro_df.columns ]
-        filled_data['Month'] = filled_data.index.month
-        filled_data['Year'] = filled_data.index.year
-        m_y_indices = [filled_data.columns.get_loc('Month'), filled_data.columns.get_loc('Year')]
-        filled_data = filled_data.fillna(mssng)
     
+    filled_data['Month'] = filled_data.index.month
+    filled_data['Year'] = filled_data.index.year
+    month_year_index = [filled_data.get_loc('Month'), filled_data.get_loc('Year')]
     
         
-    dataframe = pp.DataFrame(filled_data.values, var_names= filled_data.columns, missing_flag = mssng)
+    dataframe = pp.DataFrame(filled_data.values, var_names= filled_data.columns, missing_flag = mssng )
     # tp.plot_timeseries(dataframe)
     parcorr = ParCorr(significance='analytic')
     
-#    gpdc = GPDC(significance='analytic', gp_params=None)
+    gpdc = GPDC(significance='analytic', gp_params=None)
     
-    # pcmci_gpdc = PCMCI(
-    #     dataframe=dataframe, 
-    #     cond_ind_test=gpdc,
-    #     verbosity=0)
-    global pcmci
+    pcmci_gpdc = PCMCI(
+        dataframe=dataframe, 
+        cond_ind_test=gpdc,
+        verbosity=0)
+    
     pcmci = PCMCI(
         dataframe=dataframe, 
         cond_ind_test=parcorr,
         verbosity=1)
     #
     
-    results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None, no_parents = enviro_indices, month_year_indices = m_y_indices)
+    results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None)
     #
     q_matrix = pcmci.get_corrected_pvalues(p_matrix=results['p_matrix'], fdr_method='fdr_bh')
     #
@@ -535,11 +380,11 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
             p_matrix = results['p_matrix'], 
             q_matrix = q_matrix,
             val_matrix = results['val_matrix'],
-            alpha_level = alpha)
+            alpha_level = 0.05)
+    
     pq_matrix = q_matrix if FDR_bool == True else results['p_matrix']
     link_matrix = pcmci.return_significant_links(pq_matrix = pq_matrix,
-                            val_matrix=results['val_matrix'], alpha_level=alpha)['link_matrix']
-    link_matrix = link_matrix[:-2,:-2,:]if m_y_conditioning == True else link_matrix
+                            val_matrix=results['val_matrix'], alpha_level=0.05)['link_matrix']
     tp.plot_graph(
         val_matrix=results['val_matrix'],
         link_matrix=link_matrix,
@@ -551,25 +396,21 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     
     #dataframe = dataframe.iloc[:,:-4]
     G = nx.DiGraph()
-    names = dataframe.var_names[:-2] if m_y_conditioning == True else dataframe.var_names
-    for i , node_name in enumerate(names):
+    for i , node_name in enumerate(dataframe.var_names):
     #    G.add_node((i,{'name':node_name}))
         G.add_node(i,name = node_name, influenced_by = 0)
         
         
     #make N^2 matrix
     n_connections = 0
-#    remove contemp if tau min= 0 
     all_tau_link = np.max(link_matrix, axis = 2)
-#    all_tau_link = np.max(link_matrix, axis = 2)[:-2,:-2] if m_y_conditioning == True else np.max(link_matrix, axis = 2)
-
     for i in range(all_tau_link.shape[0]):
         for j in range(all_tau_link.shape[1]):
             icausesj = all_tau_link[i,j]
-            i_name = names[i]
-            j_name = names[j]
+            i_name = dataframe.var_names[i]
+            j_name = dataframe.var_names[j]
             if icausesj and i_name != j_name:
-                print(names[i],' causes ' , names[j])
+                print(dataframe.var_names[i],' causes ' , dataframe.var_names[j])
                 G.add_edge(i , j)
                 G.nodes[i]['influenced_by'] += 1
                 n_connections +=1 
@@ -578,31 +419,24 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     f, ax = plt.subplots(1,1,figsize = (7,5))
     f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
     # ax.set_title('Arrow represents causation, circle size represents relative importance of market')
-#    pos = nx.spring_layout(G)
-    pos = nx.drawing.layout.circular_layout(G)
+    pos = nx.spring_layout(G)
+    c = nx.drawing.layout.circular_layout(G)
     influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1)
     label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
-    nx.draw(G, node_size = influenced_arr, with_labels = False, pos = pos, arrowsize = 30, alpha = 0.65, edge_color = 'grey', ax = ax)
-    nx.draw_networkx_labels(G, pos = pos, labels = label_dict)
+    nx.draw(G, node_size = influenced_arr, with_labels = False, pos = c, arrowsize = 30, alpha = 0.65, edge_color = 'grey', ax = ax)
+    nx.draw_networkx_labels(G, pos = c, labels = label_dict)
     print(n_connections , ' Connections')
     #G = nx.Graph()
-#    print('shapes', np.array(names).shape, link_matrix.shape)
-    plot_map(link_matrix, names, commodity,  save= False)
 
-#----STL-----
-#from statsmodels.tsa.seasonal import STL
-#stl = STL(co2, seasonal=13)
-#res = stl.fit()
-#fig = res.plot()
 
-commodity = 'Rice'
-FDR_bool = False
+
+commodity = 'Millet'
+FDR_bool = True
 min_lag, max_lag  = 1,4
 add_enviro = True
-alpha = 0.005
-m_y_conditioning = True
 
-run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)
+
+run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro)
 
 
 

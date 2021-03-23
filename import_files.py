@@ -216,9 +216,13 @@ def get_enviro_ts(file, column_name , monthly_dev = True, split_date = False, da
     
         
         else:
-            output_dict[name + '_'+column_name] = ts
+            output_dict[name + '_'+column_name] = monthly_ts
         
     return output_dict
+
+precip_file = 'envirodata/ChirpsMonthlySumsRiceZones.csv'
+precip_dict = get_enviro_ts(precip_file, 'precip', date_format = '%m_%d_%Y', monthly_dev  = False)
+
 
 #flood_dict = get_flood_ts()
 
