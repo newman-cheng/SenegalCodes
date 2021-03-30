@@ -52,7 +52,7 @@ def GEIWS_prices(file):
     commod_markets = commod_markets.astype(float)
     commod_markets.columns = [x.replace(' ','').split(',')[2] for x in commod_markets.columns]
 #        reindex
-    start, end = pd.Timestamp(2002,1,1) , pd.Timestamp(2020,12,31)
+    start, end = pd.Timestamp(2000,1,1) , pd.Timestamp(2020,12,31)
 #        global index
     index = pd.date_range(start=start, end=end, freq='MS')
     commod_markets = commod_markets.reindex(index)
@@ -72,7 +72,7 @@ def GEIWS_prices(file):
 senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
 GEIWS_prices(senegal_millet_file)
 
-def wfp_prices(path, minimum_size = 50, combine = False):
+def wfp_prices(path, minimum_size = 50, combine = False, curr_exchange = True):
     
     import_rice_df = pd.read_csv(path)
 #    print(import_rice_df)
@@ -96,7 +96,8 @@ def wfp_prices(path, minimum_size = 50, combine = False):
             market_series = market_data.Price[start:end]
         #    convert to usd / mt
 #            global market_usd_mt
-            market_usd_mt = (1000 * market_series).div(curr_series[market_series.index].values)
+            
+            market_usd_mt = (1000 * market_series).div(curr_series[market_series.index].values) if curr_exchange == True else market_series
 #            print(market_usd_mt.index)
             market_usd_mt_filled = market_usd_mt.reindex(index)
         #    add to dictionary
@@ -107,6 +108,56 @@ def wfp_prices(path, minimum_size = 50, combine = False):
         prices_df['CombinedAverage'] = prices_df.mean(axis = 1, skipna = True)
         markets_dict['CombinedAverage'] = prices_df['CombinedAverage']
     return prices_df, markets_dict
+
+#------------ WFP Prices from Mamina-----------
+def wfp_mamina_prices(month_resample = True, international = False, minimum_size = None):
+    s,e = pd.Timestamp(2000,1,1) , pd.Timestamp(2020,12,31)
+    rice_dict = {}
+    millet_dict = {}
+    mamina_price  = pd.read_csv('pricedata/MaminaData.csv')
+    mamina_price.index = mamina_price.DEPARTEMENT
+    for mkt in mamina_price.index.drop_duplicates():
+        select_data = mamina_price.loc[mkt]
+        select_data.index = pd.to_datetime(select_data.DATE, format = '%d-%b-%y')
+        millet_ts = select_data['MIL_DETAIL']
+        rice_ts =  select_data['RIZ_IMP_BR ORD.']
+    
+        if month_resample == True:
+            dt_index = pd.date_range(start=s, end=e, freq = 'MS')
+            millet_ts = millet_ts.resample('MS').median().reindex(dt_index)
+            rice_ts = rice_ts.resample('MS').median().reindex(dt_index)
+        if millet_ts.dropna().size >= minimum_size:
+            millet_dict[mkt.capitalize()] = millet_ts
+        if rice_ts.dropna().size >= minimum_size:
+            rice_dict[mkt.capitalize()] = rice_ts
+    international_file = 'pricedata/GEIWS_international_rice.csv'
+    mam_rice_dataframe = pd.concat([pd.DataFrame.from_dict(rice_dict), GEIWS_prices(international_file)], axis = 1) if international == True else pd.DataFrame.from_dict(rice_dict)
+    mam_millet_dataframe = pd.DataFrame.from_dict(millet_dict)
+    return mam_rice_dataframe, mam_millet_dataframe
+
+
+#------- Plots comparing time series ----------
+#s, e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,12,31)
+#mam_rice_dataframe, mam_millet_dataframe = wfp_mamina_prices(minimum_size = 240)
+#fao_senegal = GEIWS_prices('pricedata/SenegalRice10MarketsPrices2007to2020.csv')[s:e]
+#fao_senegal = fao_senegal.multiply(exchange_rates()[fao_senegal.index].values, axis = 0) / 1000
+#
+#
+#senegal_wfp_dataframe, senegal_mkts_dict = wfp_prices('pricedata/WFP_Senegal_importedrice.csv', minimum_size = 0, curr_exchange = False)
+#
+#import matplotlib.pyplot as plt
+#mkt = 'SaintLouis'
+#f, ax = plt.subplots(1,1,figsize = (16,4)) 
+#ax.set_ylabel('XOF/kg')
+#f.suptitle(mkt+' Rice Prices', fontsize = 20)
+#lw = 2.5
+#mam_rice_dataframe['St.louis'][s:e].plot(ax = ax, legend = False, lw = lw)
+#senegal_wfp_dataframe['Saint-Louis'][s:e].plot(ax=ax, legend  = False, lw = lw)
+#fao_senegal[mkt].plot(ax=ax, legend = False, linestyle = '--', lw = lw)
+#f.legend(['Data from Mamina','WFP VAM data','FAO GEIWS data'])
+#
+
+
 
 
 

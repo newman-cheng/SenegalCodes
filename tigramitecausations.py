@@ -114,28 +114,6 @@ senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
 millet_prices = GEIWS_prices(senegal_millet_file)
 #  -------------------------------
 
-#------------ WFP Prices from Mamina-----------
-month_resample = True
-rice_dict = {}
-millet_dict = {}
-mamina_price  = pd.read_csv('pricedata/MaminaData.csv')
-mamina_price.index = mamina_price.DEPARTEMENT
-for mkt in mamina_price.index.drop_duplicates():
-    select_data = mamina_price.loc[mkt]
-    select_data.index = pd.to_datetime(select_data.DATE, format = '%d-%b-%y')
-    millet_ts = select_data['MIL_DETAIL']
-    rice_ts =  select_data['RIZ_IMP_BR ORD.']
-    
-    if month_resample == True:
-        dt_index = pd.date_range(start=s, end=e, freq = 'MS')
-        millet_ts = millet_ts.resample('MS').median().reindex(dt_index)
-        rice_ts = rice_ts.resample('MS').median().reindex(dt_index)
-    
-    millet_dict[mkt] = millet_ts
-    rice_dict[mkt] = rice_ts
-rice_dataframe = pd.DataFrame.from_dict()
-millet_dataframe = pd.DataFrame.from_dict()
-
 
 
 
@@ -146,7 +124,7 @@ def subtract_rolling_mean(df, window_radius = 6):
     return adjust_df
 # first differences over dataframe
 def take_first_diff(df):
-    if type(df) != pd.core.frame.DataFrame:
+    if type(df) != pd.core.frame.DataFrame: 
         df = pd.DataFrame(df)
     for x in range(len(df.columns)):
         df.iloc[:,x] = df.iloc[:,x] - df.iloc[:,x].shift(1)
@@ -452,7 +430,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     # ------------------OPTIONS-------------
     # --select data for study
     if commodity.lower() == 'millet':
-        study_data = millet_prices
+        study_data = mam_millet_dataframe
+#        study_data = millet_prices
     elif commodity.lower() == 'rice':
         study_data = rice_dataframe
     # study_data = millet_prices
@@ -521,6 +500,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     #     cond_ind_test=gpdc,
     #     verbosity=0)
     global pcmci
+    global results
     pcmci = PCMCI(
         dataframe=dataframe, 
         cond_ind_test=parcorr,
@@ -568,7 +548,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
             icausesj = all_tau_link[i,j]
             i_name = names[i]
             j_name = names[j]
-            if icausesj and i_name != j_name:
+            if icausesj and i_name != j_name and True:
                 print(names[i],' causes ' , names[j])
                 G.add_edge(i , j)
                 G.nodes[i]['influenced_by'] += 1
@@ -599,10 +579,10 @@ commodity = 'Rice'
 FDR_bool = False
 min_lag, max_lag  = 1,4
 add_enviro = True
-alpha = 0.005
-m_y_conditioning = True
+alpha = 0.001
+m_y_conditioning = False
 
-run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)
+#run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)
 
 
 

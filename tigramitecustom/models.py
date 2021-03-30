@@ -1065,7 +1065,7 @@ class Prediction(Models, PCMCI):
         ----------
         target_predictors : dictionary
             Dictionary of form {0:[(0, -1), (3, -2), ...], 1:[], ...} containing
-            the predictors estimated with PCMCI.
+            the predictors estimated with PCMCI.   
         selected_targets : list of integers, optional (default: range(N))
             Specify to fit model only for selected targets. If None is
             passed, models are estimated for all variables.

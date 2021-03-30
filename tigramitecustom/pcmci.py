@@ -1501,6 +1501,42 @@ class PCMCI():
         # Return the significant parents
         return {'link_dict': link_dict,
                 'link_matrix': pq_matrix <= alpha_level}
+        
+    def return_significant_positive_links(self,
+                                 pq_matrix,
+                                 val_matrix,
+                                 alpha_level=0.05,
+                                 include_lagzero_links=False):
+        """Returns boolean matrix of links that are significant AND positive in correlation as well as a boolean matrix.
+
+        Significance based on p-matrix, or q-value matrix with corrected
+        p-values. 
+
+        Parameters
+        ----------
+        pq_matrix : array-like
+            p-matrix, or q-value matrix with corrected p-values. Must be of
+            shape (N, N, tau_max + 1).
+        val_matrix : array-like
+            Matrix of test statistic values. Must be of shape (N, N, tau_max +
+            1).
+        alpha_level : float, optional (default: 0.05)
+            Significance level.
+        include_lagzero_links : bool (default: False)
+            Whether the dictionary should also return links at lag
+            zero. Note that the link_matrix always contains those.
+
+        Returns
+        -------
+        link_dict : dict
+            Dictionary of form {0:[(0, -1), (3, -2), ...], 1:[], ...}
+            containing estimated links.
+        link_dict : array, shape [N, N, tau_max+1]
+            Boolean array with True entries for significant links at alpha_level
+        """
+        # Return the significant parents
+        return {
+                'link_matrix': (pq_matrix <= alpha_level) & (val_matrix > 0) }
 
     def print_significant_links(self,
                                 p_matrix,
