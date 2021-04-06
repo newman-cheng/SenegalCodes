@@ -115,6 +115,7 @@ class Models():
         self.all_parents = all_parents
         # Set the default selected variables to all variables and check if this
         # should be overwritten
+        print('N--- ',self.N)
         self.selected_variables = range(self.N)
         if selected_variables is not None:
             self.selected_variables = selected_variables
@@ -133,17 +134,24 @@ class Models():
                                  " max_parents_lag = %d"
                                  "" % (self.tau_max, max_parents_lag))
         # Initialize the fit results
-        fit_results = {}
+        fit_results = {} 
         for j in self.selected_variables:
+            print('test')
             Y = [(j, 0)]
             X = [(j, 0)]  # dummy
             Z = self.all_parents[j]
+            print('X', X)
+            print('Y', Y)
+            print('Z', Z)
+            print('verbosity',self.verbosity)
             array, xyz = \
                 self.dataframe.construct_array(X, Y, Z,
                                                tau_max=self.tau_max,
                                                mask_type=self.mask_type,
                                                cut_off=cut_off,
                                                verbosity=self.verbosity)
+#            print('array: ' , repr(array))
+            print('\n\n xyz: ', xyz)
             # Get the dimensions out of the constructed array
             dim, T = array.shape
             dim_z = dim - 2
@@ -971,7 +979,7 @@ class Prediction(Models, PCMCI):
         # Build the testing dataframe as well
         self.test_mask = np.copy(mask)
         self.test_mask[[t for t in range(T) if t not in test_indices]] = True
-
+    
         # Setup the PCMCI instance
         if cond_ind_test is not None:
             # Force the masking
@@ -1140,7 +1148,7 @@ class Prediction(Models, PCMCI):
             raise ValueError("target must be either int or list of integers "
                              "indicating the index of the variables to "
                              "predict.")
-
+            
         if target_list == range(self.N):
             return_type = 'array'
         elif len(target_list) == 1:
@@ -1168,14 +1176,25 @@ class Prediction(Models, PCMCI):
             Z = self.target_predictors[target]
             # Check if we've passed a new dataframe object
             test_array = None
+#            print('shape: ', self.dataframe.values.shape)
+#            np.set_printoptions(threshold=np.inf)
+#            print('Array: ', repr(self.dataframe.values))
+            
+#            np.set_printoptions(threshold=1000)
             if new_data is not None:
+            
+                
+                
                 test_array, _ = new_data.construct_array(X, Y, Z,
                                                          tau_max=self.tau_max,
+                                                         mask = self.test_mask,
                                                          mask_type=self.mask_type,
                                                          cut_off=cut_off,
                                                          verbosity=self.verbosity)
+                print(test_array.shape)
             # Otherwise use the default values
             else:
+                
                 test_array, _ = \
                     self.dataframe.construct_array(X, Y, Z,
                                                    tau_max=self.tau_max,
@@ -1183,6 +1202,11 @@ class Prediction(Models, PCMCI):
                                                    mask_type=self.mask_type,
                                                    cut_off=cut_off,
                                                    verbosity=self.verbosity)
+                print(test_array.shape)
+#            print(test_array.T.shape)
+#            print('##test_array: ##\n' , test_array)
+#            print('##Type: ##\n' , type(test_array))
+#            print('\n##T: ' , test_array.T)
             # Transform the data if needed
             a_transform = self.fitted_model[target]['data_transform']
             if a_transform is not None:
@@ -1190,6 +1214,7 @@ class Prediction(Models, PCMCI):
             # Cache the test array
             self.test_array = test_array
             # Run the predictor
+#            print(test_array[2:].T)
             pred_list.append(self.fitted_model[target]['model'].predict(
                 X=test_array[2:].T, **pred_params))
 

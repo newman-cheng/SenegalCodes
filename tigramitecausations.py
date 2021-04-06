@@ -75,10 +75,14 @@ def get_rice_dict():
             
     return mkts_dict, fao_mkts_dict
 
-def get_enviro_df(monthly_dev = True):
-    ndvi_file = 'envirodata/NDVItwoRiceZones.csv'
+enviro_files_dict = {'ndvi': {'rice': 'envirodata/NDVItwoRiceZones.csv',
+                                'millet': 'envirodata/NDVIMilletZones.csv'} ,
+                    'precip' : {'rice': 'envirodata/ChirpsMonthlySumsRiceZones.csv',
+                                'millet': 'envirodata/ChirpsMonthlySumsMilletZones.csv'}}
+def get_enviro_df(commodity, monthly_dev = True):
+    ndvi_file = enviro_files_dict['ndvi'][commodity.lower()]
     ndvi_dict =  get_enviro_ts(ndvi_file, 'NDVI',split_date = 'True', monthly_dev = monthly_dev)
-    precip_file = 'envirodata/ChirpsMonthlySumsRiceZones.csv'
+    precip_file = enviro_files_dict['precip'][commodity.lower()]
     precip_dict = get_enviro_ts(precip_file, 'precip', date_format = '%m_%d_%Y', monthly_dev  = monthly_dev)
     
 #    enviro_dict =  {**ndvi_dict, **precip_dict}
@@ -93,7 +97,7 @@ mkts_dict, fao_mkts_dict = get_rice_dict()
     
 study_markets =  ['Dakar', 'Saint-Louis', 'Dagana','Nouakchott','Kayes','Tambacounda','Touba','Bakel',
             'Banjul','Farafenni', 'Zigiunchor','Kolda', 'Basse Santa su', 'Diaobe', 'Bisseau','Conakry', 'Kaolack', 'Bangkok','Mumbai','SãoPaulo']
-s,e = pd.Timestamp(2000,1,1) , pd.Timestamp(2020,12,31)
+s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,12,31)
 def get_rice_df(mkts_dict, study_markets, min_size , s,e ):
     # dict with only fao GEIWS markets
     sample_dict = {x : mkts_dict[x] for x in mkts_dict.keys() if 
@@ -430,8 +434,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     # ------------------OPTIONS-------------
     # --select data for study
     if commodity.lower() == 'millet':
-        study_data = mam_millet_dataframe
-#        study_data = millet_prices
+#        study_data = mam_millet_dataframe
+        study_data = millet_prices
     elif commodity.lower() == 'rice':
         study_data = rice_dataframe
     # study_data = millet_prices
@@ -447,8 +451,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     mssng = 99999
 
 #    adjusted_study_data  = subtract_rolling_mean( study_data.copy())[s:e]
-    adjusted_study_data  = subtract_rolling_mean( adjust_seasonality(study_data.copy()))[s:e]
-#    adjusted_study_data  = take_first_diff( adjust_seasonality(study_data.copy()))[s:e]
+#    adjusted_study_data  = subtract_rolling_mean( adjust_seasonality(study_data.copy()))[s:e]
+    adjusted_study_data  = take_first_diff( adjust_seasonality(study_data.copy()))[s:e]
     
     global t
     t = adjusted_study_data
@@ -467,7 +471,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     # month_mask = filter_months(adjusted_study_data, harvest_season, missing_flag = mssng)
     enviro_indices = None
     if add_enviro:
-        enviro_df = get_enviro_df()[s:e].fillna(mssng)
+        enviro_df = get_enviro_df(commodity)[s:e].fillna(mssng)
         filled_data = pd.concat([filled_data, enviro_df], axis = 1)
         enviro_indices = [filled_data.columns.get_loc(x) for x in enviro_df.columns ]
     
@@ -479,7 +483,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         filled_data = study_data.copy()[s:e]
 #        if adding environmental variables
         if add_enviro:
-            enviro_df = get_enviro_df(monthly_dev = False)[s:e]
+            enviro_df = get_enviro_df(commodity, monthly_dev = False)[s:e]
             filled_data = pd.concat([filled_data, enviro_df], axis = 1)
             enviro_indices = [filled_data.columns.get_loc(x) for x in enviro_df.columns ]
         filled_data['Month'] = filled_data.index.month
@@ -575,11 +579,11 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #res = stl.fit()
 #fig = res.plot()
 
-commodity = 'Rice'
-FDR_bool = False
+commodity = 'Millet'
+FDR_bool = True
 min_lag, max_lag  = 1,4
 add_enviro = True
-alpha = 0.001
+alpha = 0.05
 m_y_conditioning = False
 
 #run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)
