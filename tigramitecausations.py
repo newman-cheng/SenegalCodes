@@ -90,6 +90,7 @@ def get_enviro_df(commodity, monthly_dev = True):
 #    enviro_df = pd.DataFrame.from_dict(enviro_dict)
     enviro_df = pd.concat(list(ndvi_dict.values()) + list(precip_dict.values()), axis = 1)
     enviro_df.columns = list(ndvi_dict.keys()) + list(precip_dict.keys())
+    enviro_df = -1 * enviro_df 
     return enviro_df
 
 
@@ -222,6 +223,17 @@ def filter_months(df, month_arr, missing_flag = None):
     month_mask_arr = ~bool_arr
     month_mask = np.repeat(np.expand_dims(month_mask_arr, axis=1), repeats=df.shape[1], axis=1)
     return month_mask
+
+
+#function to deal with missing data by interpolating gaps
+#df is pandas dataframe to interpolate
+# max_gap is maximum distance to interpolate
+# method is method of interpolation, see https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html
+def interpolate_df(df, max_gap, method = 'linear'):
+    return df.interpolate(method=method, limit=max_gap)
+    
+
+    
     
 def fit_distribution(dataframe):
     dist_names = ['weibull_min','norm','weibull_max','beta','invgauss',
@@ -451,8 +463,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     mssng = 99999
 
 #    adjusted_study_data  = subtract_rolling_mean( study_data.copy())[s:e]
-#    adjusted_study_data  = subtract_rolling_mean( adjust_seasonality(study_data.copy()))[s:e]
-    adjusted_study_data  = take_first_diff( adjust_seasonality(study_data.copy()))[s:e]
+    adjusted_study_data  = subtract_rolling_mean( adjust_seasonality(study_data.copy()))[s:e]
+#    adjusted_study_data  = take_first_diff( adjust_seasonality(study_data.copy()))[s:e]
     
     global t
     t = adjusted_study_data
@@ -521,9 +533,10 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
             val_matrix = results['val_matrix'],
             alpha_level = alpha)
     pq_matrix = q_matrix if FDR_bool == True else results['p_matrix']
-    link_matrix = pcmci.return_significant_links(pq_matrix = pq_matrix,
+    link_matrix = pcmci.return_significant_positive_links(pq_matrix = pq_matrix,
                             val_matrix=results['val_matrix'], alpha_level=alpha)['link_matrix']
     link_matrix = link_matrix[:-2,:-2,:]if m_y_conditioning == True else link_matrix
+    
     tp.plot_graph(
         val_matrix=results['val_matrix'],
         link_matrix=link_matrix,
@@ -580,10 +593,10 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #fig = res.plot()
 
 commodity = 'Millet'
-FDR_bool = True
+FDR_bool = False
 min_lag, max_lag  = 1,4
 add_enviro = True
-alpha = 0.05
+alpha = 0.05 
 m_y_conditioning = False
 
 #run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)

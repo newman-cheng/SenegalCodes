@@ -162,7 +162,9 @@ class Models():
             if dim_z > 0:
                 # Copy and fit the model
                 a_model = deepcopy(self.model)
+                print('X: ', array[2:].T.shape)
                 a_model.fit(X=array[2:].T, y=array[1])
+                print('coef: ', a_model.coef_)
                 # Cache the results
                 fit_results[j] = {}
                 fit_results[j]['model'] = a_model
@@ -1181,6 +1183,9 @@ class Prediction(Models, PCMCI):
 #            print('Array: ', repr(self.dataframe.values))
             
 #            np.set_printoptions(threshold=1000)
+            print('dataframe shape: ', self.dataframe.values.shape)
+            print('Mask',self.test_mask)
+            print('Mask Type', self.mask_type)
             if new_data is not None:
             
                 
@@ -1191,7 +1196,7 @@ class Prediction(Models, PCMCI):
                                                          mask_type=self.mask_type,
                                                          cut_off=cut_off,
                                                          verbosity=self.verbosity)
-                print(test_array.shape)
+          
             # Otherwise use the default values
             else:
                 

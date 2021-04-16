@@ -116,7 +116,7 @@ class DataFrame():
         """Constructs array from variables X, Y, Z from data.
 
         Data is of shape (T, N), where T is the time series length and N the
-        number of variables.
+        number of variables.  
 
         Parameters
         ----------
