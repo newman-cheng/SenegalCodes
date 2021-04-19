@@ -20,7 +20,7 @@ from tigramite import data_processing as pp
 from tigramite import plotting as tp
 from tigramite.pcmci import PCMCI
 from tigramite.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
-from tigramitecustom.models import LinearMediation, Prediction
+from tigramite.models import LinearMediation, Prediction
 
 from tigramitecausations import get_rice_dict, get_rice_df, subtract_rolling_mean, take_first_diff, adjust_seasonality, get_enviro_df, interpolate_df
 from import_files import GEIWS_prices
@@ -34,7 +34,7 @@ use_study_vars = False
 #If so, environmental variables are multiplied by -1.
 restrict_positive = True
 
-condition_on_my = True
+condition_on_my = False
 
 interpolate = True
 inter_max_gap = 3
@@ -228,8 +228,10 @@ if commodity.lower() == 'rice':
 #millet
 if commodity.lower() == 'millet':
 #    #------ increase environmental time series by 20% --------
+    
     e_list  = ['Kaffrine_NDVI','Kaolack_NDVI', 'Fatick_NDVI', 'Kaffrine_precip', 'Kaolack_precip',  'Fatick_precip']
-    for enviro_var in e_list:
+    all_vars = adjustment_params.keys()
+    for enviro_var in all_vars:
         adjustment_params[enviro_var][0] = 0.5
         
         
@@ -250,9 +252,9 @@ predicted = pred.predict(target) #, new_data = )
 test = pred.get_test_array()[0]
 train = pred.get_train_array(0)[0]
 
-adjusted = pred.predict(target, new_data = new_data)
+adjusted = pred.predict(target, new_data = new_data)[-predicted.size:]
 train_adjusted = pred.get_train_array(0)[0]
-test_adjusted = pred.get_test_array()[0]
+test_adjusted = pred.get_test_array()[0][-predicted.size:]
 
 
 plt.scatter(test, predicted)
