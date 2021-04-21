@@ -10,6 +10,7 @@ import requests
 import numpy as np
 import pandas as pd
 from datetime import date
+
 #import json
 
 #json with all data
@@ -34,10 +35,13 @@ def get_data(country = None, commodity = None, market = None):
         market to filter by
     '''
     
+#    if str(country).lower() == 'senegal' and str(commodity).lower() == 'rice':
+#        commodity = 'Rice (imported)'
+    
     #data which fulfills the requirements passed through the function
     selected_data = [data_dict for data_dict in all_jsons if 
                      ( (country == None or data_dict['countryName'].lower() == country.lower()) and  
-                       (commodity == None or data_dict['commodity'].lower() == commodity.lower() ) and 
+                       (commodity == None or commodity.lower() in  data_dict['commodity'].lower() ) and 
                        (market == None or data_dict['market'].lower() == market.lower()))]
         #    extract data time series from selected_data
     
@@ -61,4 +65,10 @@ def get_data(country = None, commodity = None, market = None):
     
     
     return data_dict 
+
+
+
+
+
+
 

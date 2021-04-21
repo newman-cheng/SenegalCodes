@@ -20,16 +20,16 @@ from tigramite import data_processing as pp
 from tigramite import plotting as tp
 from tigramite.pcmci import PCMCI
 from tigramite.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
-from tigramite.models import LinearMediation, Prediction
+from tigramitecustom.models import LinearMediation, Prediction
 
 from tigramitecausations import get_rice_dict, get_rice_df, subtract_rolling_mean, take_first_diff, adjust_seasonality, get_enviro_df, interpolate_df
 from import_files import GEIWS_prices
 from itertools import chain
 
-commodity = 'millet'
+commodity = 'rice'
 study_market = 'Dakar'
 add_enviro  = True
-use_study_vars = False
+use_study_vars = True
 #whether or not to restrict linear regression weights to only positive values. 
 #If so, environmental variables are multiplied by -1.
 restrict_positive = True

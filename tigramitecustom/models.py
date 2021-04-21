@@ -1192,7 +1192,7 @@ class Prediction(Models, PCMCI):
                 
                 test_array, _ = new_data.construct_array(X, Y, Z,
                                                          tau_max=self.tau_max,
-                                                         mask = self.test_mask,
+                                                         
                                                          mask_type=self.mask_type,
                                                          cut_off=cut_off,
                                                          verbosity=self.verbosity)
