@@ -5,7 +5,7 @@ Created on Tue Apr 20 12:03:11 2021
 
 @author: Mitchell
 """
-import numpy as np 
+
 import pandas as pd
 import ee
 from datetime import date
@@ -23,33 +23,6 @@ CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
 #precip = CHIRPS.select('precipitation')
 GPM = ee.ImageCollection("NASA/GPM_L3/IMERG_MONTHLY_V06")
 precip = GPM.select('precipitation')
-
-
-# ------- millet regions: Kaolack, Kaffrine and Fatick------
-def map_millet(feature):
-    return feature.set('Name', feature.get('ADM1_FR'))
-
-milletRegions = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Kaolack'),
-          ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick'))).map(map_millet)
-
-# ----- Rice Regions: SRV, Casamance, Oriental, Sine Saloum ------
-SRV = departments.filter(ee.Filter.Or(ee.Filter.eq('ADM2_FR', 'Dagana'),ee.Filter.eq('ADM2_FR', 'Saint-Louis'),
-    ee.Filter.eq('ADM2_FR', 'Podor'),ee.Filter.eq('ADM2_FR', 'Matam')))
-
-Casamance = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Ziguinchor'),
-       ee.Filter.eq('ADM1_FR', 'Kolda'), ee.Filter.eq('ADM1_FR', 'Sedhiou') ))
-                                        
-Oriental = regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kedougou'), ee.Filter.eq('ADM1_FR', 'Tambacounda')))
-
-SineSaloum =  regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kaolack'),ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick')))
-
-
-  
-riceGrowingZones = ee.FeatureCollection([ee.Feature(SRV.geometry(), {'Name':'SRV'}),
-             ee.Feature(Casamance.geometry(), {'Name':'Casamance'}), 
-             ee.Feature(Oriental.geometry().union(SineSaloum.geometry()), {'Name':'OrientalAndSineSaloum'}) ])
-
-
 
 
 # Mapping Function
@@ -114,12 +87,54 @@ def makeTS(enviro_param, fc, reindex = True):
 def make_enviro_data(commodity):
     '''
     Function to create a pandas dataframe for environmental indices to pair with food price analyses
+    -------------------
+    Arguments:
+    
+    commodity (str)
+        'rice'  or 'millet', this sets the zones of growing over which to study
+        
+    '''
+    
+    # ------- millet regions: Kaolack, Kaffrine and Fatick------
+    def map_millet(feature):
+        return feature.set('Name', feature.get('ADM1_FR'))
+    
+    milletRegions = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Kaolack'),
+              ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick'))).map(map_millet)
+    
+    # ----- Rice Regions: SRV, Casamance, Oriental, Sine Saloum ------
+    SRV = departments.filter(ee.Filter.Or(ee.Filter.eq('ADM2_FR', 'Dagana'),ee.Filter.eq('ADM2_FR', 'Saint-Louis'),
+        ee.Filter.eq('ADM2_FR', 'Podor'),ee.Filter.eq('ADM2_FR', 'Matam')))
+    
+    Casamance = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Ziguinchor'),
+           ee.Filter.eq('ADM1_FR', 'Kolda'), ee.Filter.eq('ADM1_FR', 'Sedhiou') ))
+                                            
+    Oriental = regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kedougou'), ee.Filter.eq('ADM1_FR', 'Tambacounda')))
+    
+    SineSaloum =  regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kaolack'),ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick')))
     
     
-    if commodity.lower() == 
+      
+    riceGrowingZones = ee.FeatureCollection([ee.Feature(SRV.geometry(), {'Name':'SRV'}),
+                 ee.Feature(Casamance.geometry(), {'Name':'Casamance'}), 
+                 ee.Feature(Oriental.geometry().union(SineSaloum.geometry()), {'Name':'OrientalAndSineSaloum'}) ])
+    
+    if commodity.lower() == 'rice':
+        fc = riceGrowingZones
+    elif commodity.lower() == 'millet':
+        fc = milletRegions
+    else:
+        raise ValueError('Invalid Commodity')
+        
+    ndvi_dict =   {key + '_ndvi' : value for key, value in makeTS('NDVI', fc).items() }
+    precip_dict =  {key + '_precip' : value for key, value in makeTS('precipitation', fc).items() }
+    df = pd.DataFrame.from_dict( {**ndvi_dict, **precip_dict}  )
+    
+    return df
 
-enviro_param = 'NDVI'
-TScoll = makeTS(enviro_param, riceGrowingZones, reindex = True)
+
+#enviro_param = 'NDVI'
+#TScoll = makeTS(enviro_param, riceGrowingZones, reindex = True)
 #dates = TScoll.aggregate_array('Date').getInfo()
 #param = TScoll.aggregate_array(enviro_param).getInfo()
 #region = TScoll.aggregate_array('Name').getInfo()
