@@ -62,9 +62,11 @@ def makeTS(enviro_param, fc, reindex = True):
       timeSeries = ee.FeatureCollection(collList.map(makeTSmapper))
       return timeSeries
 
-    featuresLi  = fc.toList(fc.size())
+    featuresLi  = fc.toList(fc.size()).getInfo()
     ts_dict = {}
-    for i, feature in enumerate(featuresLi.getInfo()):
+    print('--- ',enviro_param,' ---')
+    for i, feature in enumerate(featuresLi):
+        print(i+1,'/', len(featuresLi ))
         feature = ee.Feature(feature)
         ts = mappingFunction(feature)
         name = feature.get('Name').getInfo()
@@ -125,7 +127,7 @@ def make_enviro_data(commodity):
         fc = milletRegions
     else:
         raise ValueError('Invalid Commodity')
-        
+    
     ndvi_dict =   {key + '_ndvi' : value for key, value in makeTS('NDVI', fc).items() }
     precip_dict =  {key + '_precip' : value for key, value in makeTS('precipitation', fc).items() }
     df = pd.DataFrame.from_dict( {**ndvi_dict, **precip_dict}  )

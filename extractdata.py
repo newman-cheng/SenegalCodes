@@ -22,7 +22,7 @@ cmdty = 'millet'
 
 
 
-def get_data(country = None, commodity = None, market = None):
+def extract_giews(country = None, commodity = None, market = None, min_size = 0):
     ''' gets data from FPMA GIEWS website directly based on country, commodity, and market
     
     Parameters
@@ -51,8 +51,8 @@ def get_data(country = None, commodity = None, market = None):
         link = [curr_dict['href'] for curr_dict in mkt_dict['links'] if curr_dict['rel'] == 'monthly_usd_tonne'][0]
         mkt_json = requests.get(link).json()
         data_array = np.array(mkt_json['data'])
-        
-        series = pd.Series(data_array[:,1], name = mkt_name)
+        global series
+        series = pd.Series(data_array[:,1], name = mkt_name, dtype = float)
         series.index = pd.to_datetime( [ pd.Timestamp(date, unit = 'ms') for date in data_array[:,0] ] )
         
 #        reindex series
@@ -60,15 +60,28 @@ def get_data(country = None, commodity = None, market = None):
         new_index = pd.date_range(start=start, end=end, freq='MS')
         reindexed = series.reindex(new_index)
 #        add to dict
-        data_dict[mkt_name] = reindexed
+        if series.dropna().shape[0] >= min_size:
+            data_dict[mkt_name] = reindexed
         
     
     
     return data_dict 
 
+def get_attribute(attribute):
+    ''' gets list of available attribute FPMA GIEWS website 
+    
+    Parameters
+    ----------------------
+    attribute (str)
+        attribute to get list of.
+        ex: 'countryName','market','commodity', etc.
+    '''
+    attribute_list = np.unique([market_dict[attribute] for market_dict in all_jsons])
+    return attribute_list 
 
 
 
 
+#r= extract_giews(country = 'Senegal', commodity = 'rice')
 
 

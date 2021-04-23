@@ -69,7 +69,7 @@ def get_rice_dict():
     fao_mkts_dict = {}
     for df in fao_senegal_rice_prices, fao_border_rice_prices, fao_international_rice_prices:
         for column in df.columns:
-            series = df[column]
+            series = df[column] 
             mkts_dict[column] = series
             fao_mkts_dict[column] = series
             
@@ -592,14 +592,14 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #res = stl.fit()
 #fig = res.plot()
 
-commodity = 'Millet'
+commodity = 'Rice'
 FDR_bool = False
 min_lag, max_lag  = 1,4
 add_enviro = True
-alpha = 0.05 
-m_y_conditioning = False
+alpha = 0.05
+m_y_conditioning = True 
 
-#run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)
+run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning)
 
 
 

@@ -25,37 +25,70 @@ from tigramitecustom.models import LinearMediation, Prediction
 from tigramitecausations import get_rice_dict, get_rice_df, subtract_rolling_mean, take_first_diff, adjust_seasonality, get_enviro_df, interpolate_df
 from import_files import GEIWS_prices
 from itertools import chain
+from extractdata import extract_giews, get_attribute
+from eeDataExtract import make_enviro_data
 
-commodity = 'rice'
-study_market = 'Dakar'
+commodity = 'Rice'
+study_market = ''
 add_enviro  = True
-use_study_vars = True
+use_study_vars = False
 #whether or not to restrict linear regression weights to only positive values. 
 #If so, environmental variables are multiplied by -1.
 restrict_positive = True
 
-condition_on_my = False
+condition_on_my = True
 
 interpolate = True
 inter_max_gap = 3
 
 
-s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,12,31)
-#------------import rice------------
-mkts_dict, fao_mkts_dict = get_rice_dict()
-
+s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,2,28)
+##------------import rice------------
+#mkts_dict, fao_mkts_dict = get_rice_dict()
+#
 minimum_size = 160
-rice_dataframe = get_rice_df(fao_mkts_dict, None, 160, s, e)
 
-# -----------import millet---------
-senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
-millet_dataframe = GEIWS_prices(senegal_millet_file)
-#------set up dataframe
+tau_max = 4
+steps_ahead= 1 #(tau_min)
+
+
+#rice_dataframe = get_rice_df(fao_mkts_dict, None, 160, s, e)
+#
+## -----------import millet---------
+##senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
+##millet_dataframe = GEIWS_prices(senegal_millet_file)
+#
+#millet_prices = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'Millet', min_size = minimum_size))
+
+
+
+
+#------set up price dataframe
 data = None
 if commodity.lower() == 'rice' :
-    data = rice_dataframe 
+    senegal_rice = extract_giews(country = 'Senegal', commodity = 'rice', min_size = minimum_size)
+    thai_rice = extract_giews(country = 'Thailand', commodity = 'rice', min_size = minimum_size)
+    india_rice = {'Mumbai': extract_giews(country = 'India', commodity = 'rice', min_size = minimum_size)['Mumbai']}
+    brazil_rice = extract_giews(country = 'Brazil', commodity = 'rice', min_size = minimum_size)
+      
+    mauri_rice = extract_giews(country = 'Mauritania', commodity = 'rice', min_size = minimum_size)
+    guinea_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = minimum_size)
+    mali_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = minimum_size)
+    
+    all_rice_dict = {**senegal_rice, **thai_rice, **india_rice}
+    all_rice_dict = {**senegal_rice, **thai_rice, **india_rice, **brazil_rice, **mauri_rice, **guinea_rice, **mali_rice}  
+    data = pd.DataFrame.from_dict(all_rice_dict)
+    
 elif commodity.lower() == 'millet' :
-    data = millet_dataframe
+    data = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'millet', min_size = minimum_size))
+else:
+    raise ValueError('Invalid Commodity')
+#  set up environmental dataframe if valid   
+if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth, 
+               # flip to negative if restricting lin regression to positive
+    enviro_df = make_enviro_data(commodity) 
+    enviro_df = - enviro_df if restrict_positive == True else enviro_df
+    
     
 # define target index
 target = list(data.columns).index(study_market)
@@ -63,62 +96,94 @@ target = list(data.columns).index(study_market)
 #get stats for time series for later correction
 mean = np.nanmean(data.iloc[:,target])
 std = np.nanstd(data.iloc[:,target])
+
 #define function to "denormalize" data back to real values
 def denorm(z):
     return (z*std) + mean
 
 # select specific markets to study 
-study_vars = [study_market, 'Bangkok','Mumbai','SãoPaulo','NorthernRiverValley_NDVI', 'SouhternRainfedArea_NDVI',
-       'NorthernRiverValley_precip', 'SouhternRainfedArea_precip']
+study_vars = [study_market, 'Bangkok','Mumbai','São Paulo','SRV_ndvi', 'SRV_precip',
+       'Casamance_precip', 'Casamance_ndvi']
+
 #study_vars = millet_dataframe.columns
 input_str = 'Millet - All markets and NDVI/Precip in Kaolack, Kaffrine, and Fatick' if commodity == 'millet' else 'Rice - Bangkok, Sao Paolo, Mumbai, and NDVI/Precip in SRV and Casamance'
 
 mssng = 99999
-data_clipped = data[s:e]
+#data_clipped = data[s:e]
 
-data_stationary = subtract_rolling_mean( adjust_seasonality( data.copy()))[s:e]
+#data_stationary = subtract_rolling_mean( adjust_seasonality( data.copy()))[s:e]
 
 #--- environmental data
-if add_enviro:
-    enviro_df = get_enviro_df(commodity)[s:e]
-    if restrict_positive:
-        enviro_df =  - enviro_df
-    data_clipped  = pd.concat([data_clipped , enviro_df], axis = 1)
-    data_stationary = pd.concat([data_stationary , enviro_df], axis = 1)
+#if add_enviro:
+#    enviro_df = get_enviro_df(commodity, monthly_dev = False)[s:e]
+#    data_clipped  = pd.concat([data_clipped , enviro_df], axis = 1)
+#    data_stationary = pd.concat([data_stationary , enviro_df], axis = 1)
     
-data_interp = data_clipped.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else data_clipped
-data_filled = data_interp.fillna(mssng) 
+#data_interp = data_clipped.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else data_clipped
+#data_filled = data_interp.fillna(mssng) 
 
 
-def m_y_conditioning(data):
+selected_links = {i : list(chain.from_iterable([ [(j,k) for k in range(-tau_max, -steps_ahead + 1)] 
+                                for j in range(N) if j != target ])) for i in range(N)}
+
+
+#
+#def m_y_conditioning(data):
+#    min_lag = 1
+#    m_y_data = data.copy()[s:e]
+##        if adding environmental variables
+#    if add_enviro:
+#        m_y_data = pd.concat([m_y_data, enviro_df], axis = 1)
+#        enviro_indices = [m_y_data.columns.get_loc(x) for x in enviro_df.columns ]
+#    m_y_data['Month'] = m_y_data.index.month
+#    m_y_data['Year'] = m_y_data.index.year
+#    m_y_indices = [m_y_data.columns.get_loc('Month'), m_y_data.columns.get_loc('Year')]
+#    m_y_data = m_y_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  m_y_data
+#    filled_data = m_y_data.fillna(mssng)
+#    return filled_data
+
+def stationarity(data):
+    pass
+
+# if conditioning on month year
+if condition_on_my:
     min_lag = 1
-    my_data = data.copy()[s:e]
+    m_y_data = data.copy()[s:e]
 #        if adding environmental variables
     if add_enviro:
-        enviro_df = get_enviro_df(commodity, monthly_dev = False)[s:e]
-        my_data = pd.concat([my_data, enviro_df], axis = 1)
-        enviro_indices = [my_data.columns.get_loc(x) for x in enviro_df.columns ]
-    my_data['Month'] = my_data.index.month
-    my_data['Year'] = my_data.index.year
-    m_y_indices = [my_data.columns.get_loc('Month'), my_data.columns.get_loc('Year')]
-    my_data = my_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  my_data
-    filled_data = my_data.fillna(mssng)
-    return filled_data
-
-if condition_on_my:
-    data_filled = m_y_conditioning(data)
-
-
-data_stationary_filled = data_stationary.fillna(mssng)
-#data_filled = data_filled.dropna()
+        m_y_data = pd.concat([m_y_data, enviro_df], axis = 1)
+        enviro_indices = [m_y_data.columns.get_loc(x) for x in enviro_df.columns ]
+        
+    m_y_data['Month'] = m_y_data.index.month
+    m_y_data['Year'] = m_y_data.index.year
+    m_y_indices = [m_y_data.columns.get_loc('Month'), m_y_data.columns.get_loc('Year')]
+    m_y_data = m_y_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  m_y_data
+    data_filled = m_y_data.fillna(mssng)
     
-data_filled = data_filled[study_vars] if use_study_vars == True else data_filled 
-data_stationary_filled = data_stationary_filled[study_vars] if use_study_vars == True else data_stationary_filled 
+else:
+    pass
+    
+    
+data_filled = data_filled[study_vars] if use_study_vars == True else data_filled   
 T, N = data_filled.shape 
 dataframe = pp.DataFrame(data_filled.values, var_names = data_filled.columns, missing_flag = mssng)
-d = dataframe
+
+#links to study
+selected_links = {i : list(chain.from_iterable([ [(j,k) for k in range(-tau_max, -steps_ahead + 1)] 
+                                for j in range(N) if j != target ])) for i in range(N)}
+#    remove month and year conditions
+    
+
+
+
+#data_stationary_filled = data_stationary.fillna(mssng)
+#data_filled = data_filled.dropna()
+#data_stationary_filled = data_stationary_filled[study_vars] if use_study_vars == True else data_stationary_filled 
+
+
+
 #dataframe = pp.DataFrame(data_filled.values, var_names = data.columns)
-dataframe_stationary = pp.DataFrame(data_stationary_filled.values, var_names = data_stationary_filled.columns, missing_flag = mssng)
+#dataframe_stationary = pp.DataFrame(data_stationary_filled.values, var_names = data_stationary_filled.columns, missing_flag = mssng)
 
 #-------- Goal 1 -----------
 #- Predict Dakar with international and environmental time series
@@ -147,14 +212,14 @@ pred = Prediction(dataframe=dataframe,
     verbosity=1
     )
 
-pred_stationary = Prediction(dataframe= dataframe_stationary,
-        cond_ind_test=ParCorr(),   #CMIknn ParCorr
-        prediction_model = sklearn.linear_model.LinearRegression(positive = restrict_positive),
-    data_transform=sklearn.preprocessing.StandardScaler(),
-    train_indices= train_indices,
-    test_indices= test_indices,
-    verbosity=1
-    )
+#pred_stationary = Prediction(dataframe= dataframe_stationary,
+#        cond_ind_test=ParCorr(),   #CMIknn ParCorr
+#        prediction_model = sklearn.linear_model.LinearRegression(positive = restrict_positive),
+#    data_transform=sklearn.preprocessing.StandardScaler(),
+#    train_indices= train_indices,
+#    test_indices= test_indices,
+#    verbosity=1
+#    )
 # Now, we estimate causal predictors using get_predictors for the target variable 2 taking into account a maximum 
 # past lag of tau_max. We use pc_alpha=None which optimizes the parameter based on the Akaike score. Note that 
 # the predictors are different for each prediction horizon. For example, at a prediction horizon of steps_ahead=1 
@@ -162,15 +227,14 @@ pred_stationary = Prediction(dataframe= dataframe_stationary,
 
 
 
-tau_max = 4
-steps_ahead= 1 #(tau_min)
+
 #studied_link_vars = 
 selected_links = {i : list(chain.from_iterable([ [(j,k) for k in range(-tau_max, -steps_ahead + 1)] 
-                                for j in range(pred.N) if j != target ])) for i in range(pred.N)}
+                                for j in range(N) if j != target ])) for i in range(N)}
 #selected_links = {target : list(chain.from_iterable([ [(j,k) for k in range(-tau_max, -steps_ahead + 1)] for j in range(pred.N) ])) }
     
     
-predictors = pred_stationary.get_predictors(
+predictors = pred.get_predictors(
                   selected_targets=[target],
                   selected_links = selected_links,
                   steps_ahead=steps_ahead,
@@ -220,10 +284,11 @@ adjustment_params = { var_name : [0, steps_back] for var_name in new_data_vals.c
 #------ increase environmental time series by half a z-score --------
 #rice
 if commodity.lower() == 'rice':
-    adjustment_params['NorthernRiverValley_NDVI'][0] = 0.5
-    adjustment_params['SouhternRainfedArea_NDVI'][0] = 0.5
-    adjustment_params['NorthernRiverValley_precip'][0] = 0.5
-    adjustment_params['SouhternRainfedArea_precip'][0] = 0.5
+#    adjustment_params['NorthernRiverValley_NDVI'][0] = 0.5
+#    adjustment_params['SouhternRainfedArea_NDVI'][0] = 0.5
+#    adjustment_params['NorthernRiverValley_precip'][0] = 0.5
+#    adjustment_params['SouhternRainfedArea_precip'][0] = 0.5
+    pass
 
 #millet
 if commodity.lower() == 'millet':
@@ -250,10 +315,10 @@ new_data = pp.DataFrame(new_data_filled.values, var_names = new_data_filled.colu
 
 predicted = pred.predict(target) #, new_data = )
 test = pred.get_test_array()[0]
-train = pred.get_train_array(0)[0]
+train = pred.get_train_array(target)[0]
 
 adjusted = pred.predict(target, new_data = new_data)[-predicted.size:]
-train_adjusted = pred.get_train_array(0)[0]
+train_adjusted = pred.get_train_array(target)[0]
 test_adjusted = pred.get_test_array()[0][-predicted.size:]
 
 
@@ -272,7 +337,7 @@ plt.show()
 #plt.show()
 
 #---- plot time series- ---
-index = data_clipped.index
+index = data_filled.index
 #train = pred.get_train_array(0)[0]
 #test = pred.get_test_array()[0]
 true_vals =  np.concatenate([train,test], axis = 0)
@@ -283,7 +348,7 @@ predicted_range_adj = list(range(train_adjusted.size , train_adjusted.size + tes
 
 # ------- set up axis -----
 f, ax1 = plt.subplots(1,1,figsize = (13,4))
-f.suptitle('Price Prediction - Dakar', fontsize = 14)
+f.suptitle('Price Prediction - ' + study_market, fontsize = 14)
 ax1.set_title('Inputs: ' + input_str, fontsize = 12)
 ax1.set_xlabel('Month Number', fontsize= 14)
 ax1.set_ylabel('Price z-score', fontsize = 14)
