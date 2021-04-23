@@ -16,7 +16,7 @@ from matplotlib.collections import PatchCollection
 import sys
 from operator import sub
 import networkx as nx
-import tigramite.data_processing as pp
+import tigramitecustom.data_processing as pp
 from copy import deepcopy
 import matplotlib.path as mpath
 import matplotlib.patheffects as PathEffects

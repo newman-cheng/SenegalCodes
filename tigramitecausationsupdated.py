@@ -361,11 +361,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #    print('shapes', np.array(names).shape, link_matrix.shape)
     plot_map(link_matrix, names, commodity,  save= False)
 
-#----STL-----
-#from statsmodels.tsa.seasonal import STL
-#stl = STL(co2, seasonal=13)
-#res = stl.fit()
-#fig = res.plot()
+
 
 commodity = 'Rice'
 FDR_bool = False

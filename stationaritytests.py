@@ -115,3 +115,39 @@ def fit_distribution(dataframe):
     print ('............................................')
     print (results)
     
+    
+    def test_distribution(dataframe, t = None):
+    def print_res(p, alpha):
+        print('p = ', p)
+        if np.isnan(p):
+            print('p is null')
+        elif p < alpha: 
+            print("The null hypothesis of normality can be rejected --> NOT NORMAL")
+        else:
+            print("The null hypothesis of normality cannot be rejected --> LIKELY NORMAL")
+    alpha = 0.05
+    global arr
+    arr = dataframe.values.flatten()
+    arr = arr[~np.isnan(arr)]
+    corrected = (arr - np.mean(arr)) / np.std(arr)
+    plt.hist(corrected, bins = 15)
+    plt.suptitle(t)
+    plt.show()
+    qqplot(corrected, line = '45')
+    plt.suptitle(t + ' qq Plot')
+    plt.show()
+    # test raw values
+    print("Raw Data:")
+    k2, p = normaltest(corrected) 
+    print_res(p, alpha)
+    
+    # print('Log Data')
+    # log_arr = np.log(arr)
+    # k2, p = normaltest(log_arr)
+    # print_res(p, alpha)
+    
+    
+# test_distribution(rice_dataframe , t='Rice')
+# test_distribution(millet_prices, t = 'Millet')
+# test_distribution()
+    
