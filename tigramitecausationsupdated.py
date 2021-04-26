@@ -234,7 +234,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     
     if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth
         enviro_df = make_enviro_data(commodity) 
-        enviro_indices = [filled_data.columns.get_loc(x) for x in enviro_df.columns ]
+        enviro_indices = [study_data.columns.get_loc(x) for x in enviro_df.columns ]
     
 
 #    adjusted_study_data  = subtract_rolling_mean( study_data.copy())[s:e]
