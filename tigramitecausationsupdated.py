@@ -32,16 +32,16 @@ from eeDataExtract import make_enviro_data
 #study_markets =  ['Dakar', 'Saint-Louis', 'Dagana','Nouakchott','Kayes','Tambacounda','Touba','Bakel',
 #            'Banjul','Farafenni', 'Zigiunchor','Kolda', 'Basse Santa su', 'Diaobe', 'Bisseau','Conakry', 'Kaolack', 'Bangkok','Mumbai','SãoPaulo']
 
-s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,12,31)
+s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,3,30)
 
 
-minimum_size = 160
-rice_dataframe = get_rice_df(fao_mkts_dict, None, minimum_size, s, e)
-
-
-# -----------import millet---------
-senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
-millet_prices = GEIWS_prices(senegal_millet_file)
+#minimum_size = 160
+##rice_dataframe = get_rice_df(fao_mkts_dict, None, minimum_size, s, e)
+#
+#
+## -----------import millet---------
+#senegal_millet_file = 'pricedata/SenegalGEIWSMillet.csv'
+#millet_prices = GEIWS_prices(senegal_millet_file)
 #  -------------------------------
 
 
@@ -229,7 +229,7 @@ def create_data(commodity):
 
 
 def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = False, 
-             interpolate = False, max_gap, stationarity_method = 'firstdifference' ):
+             interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' ):
     
     
     study_data = create_data(commodity)
@@ -272,13 +272,13 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     else:
         if stationarity_method == 'firstdifference':
             stationary = take_first_diff
-        elif stationarity_method = 'rollingmean':
+        elif stationarity_method == 'rollingmean':
             stationary = subtract_rolling_mean
         else:
             raise ValueError("Not Valid Stationarity method: 'firstdifference' or 'rollingmean'")
 #            interpolate if desired
         study_data = study_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  study_data
-        adjusted_study_data  = stationarity(adjust_seasonality(study_data.copy())[s:e]
+        adjusted_study_data  = stationarity(adjust_seasonality(study_data.copy()))[s:e]
         
         
 #        fill data with missing flag
