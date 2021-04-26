@@ -32,10 +32,8 @@ from eeDataExtract import make_enviro_data
 #study_markets =  ['Dakar', 'Saint-Louis', 'Dagana','Nouakchott','Kayes','Tambacounda','Touba','Bakel',
 #            'Banjul','Farafenni', 'Zigiunchor','Kolda', 'Basse Santa su', 'Diaobe', 'Bisseau','Conakry', 'Kaolack', 'Bangkok','Mumbai','SãoPaulo']
 
-s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,3,30)
-
-
-#minimum_size = 160
+s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,3,31)
+minimum_size = 160
 ##rice_dataframe = get_rice_df(fao_mkts_dict, None, minimum_size, s, e)
 #
 #
