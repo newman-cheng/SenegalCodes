@@ -26,7 +26,7 @@ Bamako,12.632644,-7.999785
 SaoPaulo2,11,-17.5
 Mumbai2,10,-16
 Bangkok2,9,-14.5
-SaoPaulo,16.5,-19
+Sao Paulo,16.5,-19
 Mumbai,15,-19
 Bangkok,13.5,-19
 SouhternRainfedArea_NDVI,12.894509,-14
@@ -41,3 +41,9 @@ Fatick_NDVI,14.3744,-15.1885
 Fatick_precip,14.01717,-15.13213
 Kaolack_NDVI,14.3744,-15.1885
 Kaolack_precip,14.01717,-15.13213
+SRV_ndvi,16.5,-15
+SRV_precip,15.5,-14
+Casamance_ndvi,12.7,-15.8
+Casamance_precip,13,-16.273497
+OrientalAndSineSaloum_ndvi,12.894509,-14
+OrientalAndSineSaloum_precip,13.4,-13

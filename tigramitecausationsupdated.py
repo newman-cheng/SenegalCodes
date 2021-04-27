@@ -226,25 +226,11 @@ def create_data(commodity):
 
 
 
-def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = False, 
+def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
              interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' ):
     
     
     study_data = create_data(commodity)
-    
-    if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth
-        enviro_df = make_enviro_data(commodity) 
-        enviro_indices = [study_data.columns.get_loc(x) for x in enviro_df.columns ]
-    
-
-#    adjusted_study_data  = subtract_rolling_mean( study_data.copy())[s:e]
-    
-#    adjusted_study_data  = take_first_diff( adjust_seasonality(study_data.copy()))[s:e]
-    
-    
-
-    
-    
     
     
     # --- Select Season -----
@@ -254,17 +240,18 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     # month_mask = filter_months(adjusted_study_data, harvest_season, missing_flag = mssng)
     
 #   if using month and year conditions in the system
-    if m_y_conditioning:
+    if m_y_conditioning: 
         m_y_data = study_data.copy()[s:e]
     #        if adding environmental variables
         if add_enviro:
+            enviro_df = make_enviro_data(commodity) 
             m_y_data = pd.concat([m_y_data, enviro_df], axis = 1)
             enviro_indices = [m_y_data.columns.get_loc(x) for x in enviro_df.columns ]
             
         m_y_data['Month'] = m_y_data.index.month
         m_y_data['Year'] = m_y_data.index.year
         m_y_indices = [m_y_data.columns.get_loc('Month'), m_y_data.columns.get_loc('Year')]
-        m_y_data = m_y_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  m_y_data
+        m_y_data = m_y_data.interpolate(method='linear', limit=max_gap) if interpolate == True else  m_y_data
         adjusted_study_data = m_y_data
         
     else:
@@ -275,14 +262,20 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         else:
             raise ValueError("Not Valid Stationarity method: 'firstdifference' or 'rollingmean'")
 #            interpolate if desired
-        study_data = study_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  study_data
-        adjusted_study_data  = stationarity(adjust_seasonality(study_data.copy()))[s:e]
-        
+        if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth
+            enviro_df = make_enviro_data(commodity) 
+            study_data = pd.concat([study_data.copy(), enviro_df], axis = 1)
+            enviro_indices = [study_data.columns.get_loc(x) for x in enviro_df.columns ]
+        study_data = study_data.interpolate(method='linear', limit=max_gap) if interpolate == True else  study_data
+        adjusted_study_data  = stationary(adjust_seasonality(study_data.copy()))[s:e]
+    
         
 #        fill data with missing flag
     mssng = 99999
     filled_data = adjusted_study_data.fillna(mssng)
         
+    global t
+    t = filled_data.copy()
 #        create tigramite dataframe
     dataframe = pp.DataFrame(filled_data.values, var_names= filled_data.columns, missing_flag = mssng)
     

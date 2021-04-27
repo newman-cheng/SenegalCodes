@@ -200,15 +200,20 @@ class PCMCI():
         # data range
         _key_set = set(_int_sel_links.keys())
         valid_entries = _key_set == set(range(self.N))
-
+#        print(1, valid_entries)
         valid_entries = valid_entries and \
                         set(var for parents in _int_sel_links.values()
                             for var, _ in parents).issubset(_vars)
+#        print(2, valid_entries)
         valid_entries = valid_entries and \
                         set(lag for parents in _int_sel_links.values()
                             for _, lag in parents).issubset(_lags)
+#        print(3, valid_entries)
+#        print('lags', _lags)
+#        print('set: ' ,set(lag for parents in _int_sel_links.values()
+#                            for _, lag in parents))
         if not valid_entries:
-            raise ValueError("selected_links"
+             raise ValueError("selected_links"
                              " must be dictionary with keys for all [0,...,N-1]"
                              " variables and contain only links from "
                              "these variables in range [tau_min, tau_max]")
@@ -1831,28 +1836,32 @@ class PCMCI():
 #            tau_min = 0
             m_index = month_year_indices[0]
             y_index = month_year_indices[1]
-            print('Month, Year: ' , m_index, y_index)
-#            add contemperaneous connection for each
-            for key in all_parents.keys():
-#                get rid of contemperaneous links
-                all_parents[key] = [pair for pair in all_parents[key] if pair[1] != 0]
-#                add month/year contemp links:
-                all_parents[key].append((m_index, 0))
-                all_parents[key ].append((y_index, 0))
-#                give month and year no parents
             all_parents[m_index] = []
             all_parents[y_index] = []
-            selected_links = all_parents
             
-        print('---------All Parents---------------')
-        print(all_parents)
+#            print('Month, Year: ' , m_index, y_index)
+##            add contemperaneous connection for each
+#            for key in all_parents.keys():
+##                get rid of contemperaneous links
+#                all_parents[key] = [pair for pair in all_parents[key] if pair[1] != 0]
+##                add month/year contemp links:
+#                all_parents[key].append((m_index, 0))
+#                all_parents[key ].append((y_index, 0))
+##                give month and year no parents
+#            all_parents[m_index] = []
+#            all_parents[y_index] = []
+#            selected_links = all_parents
+#            print(selected_links)
+            
+#        print('---------All Parents---------------')
+#        print(all_parents)
         
 #        add month and year as parent for each market but not having any parents
 #        if 
             
         
         # Get the results from run_mci, using the parents as the input
-        results = self.run_mci(selected_links=selected_links,
+        results = self.run_mci(selected_links=all_parents,
                                tau_min=tau_min,
                                tau_max=tau_max,
                                parents=all_parents,
