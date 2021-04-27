@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 ## use `%matplotlib notebook` for interactive figures
 #plt.style.use('ggplot')
 import sklearn
-import tigramite
 from tigramitecustom import data_processing as pp
 from tigramitecustom import plotting as tp
 from tigramitecustom.pcmci import PCMCI
@@ -343,20 +342,4 @@ def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m
     ax1.legend()
     
     
-#commodity = 'Rice'
-#study_market = 'Dakar'
-#add_enviro  = True
-#use_study_vars = False
-##whether or not to restrict linear regression weights to only positive values. 
-##If so, environmental variables are multiplied by -1.
-#restrict_positive = True
-#
-#condition_on_my = True
-#
-#interpolate = True
-#inter_max_gap = 3
-#
-#run_pred_test(commodity, study_market, min_lag,  max_lag, add_enviro, m_y_conditioning = True, 
-#             interpolate = False, max_gap = 3)
-#    
-#    
+
