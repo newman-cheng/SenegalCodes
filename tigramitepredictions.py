@@ -62,7 +62,6 @@ steps_ahead= 1 #(tau_min)
 
 
 
-
 #------set up price dataframe
 data = None
 if commodity.lower() == 'rice' :
@@ -361,6 +360,7 @@ ax1.plot(predicted_range, denorm(predicted), color = 'red',lw = 2, linestyle = '
 ax1.plot(predicted_range_adj, denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
 ax1.axvspan( predicted_range[-1] - 12 , predicted_range[-1], alpha=0.2, color='red')
 ax1.legend()
+
 
 
 

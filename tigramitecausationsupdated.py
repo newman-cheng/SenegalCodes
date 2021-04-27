@@ -44,7 +44,6 @@ minimum_size = 160
 
 
 
-
 #subtract by rolling mean
 def subtract_rolling_mean(df, window_radius = 6):
     rolling_mean = df.rolling(window_radius*2 , center = True).mean(skipna = True)
@@ -232,7 +231,8 @@ def create_data(commodity):
 
     
 
-
+#allows for saving of environemntal data over mulitple runs
+enviro_data_dict = {}
 
 def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
              interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' ):
@@ -240,6 +240,13 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     
     study_data = create_data(commodity)
     
+    if add_enviro:
+        if commodity in enviro_data_dict.keys():
+            enviro_df = enviro_data_dict[commodity]
+        else:
+            enviro_df = make_enviro_data(commodity) 
+            enviro_data_dict[commodity] = enviro_df
+        
     
     # --- Select Season -----
     
@@ -252,7 +259,6 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         m_y_data = study_data.copy()[s:e]
     #        if adding environmental variables
         if add_enviro:
-            enviro_df = make_enviro_data(commodity) 
             m_y_data = pd.concat([m_y_data, enviro_df], axis = 1)
             enviro_indices = [m_y_data.columns.get_loc(x) for x in enviro_df.columns ]
             
@@ -271,7 +277,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
             raise ValueError("Not Valid Stationarity method: 'firstdifference' or 'rollingmean'")
 #            interpolate if desired
         if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth
-            enviro_df = make_enviro_data(commodity) 
+            
             study_data = pd.concat([study_data.copy(), enviro_df], axis = 1)
             enviro_indices = [study_data.columns.get_loc(x) for x in enviro_df.columns ]
         study_data = study_data.interpolate(method='linear', limit=max_gap) if interpolate == True else  study_data
