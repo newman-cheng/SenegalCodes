@@ -232,7 +232,7 @@ def create_data(commodity):
     
 
 #allows for saving of environemntal data over mulitple runs
-enviro_data_dict = {}
+enviro_data_dict = {} if 'enviro_data_dict' not in dir() else enviro_data_dict 
 
 def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
              interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' ):

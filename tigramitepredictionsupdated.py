@@ -14,16 +14,15 @@ import matplotlib.pyplot as plt
 ## use `%matplotlib notebook` for interactive figures
 #plt.style.use('ggplot')
 import sklearn
-import sklearn.neighbors
 import tigramite
-from tigramite import data_processing as pp
-from tigramite import plotting as tp
-from tigramite.pcmci import PCMCI
-from tigramite.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
+from tigramitecustom import data_processing as pp
+from tigramitecustom import plotting as tp
+from tigramitecustom.pcmci import PCMCI
+from tigramitecustom.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
 from tigramitecustom.models import LinearMediation, Prediction
 
 from tigramitecausationsupdated import  subtract_rolling_mean, take_first_diff, adjust_seasonality
-from import_files import GEIWS_prices
+
 from itertools import chain
 from extractdata import extract_giews, get_attribute
 from eeDataExtract import make_enviro_data
@@ -41,7 +40,7 @@ condition_on_my = True
 interpolate = True
 inter_max_gap = 3
 #allows for saving enviro data over multiple runs
-enviro_data_dict = {}
+enviro_data_dict = {} if 'enviro_data_dict' not in dir() else enviro_data_dict 
 
 
 s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,2,28)
@@ -63,7 +62,7 @@ min_lag = 1 #(tau_min)
 #millet_prices = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'Millet', min_size = minimum_size))
 
 
-def run_pred_test(commodity, study_market, FDR_bool, steps_ahead,  tau_max, add_enviro,  m_y_conditioning = True, 
+def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m_y_conditioning = True, 
              interpolate = False, max_gap = 3):
     #------set up price dataframe
     data = None
@@ -88,11 +87,13 @@ def run_pred_test(commodity, study_market, FDR_bool, steps_ahead,  tau_max, add_
     #  set up environmental dataframe if valid   
     if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth, 
                    # flip to negative if restricting lin regression to positive
-        if commodity in enviro_data_dict.keys():
-            enviro_df = enviro_data_dict[commodity]
+        if commodity.lower() in enviro_data_dict.keys():
+            enviro_df = enviro_data_dict[commodity.lower()]
         else:
+            print('test')
             enviro_df = make_enviro_data(commodity) 
-            enviro_data_dict[commodity] = enviro_df
+            enviro_data_dict[commodity.lower()] = enviro_df
+            
         enviro_df = - enviro_df if restrict_positive == True else enviro_df
         
         
@@ -355,7 +356,7 @@ def run_pred_test(commodity, study_market, FDR_bool, steps_ahead,  tau_max, add_
 #interpolate = True
 #inter_max_gap = 3
 #
-#run_pred_test(commodity, study_market, FDR_bool, min_lag,  max_lag, add_enviro, m_y_conditioning = True, 
+#run_pred_test(commodity, study_market, min_lag,  max_lag, add_enviro, m_y_conditioning = True, 
 #             interpolate = False, max_gap = 3)
-    
-    
+#    
+#    
