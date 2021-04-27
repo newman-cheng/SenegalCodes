@@ -90,13 +90,21 @@ def filter_months(df, month_arr, missing_flag = None):
     
 def plot_map(link_matrix,  names, variable, save= False):
     #upload coordinates
-    global coord_df
-    coord_df = pd.read_csv('/Users/Mitchell/SenegalAnalyses/SenegalCodes/shapedata/citycoordinates.csv')
+    
+    try:    
+        coord_df = pd.read_csv('shapedata/citycoordinates.csv')
+        country_gdf = gp.read_file('shapedata/WestAfricaADMN0/wca_adm0.shp')
+    except FileNotFoundError:
+        coord_df = pd.read_csv('SenegalCodes/shapedata/citycoordinates.csv')
+        country_gdf = gp.read_file('SenegalCodes/shapedata/WestAfricaADMN0/wca_adm0.shp')
+        
+    
+    
     coord_df.index = coord_df['City Name']
     coord_df = coord_df[['Lat','Lon']]
     
     
-    country_gdf = gp.read_file('/Users/Mitchell/SenegalAnalyses/SenegalCodes/shapedata/WestAfricaADMN0/wca_adm0.shp')
+    
     country_gdf = country_gdf.to_crs('epsg:4326')
     country_gdf.index = country_gdf['admin0Name']
     select_country_idx = ['Senegal','Gambia','Guinea','Guinea Bissau','Mauritania','Mali']
