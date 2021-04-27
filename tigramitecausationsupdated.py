@@ -362,17 +362,17 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 
 
 
-commodity = 'Rice'
-FDR_bool = False
-min_lag, max_lag  = 1,4
-add_enviro = True
-alpha = 0.05
-m_y_conditioning = True 
-interpolate = False
-max_gap= 2
+#commodity = 'Rice'
+#FDR_bool = False
+#min_lag, max_lag  = 1,4
+#add_enviro = True
+#alpha = 0.05
+#m_y_conditioning = True 
+#interpolate = False
+#max_gap= 2
 #stationarity_method = 'firstdifference'
 
-run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate, max_gap= max_gap, stationarity_method = 'firstdifference')
+#run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate, max_gap= max_gap, stationarity_method = 'firstdifference')
 
 
 
