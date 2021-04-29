@@ -9,8 +9,8 @@ from copy import deepcopy
 
 import numpy as np
 
-from tigramite.data_processing import DataFrame
-from tigramite.pcmci import PCMCI
+from tigramitecustom.data_processing import DataFrame
+from tigramitecustom.pcmci import PCMCI
 
 try:
     import sklearn

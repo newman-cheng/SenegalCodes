@@ -137,7 +137,8 @@ class PCMCI():
     def __init__(self, dataframe,
                  cond_ind_test,
                  selected_variables=None,
-                 verbosity=0):
+                 verbosity=0,
+                 print_info = False):
         # Set the data for this iteration of the algorithm
         self.dataframe = dataframe
         # Set the conditional independence test to be used
@@ -147,6 +148,8 @@ class PCMCI():
         self.verbosity = verbosity
         # Set the variable names 
         self.var_names = self.dataframe.var_names
+        # Set whether or not to print
+        self.print_info = print_info
 
         # Raise error if selected_variables is set
         if selected_variables is not None:
@@ -200,18 +203,15 @@ class PCMCI():
         # data range
         _key_set = set(_int_sel_links.keys())
         valid_entries = _key_set == set(range(self.N))
-#        print(1, valid_entries)
+
         valid_entries = valid_entries and \
                         set(var for parents in _int_sel_links.values()
                             for var, _ in parents).issubset(_vars)
-#        print(2, valid_entries)
+
         valid_entries = valid_entries and \
                         set(lag for parents in _int_sel_links.values()
                             for _, lag in parents).issubset(_lags)
-#        print(3, valid_entries)
-#        print('lags', _lags)
-#        print('set: ' ,set(lag for parents in _int_sel_links.values()
-#                            for _, lag in parents))
+
         if not valid_entries:
              raise ValueError("selected_links"
                              " must be dictionary with keys for all [0,...,N-1]"
@@ -712,9 +712,10 @@ class PCMCI():
         iterations = defaultdict(dict)
 
         if self.verbosity > 0:
-            self._print_pc_params(selected_links, tau_min, tau_max,
-                              _int_pc_alpha, max_conds_dim,
-                              max_combinations)
+            if self.print_info:
+                self._print_pc_params(selected_links, tau_min, tau_max,
+                                  _int_pc_alpha, max_conds_dim,
+                                  max_combinations)
 
         # Set the selected links
         _int_sel_links = self._set_sel_links(selected_links, tau_min, tau_max,
@@ -762,8 +763,10 @@ class PCMCI():
             optimal_alpha = _int_pc_alpha[score.argmin()]
             # Only print the selection results if there is more than one
             # pc_alpha
+            
             if self.verbosity > 1 and select_optimal_alpha:
-                self._print_pc_sel_results(_int_pc_alpha, results, j,
+                if self.print_info:
+                    self._print_pc_sel_results(_int_pc_alpha, results, j,
                                            score, optimal_alpha)
             # Record the results for this variable
             all_parents[j] = results[optimal_alpha]['parents']
@@ -784,8 +787,9 @@ class PCMCI():
         self.pval_max = pval_max
         # Print the results
         if self.verbosity > 0:
-            print("\n## Resulting lagged parent (super)sets:")
-            self._print_parents(all_parents, val_min, pval_max)
+            if self.print_info:
+                print("\n## Resulting lagged parent (super)sets:")
+                self._print_parents(all_parents, val_min, pval_max)
         # Return the parents
         return all_parents
 
@@ -1166,13 +1170,14 @@ class PCMCI():
         """
 
         if self.verbosity > 0:
-            print("\n##\n## Step 2: MCI algorithm\n##"
-                  "\n\nParameters:")
-            print("\nindependence test = %s" % self.cond_ind_test.measure
-                  + "\ntau_min = %d" % tau_min
-                  + "\ntau_max = %d" % tau_max
-                  + "\nmax_conds_py = %s" % max_conds_py
-                  + "\nmax_conds_px = %s" % max_conds_px)
+            if self.print_info:
+                print("\n##\n## Step 2: MCI algorithm\n##"
+                      "\n\nParameters:")
+                print("\nindependence test = %s" % self.cond_ind_test.measure
+                      + "\ntau_min = %d" % tau_min
+                      + "\ntau_max = %d" % tau_max
+                      + "\nmax_conds_py = %s" % max_conds_py
+                      + "\nmax_conds_px = %s" % max_conds_px)
 
         return self._run_mci_or_variants(
             selected_links=selected_links,
@@ -1827,7 +1832,7 @@ class PCMCI():
                                          pc_alpha=pc_alpha,
                                          max_conds_dim=max_conds_dim,
                                          max_combinations=max_combinations)
-        print(all_parents)
+#        print(all_parents)
         # all parents form: {mkt_index : [(link_mkt_index , lag_value), (2nd link), ...] , 2nd mkt index : [] }
         if no_parents:
             for x in no_parents:
@@ -1892,7 +1897,8 @@ class PCMCI():
                        'conf_matrix': conf_matrix}
         # Print the information
         if self.verbosity > 0:
-            self.print_results(return_dict)
+            if self.print_info:
+                self.print_results(return_dict)
         # Return the dictionary
         self.results = return_dict
         return return_dict

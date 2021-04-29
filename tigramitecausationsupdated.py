@@ -232,19 +232,25 @@ def create_data(commodity):
     
 
 #allows for saving of environemntal data over mulitple runs
-enviro_data_dict = {} if 'enviro_data_dict' not in dir() else enviro_data_dict 
+if 'enviro_data_dict' not in dir():
+    enviro_data_dict = {} 
 
 def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
-             interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' ):
+             interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' , print_info = False, use_gee = True):
     
     
     study_data = create_data(commodity)
     
     if add_enviro:
+        
         if commodity in enviro_data_dict.keys():
             enviro_df = enviro_data_dict[commodity]
         else:
-            enviro_df = make_enviro_data(commodity) 
+            if use_gee:
+                enviro_df =  -  make_enviro_data(commodity) 
+            else:
+                enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
+                enviro_df.index = pd.to_datetime()
             enviro_data_dict[commodity] = enviro_df
         
     
@@ -301,17 +307,20 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     pcmci = PCMCI(
         dataframe=dataframe, 
         cond_ind_test=parcorr,
-        verbosity=1)
+        verbosity=1,
+        print_info = print_info)
 #    get results of pcmci
     results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None, no_parents = enviro_indices, month_year_indices = m_y_indices)
     #
     q_matrix = pcmci.get_corrected_pvalues(p_matrix=results['p_matrix'], fdr_method='fdr_bh')
     #
-    pcmci.print_significant_links(
-            p_matrix = results['p_matrix'], 
-            q_matrix = q_matrix,
-            val_matrix = results['val_matrix'],
-            alpha_level = alpha)
+    if print_info:
+        pcmci.print_significant_links(
+                p_matrix = results['p_matrix'], 
+                q_matrix = q_matrix,
+                val_matrix = results['val_matrix'],
+                alpha_level = alpha)
+        
     pq_matrix = q_matrix if FDR_bool == True else results['p_matrix']
     link_matrix = pcmci.return_significant_positive_links(pq_matrix = pq_matrix,
                             val_matrix=results['val_matrix'], alpha_level=alpha)['link_matrix']
@@ -322,7 +331,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         link_matrix=link_matrix,
         var_names=filled_data.columns,
         link_colorbar_label='cross-MCI',
-        node_colorbar_label='auto-MCI',
+        node_colorbar_label='auto-MCI'
         )
     plt.show()
     
@@ -356,29 +365,47 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
     # ax.set_title('Arrow represents causation, circle size represents relative importance of market')
 #    pos = nx.spring_layout(G)
+    global pos
+    
     pos = nx.drawing.layout.circular_layout(G)
+    tig_pos = {'x': np.array([a[0] for a in pos.values()]) ,
+               'y': np.array([a[1] for a in pos.values()]) }
+    
+    
+    tp.plot_graph(
+        val_matrix=results['val_matrix'],
+        link_matrix=link_matrix,
+        var_names=filled_data.columns,
+        link_colorbar_label='cross-MCI',
+        node_colorbar_label='auto-MCI',
+        node_pos = tig_pos
+        )
+    plt.show()
+    
     influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1)
     label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
     nx.draw(G, node_size = influenced_arr, with_labels = False, pos = pos, arrowsize = 30, alpha = 0.65, edge_color = 'grey', ax = ax)
     nx.draw_networkx_labels(G, pos = pos, labels = label_dict)
-    print(n_connections , ' Connections')
+#    print(n_connections , ' Connections') 
     #G = nx.Graph()
 #    print('shapes', np.array(names).shape, link_matrix.shape)
     plot_map(link_matrix, names, commodity,  save= False)
 
 
 
-#commodity = 'Rice'
-#FDR_bool = False
-#min_lag, max_lag  = 1,4
-#add_enviro = True
-#alpha = 0.05
-#m_y_conditioning = True 
-#interpolate = False
-#max_gap= 2
-#stationarity_method = 'firstdifference'
+commodity = 'Rice'
+FDR_bool = False
+min_lag, max_lag  = 1,4
+add_enviro = True
+alpha = 0.05
+m_y_conditioning = True 
+interpolate = False
+max_gap= 2
+stationarity_method = 'firstdifference'
+print_info = False
 
-#run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate, max_gap= max_gap, stationarity_method = 'firstdifference')
+run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
 
