@@ -250,7 +250,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
                 enviro_df =  -  make_enviro_data(commodity) 
             else:
                 enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
-                enviro_df.index = pd.to_datetime()
+                enviro_df.index = pd.to_datetime(enviro_df.iloc[:,0], format = '%Y-%m-%d')
+                enviro_df = - enviro_df.drop(columns = enviro_df.columns[0])
             enviro_data_dict[commodity] = enviro_df
         
     
@@ -393,19 +394,19 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 
 
 
-commodity = 'Rice'
-FDR_bool = False
-min_lag, max_lag  = 1,4
-add_enviro = True
-alpha = 0.05
-m_y_conditioning = True 
-interpolate = False
-max_gap= 2
-stationarity_method = 'firstdifference'
-print_info = False
-
-run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+#commodity = 'Rice'
+#FDR_bool = False
+#min_lag, max_lag  = 1,4
+#add_enviro = True
+#alpha = 0.05
+#m_y_conditioning = True 
+#interpolate = False
+#max_gap= 2
+#stationarity_method = 'firstdifference'
+#print_info = False
+#
+#run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+#         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
 

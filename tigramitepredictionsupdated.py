@@ -62,7 +62,7 @@ min_lag = 1 #(tau_min)
 
 
 def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m_y_conditioning = True, 
-             interpolate = False, max_gap = 3, print_info = False):
+             interpolate = False, max_gap = 3, print_info = False, use_gee = True):
     #------set up price dataframe
     data = None
     if commodity.lower() == 'rice' :
