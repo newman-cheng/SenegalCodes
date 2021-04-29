@@ -62,7 +62,7 @@ min_lag = 1 #(tau_min)
 
 
 def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m_y_conditioning = True, 
-             interpolate = False, max_gap = 3):
+             interpolate = False, max_gap = 3, print_info = False):
     #------set up price dataframe
     data = None
     if commodity.lower() == 'rice' :
@@ -85,14 +85,17 @@ def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m
         raise ValueError('Invalid Commodity')
     #  set up environmental dataframe if valid   
     if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth, 
-                   # flip to negative if restricting lin regression to positive
-        if commodity.lower() in enviro_data_dict.keys():
-            enviro_df = enviro_data_dict[commodity.lower()]
+                   # flip to negative if restricting lin regression to positive       
+        if commodity in enviro_data_dict.keys():
+            enviro_df = enviro_data_dict[commodity]
         else:
-            print('test')
-            enviro_df = make_enviro_data(commodity) 
-            enviro_data_dict[commodity.lower()] = enviro_df
-            
+            if use_gee:
+                enviro_df =   make_enviro_data(commodity) 
+            else:
+                enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
+                enviro_df.index = pd.to_datetime(enviro_df.iloc[:,0], format = '%Y-%m-%d')
+                enviro_df =  enviro_df.drop(columns = enviro_df.columns[0])
+            enviro_data_dict[commodity] = enviro_df
         enviro_df = - enviro_df if restrict_positive == True else enviro_df
         
         
@@ -188,7 +191,8 @@ def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m
         data_transform=sklearn.preprocessing.StandardScaler(),
         train_indices= train_indices,
         test_indices= test_indices,
-        verbosity=1
+        verbosity=1, 
+        print_info = print_info
         )
     
     #pred_stationary = Prediction(dataframe= dataframe_stationary,

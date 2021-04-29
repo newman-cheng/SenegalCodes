@@ -956,7 +956,8 @@ class Prediction(Models, PCMCI):
                  prediction_model,
                  cond_ind_test=None,
                  data_transform=None,
-                 verbosity=0):
+                 verbosity=0,
+                 print_info = False):
 
         # Default value for the mask
         mask = dataframe.mask
@@ -1000,6 +1001,7 @@ class Prediction(Models, PCMCI):
         self.selected_targets = None
         self.fitted_model = None
         self.test_array = None
+        self.print_info = print_info
 
     def get_predictors(self,
                        selected_targets=None,
