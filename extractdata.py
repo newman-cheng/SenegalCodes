@@ -48,6 +48,7 @@ def extract_giews(country = None, commodity = None, market = None, min_size = 0)
     data_dict = {}
     for mkt_dict in selected_data:
         mkt_name = mkt_dict['market']
+        print(mkt_name)
         if mkt_name =='Zguinchor':
             print('test')
             mkt_name = 'Ziguinchor' #fix mispelling
