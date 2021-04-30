@@ -355,7 +355,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     caused_by = []
     causes = []
     mci = []
-    k = 1
+
     for i in range(all_tau_link.shape[0]):
         for j in range(all_tau_link.shape[1]):
             icausesj = all_tau_link[i,j]
@@ -364,8 +364,6 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
             j_name = names[j]
             if icausesj and i_name != j_name and True:
                 print(names[i],' causes ' , names[j])
-                num.append(k)
-                k +=1
                 caused_by.append(i_name)
                 causes.append(j_name)
                 mci.append(np.max(mci_val))
@@ -373,12 +371,11 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
                 G.nodes[i]['influenced_by'] += 1
                 n_connections +=1 
                 
-    link_df = pd.DataFrame.from_dict({'Connection #':num,
-                                     'Caused By': caused_by,
+    link_df = pd.DataFrame.from_dict({'Caused By': caused_by,
                                      'Causes':causes,
                                      'MCI-val':mci})
                 
-    print(link_df)
+    print('\n\n ### Causation Links ###', link_df,'\n\n')
     scale_factor = 200
     f, ax = plt.subplots(1,1,figsize = (7,5))
     f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
