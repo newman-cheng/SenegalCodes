@@ -278,7 +278,7 @@ def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m
     if commodity.lower() == 'millet':
     #    #------ increase environmental time series by 20% --------
         
-        e_list  = ['Kaffrine_NDVI','Kaolack_NDVI', 'Fatick_NDVI', 'Kaffrine_precip', 'Kaolack_precip',  'Fatick_precip']
+        e_list  = ['Kaffrine_ndvi','Kaolack_ndvi', 'Fatick_ndvi', 'Kaffrine_precip', 'Kaolack_precip',  'Fatick_precip']
         all_vars = adjustment_params.keys()
         for enviro_var in all_vars:
             adjustment_params[enviro_var][0] = 0.5
@@ -345,6 +345,8 @@ def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m
     ax1.plot(predicted_range_adj, denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
     ax1.axvspan( predicted_range[-1] - 12 , predicted_range[-1], alpha=0.2, color='red')
     ax1.legend()
+    
+
     
     
 

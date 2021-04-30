@@ -1532,6 +1532,7 @@ def plot_graph(
     network_lower_bound=0.2,
     show_colorbar=True,
     inner_edge_style="dashed",
+    title = None
 ):
     """Creates a network plot.
     This is still in beta. The network is defined either from True values in
@@ -1615,6 +1616,9 @@ def plot_graph(
         Fraction of vertical space below graph plot.
     show_colorbar : bool
         Whether to show colorbars for links and nodes.
+    title : str, optional (default None)
+        title for graph
+        
     """
 
     if fig_ax is None:
@@ -1626,6 +1630,8 @@ def plot_graph(
     (link_matrix, val_matrix, link_width, link_attribute) = _check_matrices(
         link_matrix, val_matrix, link_width, link_attribute, sig_thres
     )
+    if title:
+        fig.suptitle(title)
 
     N, N, dummy = val_matrix.shape
     tau_max = dummy - 1

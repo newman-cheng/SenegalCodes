@@ -35,11 +35,11 @@ NorthernRiverValley_NDVI,16.5,-15
 NorthernRiverValley_precip,15.5,-14
 Pikine,14.7319,-17.4
 St.louis,16.0333,-16.5
-Kaffrine_NDVI,14.3744,-15.1885
+Kaffrine_ndvi,14.3744,-15.1885
 Kaffrine_precip,14.01717,-15.13213
-Fatick_NDVI,14.3744,-15.1885
+Fatick_ndvi,14.3744,-15.1885
 Fatick_precip,14.01717,-15.13213
-Kaolack_NDVI,14.3744,-15.1885
+Kaolack_ndvi,14.3744,-15.1885
 Kaolack_precip,14.01717,-15.13213
 SRV_ndvi,16.5,-15
 SRV_precip,15.5,-14

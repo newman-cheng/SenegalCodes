@@ -169,7 +169,7 @@ def plot_map(link_matrix,  names, variable, save= False):
 #    c = nx.drawing.layout.circular_layout(G)
     
     influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1) - 100
-    print(influenced_arr)
+#    print(influenced_arr)
     label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
 #    change enviro vars to better names:
     
@@ -311,6 +311,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         verbosity=1,
         print_info = print_info)
 #    get results of pcmci
+    global results
     results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None, no_parents = enviro_indices, month_year_indices = m_y_indices)
     #
     q_matrix = pcmci.get_corrected_pvalues(p_matrix=results['p_matrix'], fdr_method='fdr_bh')
@@ -326,6 +327,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     link_matrix = pcmci.return_significant_positive_links(pq_matrix = pq_matrix,
                             val_matrix=results['val_matrix'], alpha_level=alpha)['link_matrix']
     link_matrix = link_matrix[:-2,:-2,:]if m_y_conditioning == True else link_matrix
+    results['val_matrix'] = results['val_matrix'][:-2,:-2,:] if m_y_conditioning == True else results['val_matrix']
     
     tp.plot_graph(
         val_matrix=results['val_matrix'],
@@ -355,11 +357,13 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     caused_by = []
     causes = []
     mci = []
+    p_vals = []
 
     for i in range(all_tau_link.shape[0]):
         for j in range(all_tau_link.shape[1]):
             icausesj = all_tau_link[i,j]
             mci_val = results['val_matrix'][i,j]
+            p_val = pq_matrix
             i_name = names[i]
             j_name = names[j]
             if icausesj and i_name != j_name and True:
@@ -367,21 +371,22 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
                 caused_by.append(i_name)
                 causes.append(j_name)
                 mci.append(np.max(mci_val))
+                p_vals.append(p_val)
                 G.add_edge(i , j)
                 G.nodes[i]['influenced_by'] += 1
                 n_connections +=1 
                 
     link_df = pd.DataFrame.from_dict({'Caused By': caused_by,
                                      'Causes':causes,
-                                     'MCI-val':mci})
+                                     'MCI-val':mci
+                                     'P-val':p_vals})
                 
-    print('\n\n ### Causation Links ###', link_df,'\n\n')
-    scale_factor = 200
-    f, ax = plt.subplots(1,1,figsize = (7,5))
-    f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
+    print('\n\n ### Causation Links ###\n', link_df,'\n\n')
+#    scale_factor = 200
+#    f, ax = plt.subplots(1,1,figsize = (7,5))
+#    f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
     # ax.set_title('Arrow represents causation, circle size represents relative importance of market')
 #    pos = nx.spring_layout(G)
-    global pos
     
     pos = nx.drawing.layout.circular_layout(G)
     tig_pos = {'x': np.array([a[0] for a in pos.values()]) ,
@@ -393,35 +398,38 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         link_matrix=link_matrix,
         var_names=filled_data.columns,
         link_colorbar_label='cross-MCI',
-        node_colorbar_label='auto-MCI'
-#        node_pos = tig_pos
+        node_colorbar_label='auto-MCI',
+        node_pos = tig_pos,
+        title = '{} Links'.format(commodity)
         )
     plt.show()
     
-    influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1)
-    label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
-    nx.draw(G, node_size = influenced_arr, with_labels = False, pos = pos, arrowsize = 30, alpha = 0.65, edge_color = 'grey', ax = ax)
-    nx.draw_networkx_labels(G, pos = pos, labels = label_dict)
+#    influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1)
+#    label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
+#    nx.draw(G, node_size = influenced_arr, with_labels = False, pos = pos, arrowsize = 30, alpha = 0.65, edge_color = 'grey', ax = ax)
+#    nx.draw_networkx_labels(G, pos = pos, labels = label_dict)
 #    print(n_connections , ' Connections') 
     #G = nx.Graph()
 #    print('shapes', np.array(names).shape, link_matrix.shape)
     plot_map(link_matrix, names, commodity,  save= False)
+    
+    return link_df
 
 
 
-commodity = 'Millet'
-FDR_bool = False
-min_lag, max_lag  = 1,4
-add_enviro = True
-alpha = 0.05
-m_y_conditioning = True 
-interpolate = False
-max_gap= 2
-stationarity_method = 'firstdifference'
-print_info = False
-
-run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+#commodity = 'Millet'
+#FDR_bool = False
+#min_lag, max_lag  = 1,4
+#add_enviro = True
+#alpha = 0.05
+#m_y_conditioning = True 
+#interpolate = False
+#max_gap= 2
+#stationarity_method = 'firstdifference'
+#print_info = False
+#
+#link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+#         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
 
