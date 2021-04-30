@@ -134,6 +134,14 @@ def make_enviro_data(commodity):
     
     return df
 
+def save_enviro_data(commodity, ):
+    df = make_enviro_data(commodity)
+    df.to_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()))
+    
+def update_enviro_data():
+    pass
+    
+
 
 #enviro_param = 'NDVI'
 #TScoll = makeTS(enviro_param, riceGrowingZones, reindex = True)

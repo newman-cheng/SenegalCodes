@@ -48,6 +48,8 @@ def extract_giews(country = None, commodity = None, market = None, min_size = 0)
     data_dict = {}
     for mkt_dict in selected_data:
         mkt_name = mkt_dict['market']
+        if mkt_name =='Zguinchor':
+            mkt_name = 'Ziguinchor' #fix mispelling
         link = [curr_dict['href'] for curr_dict in mkt_dict['links'] if curr_dict['rel'] == 'monthly_usd_tonne'][0]
         mkt_json = requests.get(link).json()
         data_array = np.array(mkt_json['data'])
