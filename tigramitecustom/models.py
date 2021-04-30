@@ -140,10 +140,10 @@ class Models():
             Y = [(j, 0)]
             X = [(j, 0)]  # dummy
             Z = self.all_parents[j]
-            print('X', X)
-            print('Y', Y)
-            print('Z', Z)
-            print('verbosity',self.verbosity)
+#            print('X', X)
+#            print('Y', Y)
+#            print('Z', Z)
+#            print('verbosity',self.verbosity)
             array, xyz = \
                 self.dataframe.construct_array(X, Y, Z,
                                                tau_max=self.tau_max,
@@ -151,7 +151,7 @@ class Models():
                                                cut_off=cut_off,
                                                verbosity=self.verbosity)
 #            print('array: ' , repr(array))
-            print('\n\n xyz: ', xyz)
+#            print('\n\n xyz: ', xyz)
             # Get the dimensions out of the constructed array
             dim, T = array.shape
             dim_z = dim - 2
@@ -162,7 +162,7 @@ class Models():
             if dim_z > 0:
                 # Copy and fit the model
                 a_model = deepcopy(self.model)
-                print('X: ', array[2:].T.shape)
+#                print('X: ', array[2:].T.shape)
                 a_model.fit(X=array[2:].T, y=array[1])
                 print('coef: ', a_model.coef_)
                 # Cache the results

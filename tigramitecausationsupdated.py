@@ -350,17 +350,35 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     all_tau_link = np.max(link_matrix, axis = 2)
 #    all_tau_link = np.max(link_matrix, axis = 2)[:-2,:-2] if m_y_conditioning == True else np.max(link_matrix, axis = 2)
 
+
+    num = []
+    caused_by = []
+    causes = []
+    mci = []
+    k = 1
     for i in range(all_tau_link.shape[0]):
         for j in range(all_tau_link.shape[1]):
             icausesj = all_tau_link[i,j]
+            mci_val = results['val_matrix'][i,j]
             i_name = names[i]
             j_name = names[j]
             if icausesj and i_name != j_name and True:
                 print(names[i],' causes ' , names[j])
+                num.append(k)
+                k +=1
+                caused_by.append(i_name)
+                causes.append(j_name)
+                mci.append(np.max(mci_val))
                 G.add_edge(i , j)
                 G.nodes[i]['influenced_by'] += 1
                 n_connections +=1 
                 
+    link_df = pd.DataFrame.from_dict({'Connection #':num,
+                                     'Caused By': caused_by,
+                                     'Causes':causes,
+                                     'MCI-val':mci})
+                
+    print(link_df)
     scale_factor = 200
     f, ax = plt.subplots(1,1,figsize = (7,5))
     f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
@@ -378,8 +396,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
         link_matrix=link_matrix,
         var_names=filled_data.columns,
         link_colorbar_label='cross-MCI',
-        node_colorbar_label='auto-MCI',
-        node_pos = tig_pos
+        node_colorbar_label='auto-MCI'
+#        node_pos = tig_pos
         )
     plt.show()
     
@@ -394,19 +412,19 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 
 
 
-#commodity = 'Rice'
-#FDR_bool = False
-#min_lag, max_lag  = 1,4
-#add_enviro = True
-#alpha = 0.05
-#m_y_conditioning = True 
-#interpolate = False
-#max_gap= 2
-#stationarity_method = 'firstdifference'
-#print_info = False
-#
-#run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-#         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+commodity = 'Rice'
+FDR_bool = False
+min_lag, max_lag  = 1,4
+add_enviro = True
+alpha = 0.05
+m_y_conditioning = True 
+interpolate = False
+max_gap= 2
+stationarity_method = 'firstdifference'
+print_info = False
+
+run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
 

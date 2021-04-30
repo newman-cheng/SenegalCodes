@@ -234,14 +234,15 @@ def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m
             link_matrix[p[0], j, abs(p[1])] = 1
             
     # Plot time series graph
-    tp.plot_time_series_graph(
-        figsize=(6, 3),
-    #     node_aspect=2.,
-        val_matrix=np.ones(link_matrix.shape),
-        link_matrix=link_matrix,
-        var_names=None,
-        link_colorbar_label='',
-        ); plt.show()
+    if print_info:
+        tp.plot_time_series_graph(
+            figsize=(6, 3),
+        #     node_aspect=2.,
+            val_matrix=np.ones(link_matrix.shape),
+            link_matrix=link_matrix,
+            var_names=None,
+            link_colorbar_label='',
+            ); plt.show()
     
     #------
     
