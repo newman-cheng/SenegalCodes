@@ -378,7 +378,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
                 
     link_df = pd.DataFrame.from_dict({'Caused By': caused_by,
                                      'Causes':causes,
-                                     'MCI-val':mci
+                                     'MCI-val':mci,
                                      'P-val':p_vals})
                 
     print('\n\n ### Causation Links ###\n', link_df,'\n\n')
@@ -417,19 +417,19 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 
 
 
-#commodity = 'Millet'
-#FDR_bool = False
-#min_lag, max_lag  = 1,4
-#add_enviro = True
-#alpha = 0.05
-#m_y_conditioning = True 
-#interpolate = False
-#max_gap= 2
-#stationarity_method = 'firstdifference'
-#print_info = False
-#
-#link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-#         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+commodity = 'Millet'
+FDR_bool = False
+min_lag, max_lag  = 1,4
+add_enviro = True
+alpha = 0.05
+m_y_conditioning = True 
+interpolate = False
+max_gap= 2
+stationarity_method = 'firstdifference'
+print_info = False
+
+link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
 
