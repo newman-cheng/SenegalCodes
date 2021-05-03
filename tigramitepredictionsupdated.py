@@ -32,7 +32,7 @@ from eeDataExtract import make_enviro_data
 commodity = 'Rice'
 study_market = 'Dakar'
 add_enviro  = True
-use_study_vars = False
+
 #whether or not to restrict linear regression weights to only positive values. 
 #If so, environmental variables are multiplied by -1.
 restrict_positive = True
@@ -102,9 +102,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     def denorm(z):
         return (z*std) + mean
     
-    # select specific markets to study 
-    study_vars = [study_market, 'Bangkok','Mumbai','São Paulo','SRV_ndvi', 'SRV_precip',
-           'Casamance_precip', 'Casamance_ndvi']
+
     
     #study_vars = millet_dataframe.columns
     input_str = 'Millet - All markets and NDVI/Precip in Kaolack, Kaffrine, and Fatick' if commodity == 'millet' else 'Rice - Bangkok, Sao Paolo, Mumbai, and NDVI/Precip in SRV and Casamance'
@@ -133,7 +131,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
         pass
         
         
-    data_filled = data_filled[study_vars] if use_study_vars == True else data_filled   
+    data_filled = data_filled[study_variables] if study_variables == True else data_filled   
     
     T, N = data_filled.shape
     
@@ -245,7 +243,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     
     
     
-    new_data_vals = data_filled[study_vars].copy() if use_study_vars == True else data_filled.copy()
+    new_data_vals = data_filled[study_variables].copy() if study_variables == True else data_filled.copy()
     new_data_vals = new_data_vals.replace(mssng,np.nan)
     
     #-----adjustment for each variable --------
