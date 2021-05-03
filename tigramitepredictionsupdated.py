@@ -20,11 +20,14 @@ from tigramitecustom.pcmci import PCMCI
 from tigramitecustom.independence_tests import ParCorr, GPDC, CMIknn, CMIsymb
 from tigramitecustom.models import LinearMediation, Prediction
 
-from tigramitecausationsupdated import  subtract_rolling_mean, take_first_diff, adjust_seasonality
+from tigramitecausationsupdated import  subtract_rolling_mean, take_first_diff, adjust_seasonality, create_data
 
 from itertools import chain
 from extractdata import extract_giews, get_attribute
 from eeDataExtract import make_enviro_data
+
+
+
 
 commodity = 'Rice'
 study_market = 'Dakar'
@@ -38,8 +41,10 @@ condition_on_my = True
 
 interpolate = True
 inter_max_gap = 3
+
 #allows for saving enviro data over multiple runs
-enviro_data_dict = {} if 'enviro_data_dict' not in dir() else enviro_data_dict 
+if 'enviro_data_dict' not in dir():
+    enviro_data_dict = {} 
 
 
 s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,2,28)
@@ -61,28 +66,15 @@ min_lag = 1 #(tau_min)
 #millet_prices = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'Millet', min_size = minimum_size))
 
 
-def run_pred_test(commodity, study_market, steps_ahead,  tau_max, add_enviro,  m_y_conditioning = True, 
-             interpolate = False, max_gap = 3, print_info = False, use_gee = True):
-    #------set up price dataframe
-    data = None
-    if commodity.lower() == 'rice' :
-        senegal_rice = extract_giews(country = 'Senegal', commodity = 'rice', min_size = minimum_size)
-        thai_rice = extract_giews(country = 'Thailand', commodity = 'rice', min_size = minimum_size)
-        india_rice = {'Mumbai': extract_giews(country = 'India', commodity = 'rice', min_size = minimum_size)['Mumbai']}
-        brazil_rice = extract_giews(country = 'Brazil', commodity = 'rice', min_size = minimum_size)
-          
-        mauri_rice = extract_giews(country = 'Mauritania', commodity = 'rice', min_size = minimum_size)
-        guinea_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = minimum_size)
-        mali_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = minimum_size)
-        
-        all_rice_dict = {**senegal_rice, **thai_rice, **india_rice}
-        all_rice_dict = {**senegal_rice, **thai_rice, **india_rice, **brazil_rice, **mauri_rice, **guinea_rice, **mali_rice}  
-        data = pd.DataFrame.from_dict(all_rice_dict)
-        
-    elif commodity.lower() == 'millet' :
-        data = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'millet', min_size = minimum_size))
-    else:
-        raise ValueError('Invalid Commodity')
+def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_enviro, study_variables = None,  m_y_conditioning = True, 
+             interpolate = False, max_gap = 3, print_info = False, use_gee = True, minimum_size = 160):
+    ''' 
+    Code to run predictive test based on tigramite PCMCI network framework. 
+    Optimized for use in Senegal with Rice and Millet but applicable to any country/commodity combination
+    '''
+    
+    
+    data = create_data(country, commodity,min_size = minimum_size)
     #  set up environmental dataframe if valid   
     if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth, 
                    # flip to negative if restricting lin regression to positive       

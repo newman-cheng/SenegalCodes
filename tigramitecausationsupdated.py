@@ -24,6 +24,8 @@ import geopandas as gp
 from extractdata import extract_giews, get_attribute
 from eeDataExtract import make_enviro_data
 
+from OSMPythonTools.nominatim import Nominatim
+nominatim = Nominatim()
 
 
 
@@ -87,7 +89,7 @@ def filter_months(df, month_arr, missing_flag = None):
 
 
     
-def plot_map(link_matrix,  names, variable, save= False):
+def plot_map(link_matrix,  names, variable, country, save= False):
     #upload coordinates
     
     try:    
@@ -110,15 +112,14 @@ def plot_map(link_matrix,  names, variable, save= False):
     select_countries = country_gdf.loc[select_country_idx]
     
     #    plot map
-    fig1, ax1 = plt.subplots(1,1,figsize = (12,15))
+    
     
     
     vmin, vmax = 0.0, 0.25
     cmap = 'Reds'
     
-    #blue: 607dab
-    #grey: '#bfbfbf'
-    select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black")
+    
+    
                    
     matplotlib.rcParams['font.size'] = 12
     global  G
@@ -151,10 +152,22 @@ def plot_map(link_matrix,  names, variable, save= False):
     position_dict = {}
     for i in range(len(names)):   
         name = names[i].replace('ã','a')
-        lon, lat = coord_df.loc[name].Lon, coord_df.loc[name].Lat
+        try:
+            lon, lat = coord_df.loc[name].Lon, coord_df.loc[name].Lat
+        except KeyError:
+            try:
+                query_results = nominatim.query('{}, {}'.format(name, country))._json
+                top_result = query_results[0]
+                lon, lat = float(top_result['lon']), float(top_result['lat'])
+            except IndexError:
+                raise KeyError('{} cannot be found in Open Street Map'.format(name))
         position_dict[i] = np.array([lon, lat])
        
-
+        
+    fig1, ax1 = plt.subplots(1,1,figsize = (12,15))
+    #blue: 607dab
+    #grey: '#bfbfbf'
+    select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black")
     lons, lats = [float(val[0]) for val in position_dict.values()] , [float(val[1]) for val in position_dict.values()]
     buffer = 1
     min_lon, max_lon = min(lons) - buffer, max(lons) + buffer
@@ -206,27 +219,32 @@ def plot_map(link_matrix,  names, variable, save= False):
          
         
     
-def create_data(commodity):
-    if commodity.lower() == 'rice' :
-        senegal_rice = extract_giews(country = 'Senegal', commodity = 'rice', min_size = minimum_size)
-        thai_rice = extract_giews(country = 'Thailand', commodity = 'rice', min_size = minimum_size)
-        india_rice = {'Mumbai': extract_giews(country = 'India', commodity = 'rice', min_size = minimum_size)['Mumbai']}
-        brazil_rice = extract_giews(country = 'Brazil', commodity = 'rice', min_size = minimum_size)
-          
-        mauri_rice = extract_giews(country = 'Mauritania', commodity = 'rice', min_size = minimum_size)
-        guinea_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = minimum_size)
-        mali_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = minimum_size)
-        
-        all_rice_dict = {**senegal_rice, **thai_rice, **india_rice}
-        all_rice_dict = {**senegal_rice, **thai_rice, **india_rice, **brazil_rice, **mauri_rice, **guinea_rice, **mali_rice}  
-        data = pd.DataFrame.from_dict(all_rice_dict)
-        return data
-        
-    elif commodity.lower() == 'millet' :
-        data = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'millet', min_size = minimum_size))
-        return data
+def create_data(country, commodity,min_size = 0):
+    if country == 'Senegal':
+        if commodity.lower() == 'rice' :
+            senegal_rice = extract_giews(country = 'Senegal', commodity = 'rice', min_size = min_size)
+            thai_rice = extract_giews(country = 'Thailand', commodity = 'rice', min_size = min_size)
+            india_rice = {'Mumbai': extract_giews(country = 'India', commodity = 'rice', min_size = min_size)['Mumbai']}
+            brazil_rice = extract_giews(country = 'Brazil', commodity = 'rice', min_size = min_size)
+              
+            mauri_rice = extract_giews(country = 'Mauritania', commodity = 'rice', min_size = min_size)
+            guinea_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = min_size)
+            mali_rice = extract_giews(country = 'Guinea', commodity = 'rice', min_size = min_size)
+            
+            all_rice_dict = {**senegal_rice, **thai_rice, **india_rice}
+            all_rice_dict = {**senegal_rice, **thai_rice, **india_rice, **brazil_rice, **mauri_rice, **guinea_rice, **mali_rice}  
+            data = pd.DataFrame.from_dict(all_rice_dict)
+            return data
+            
+        elif commodity.lower() == 'millet' :
+            data = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'millet', min_size = min_size))
+            return data
+    
+        else:
+            raise ValueError('Invalid Commodity for Senegal')
     else:
-        raise ValueError('Invalid Commodity')
+        data = pd.DataFrame.from_dict(extract_giews(country = country, commodity = commodity, min_size = min_size))
+        return data
     
 
     
@@ -235,13 +253,15 @@ def create_data(commodity):
 if 'enviro_data_dict' not in dir():
     enviro_data_dict = {} 
 
-def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
-             interpolate = False, max_gap = 3, stationarity_method = 'firstdifference' , print_info = False, use_gee = True):
+def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
+             interpolate = False, max_gap = 3, minimum_size = 160, stationarity_method = 'firstdifference' , 
+             print_info = False, use_gee = True, print_graphs = True):
+    
+    s, e = pd.Timestamp(2007,1,1), pd.Timestamp(2021,4,1)
+    study_data = create_data(country, commodity, min_size = minimum_size)
     
     
-    study_data = create_data(commodity)
-    
-    if add_enviro:
+    if add_enviro and country == 'Senegal':
         
         if commodity in enviro_data_dict.keys():
             enviro_df = enviro_data_dict[commodity]
@@ -262,6 +282,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     # month_mask = filter_months(adjusted_study_data, harvest_season, missing_flag = mssng)
     
 #   if using month and year conditions in the system
+    enviro_indices = []
     if m_y_conditioning: 
         m_y_data = study_data.copy()[s:e]
     #        if adding environmental variables
@@ -302,12 +323,12 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     
 #   Possible test types
     parcorr = ParCorr(significance='analytic')
-    gpdc = GPDC(significance='analytic', gp_params=None)
+#    gpdc = GPDC(significance='analytic', gp_params=None)
 #    select test of choice and set up pcmci
     test_type = parcorr
     pcmci = PCMCI(
         dataframe=dataframe, 
-        cond_ind_test=parcorr,
+        cond_ind_test=test_type,
         verbosity=1,
         print_info = print_info)
 #    get results of pcmci
@@ -329,14 +350,6 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     link_matrix = link_matrix[:-2,:-2,:]if m_y_conditioning == True else link_matrix
     results['val_matrix'] = results['val_matrix'][:-2,:-2,:] if m_y_conditioning == True else results['val_matrix']
     
-    tp.plot_graph(
-        val_matrix=results['val_matrix'],
-        link_matrix=link_matrix,
-        var_names=filled_data.columns,
-        link_colorbar_label='cross-MCI',
-        node_colorbar_label='auto-MCI'
-        )
-    plt.show()
     
     #dataframe = dataframe.iloc[:,:-4]
     G = nx.DiGraph()
@@ -367,7 +380,8 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
             i_name = names[i]
             j_name = names[j]
             if icausesj and i_name != j_name and True:
-                print(names[i],' causes ' , names[j])
+                if print_info:
+                    print(names[i],' causes ' , names[j])
                 caused_by.append(i_name)
                 causes.append(j_name)
                 mci_val = np.max(mci_vals * (p_vals <= alpha))
@@ -394,16 +408,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
                'y': np.array([a[1] for a in pos.values()]) }
     
     
-    tp.plot_graph(
-        val_matrix=results['val_matrix'],
-        link_matrix=link_matrix,
-        var_names=filled_data.columns,
-        link_colorbar_label='cross-MCI',
-        node_colorbar_label='auto-MCI',
-        node_pos = tig_pos,
-        title = '{} Links'.format(commodity)
-        )
-    plt.show()
+
     
 #    influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1)
 #    label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
@@ -412,16 +417,36 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #    print(n_connections , ' Connections') 
     #G = nx.Graph()
 #    print('shapes', np.array(names).shape, link_matrix.shape)
-    plot_map(link_matrix, names, commodity,  save= False)
+    if print_graphs:
+        tp.plot_graph(
+            val_matrix=results['val_matrix'],
+            link_matrix=link_matrix,
+            var_names=filled_data.columns,
+            link_colorbar_label='cross-MCI',
+            node_colorbar_label='auto-MCI',
+            node_pos = tig_pos,
+            title = '{} {} Links'.format(country, commodity)
+        )
+        plt.show()
+        try:
+            plot_map(link_matrix, names, commodity, country, save= False)
+        except KeyError as error:
+            print('### Unable to plot map, likely missing market coordinates ###')
+            print('Error message: {}'.format(error))
+        
     
     return link_df
 
 
+#country = 'Senegal'
+#commodity = 'Rice'
+#    
+##country = 'Mozambique'
+##commodity = 'Rice'
 #
-#commodity = 'Millet'
 #FDR_bool = False
 #min_lag, max_lag  = 1,4
-#add_enviro = True
+#add_enviro = False
 #alpha = 0.05
 #m_y_conditioning = True 
 #interpolate = False
@@ -429,7 +454,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #stationarity_method = 'firstdifference'
 #print_info = False
 #
-#link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+#link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
 #         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
