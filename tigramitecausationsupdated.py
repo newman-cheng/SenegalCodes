@@ -203,7 +203,7 @@ def plot_map(link_matrix,  names, variable, save= False):
     if save:
         plt.savefig('figures/TigramiteMap{}.png'.format(variable), dpi = 200, bbox_inches = 'tight')
     plt.show()
-        
+         
         
     
 def create_data(commodity):
@@ -417,19 +417,19 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 
 
 
-commodity = 'Millet'
-FDR_bool = False
-min_lag, max_lag  = 1,4
-add_enviro = True
-alpha = 0.05
-m_y_conditioning = True 
-interpolate = False
-max_gap= 2
-stationarity_method = 'firstdifference'
-print_info = False
-
-link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
-
+#commodity = 'Millet'
+#FDR_bool = False
+#min_lag, max_lag  = 1,4
+#add_enviro = True
+#alpha = 0.05
+#m_y_conditioning = True 
+#interpolate = False
+#max_gap= 2
+#stationarity_method = 'firstdifference'
+#print_info = False
+#
+#link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+#         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+#
 
 
