@@ -353,35 +353,36 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #    all_tau_link = np.max(link_matrix, axis = 2)[:-2,:-2] if m_y_conditioning == True else np.max(link_matrix, axis = 2)
 
 
-    num = []
+
     caused_by = []
     causes = []
-    mci = []
-    p_vals = []
+    mci_arr = []
+    p_arr = []
 
     for i in range(all_tau_link.shape[0]):
         for j in range(all_tau_link.shape[1]):
             icausesj = all_tau_link[i,j]
-            mci_val = results['val_matrix'][i,j]
-            p_val = pq_matrix
+            mci_vals = results['val_matrix'][i,j]
+            p_vals = pq_matrix[i,j]
             i_name = names[i]
             j_name = names[j]
             if icausesj and i_name != j_name and True:
                 print(names[i],' causes ' , names[j])
                 caused_by.append(i_name)
                 causes.append(j_name)
-                mci.append(np.max(mci_val))
-                p_vals.append(p_val)
+                mci_val = np.max(mci_vals * (p_vals <= alpha))
+                mci_arr.append(mci_val)
+                p_arr.append(np.round(p_vals[np.where(mci_vals == mci_val)[0][0]], 4))
                 G.add_edge(i , j)
                 G.nodes[i]['influenced_by'] += 1
                 n_connections +=1 
                 
     link_df = pd.DataFrame.from_dict({'Caused By': caused_by,
                                      'Causes':causes,
-                                     'MCI-val':mci,
-                                     'P-val':p_vals})
+                                     'MCI-val':mci_arr,
+                                     'P-val':p_arr})
                 
-    print('\n\n ### Causation Links ###\n', link_df,'\n\n')
+#    print('\n\n ### Causation Links ###\n', link_df,'\n\n')
 #    scale_factor = 200
 #    f, ax = plt.subplots(1,1,figsize = (7,5))
 #    f.suptitle('{} Price Causation Network'.format(commodity), fontsize = 15 )
@@ -416,7 +417,7 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
     return link_df
 
 
-
+#
 #commodity = 'Millet'
 #FDR_bool = False
 #min_lag, max_lag  = 1,4
@@ -430,6 +431,6 @@ def run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_condi
 #
 #link_df = run_test(commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
 #         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
-#
+
 
 
