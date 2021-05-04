@@ -28,33 +28,33 @@ from eeDataExtract import make_enviro_data
 
 
 
-
-commodity = 'Rice'
-study_market = 'Dakar'
-add_enviro  = True
-
-#whether or not to restrict linear regression weights to only positive values. 
-#If so, environmental variables are multiplied by -1.
-restrict_positive = True
-
-condition_on_my = True
-
-interpolate = True
-inter_max_gap = 3
-
-#allows for saving enviro data over multiple runs
-if 'enviro_data_dict' not in dir():
-    enviro_data_dict = {} 
-
-
-s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,2,28)
-##------------import rice------------
-#mkts_dict, fao_mkts_dict = get_rice_dict()
 #
-minimum_size = 160
-
-max_lag = 4
-min_lag = 1 #(tau_min)
+#commodity = 'Rice'
+#study_market = 'Dakar'
+#add_enviro  = True
+#
+##whether or not to restrict linear regression weights to only positive values. 
+##If so, environmental variables are multiplied by -1.
+#restrict_positive = True
+#
+#condition_on_my = True
+#
+#interpolate = True
+#inter_max_gap = 3
+#
+##allows for saving enviro data over multiple runs
+#if 'enviro_data_dict' not in dir():
+#    enviro_data_dict = {} 
+#
+#
+#s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,2,28)
+###------------import rice------------
+##mkts_dict, fao_mkts_dict = get_rice_dict()
+##
+#minimum_size = 160
+#
+#max_lag = 4
+#min_lag = 1 #(tau_min)
 
 
 #rice_dataframe = get_rice_df(fao_mkts_dict, None, 160, s, e)
@@ -67,7 +67,7 @@ min_lag = 1 #(tau_min)
 
 
 def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_enviro, study_variables = None,  m_y_conditioning = True, 
-             interpolate = False, max_gap = 3, print_info = False, use_gee = True, minimum_size = 160):
+             interpolate = False, max_gap = 3, print_info = False,  use_gee = True, minimum_size = 160):
     ''' 
     Code to run predictive test based on tigramite PCMCI network framework. 
     Optimized for use in Senegal with Rice and Millet but applicable to any country/commodity combination
@@ -323,7 +323,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     # ------- set up axis -----
     f, ax1 = plt.subplots(1,1,figsize = (13,4))
     f.suptitle('Price Prediction - ' + study_market, fontsize = 14)
-    ax1.set_title('Inputs: ' + input_str, fontsize = 12)
+#    ax1.set_title('Inputs: '
     ax1.set_xlabel('Month Number', fontsize= 14)
     ax1.set_ylabel('Price z-score', fontsize = 14)
     # ------ plotting -------          
@@ -338,5 +338,33 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     
 
     
+    # ---- key parameters ----
+study_market = 'Dakar' # market to predict the time series of
+country = 'Senegal' # country of study, optimized for senegal 
+                    # but can choose any country/commodity pair at FPMA portal: https://fpma.apps.fao.org/giews/food-prices/tool/public/#/dataset/domestic
+commodity = 'Millet' #commodity to study: optimized for 'Rice' or 'Millet' in Senegal 
+add_enviro = True # whether or not to add environmental variables to study. (currently only available for Senegal)
+use_gee =  True # use Google Earth Engine to obtain most up to date environmental time series.
+                # If True, requires valid Earth Engine login. 
+                # If False, data ends in April 2021.
+
+# ---- additional test parameters -----
+min_lag, max_lag  = 1,4  # minimum and maximum lag of causal links
+condition_on_my = True # whether to condition on month and year instead of directly correcting for these relations
+study_variables = [] # optional list of markets to include as manual predictors to PC test
+restrict_positive = True #whether or not to restrict linear regression weights to only positive values (recommend True). 
+                          # (If so, environmental variables are multiplied by -1.)
+interpolate = True # Interpolate time series (recommended for prediction)
+max_gap= 3 # maximum gap to interpolate
+minimum_size = 160 # minimum size of each price time series
+
+# ---- display parameters
+print_info = False # Whether or not to provide printed outputs for all steps of test
+#print_graphs = True # print spatial and link graph
+
+run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, 
+              study_variables = study_variables, m_y_conditioning = condition_on_my, 
+             interpolate = False, max_gap = 3, minimum_size = minimum_size, 
+              print_info = print_info,  use_gee = use_gee)
     
 
