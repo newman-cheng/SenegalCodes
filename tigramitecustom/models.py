@@ -158,6 +158,7 @@ class Models():
             # Transform the data if needed
             if self.data_transform is not None:
                 array = self.data_transform.fit_transform(X=array.T).T
+#                print('ARR', repr(array[0]))
             # Fit the model if there are any parents for this variable to fit
             if dim_z > 0:
                 # Copy and fit the model

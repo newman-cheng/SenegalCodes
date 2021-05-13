@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import pandas as pd
+import warnings
 from tigramitecustom import data_processing as pp
 from tigramitecustom import plotting as tp
 from tigramitecustom.pcmci import PCMCI
@@ -92,6 +93,7 @@ def filter_months(df, month_arr, missing_flag = None):
 def plot_map(link_matrix,  names, variable, country, save= False):
     #upload coordinates
     
+#    ------ Senegal optimized plotting
     try:    
         coord_df = pd.read_csv('shapedata/citycoordinates.csv')
         country_gdf = gp.read_file('shapedata/WestAfricaADMN0/wca_adm0.shp')
@@ -99,17 +101,9 @@ def plot_map(link_matrix,  names, variable, country, save= False):
         coord_df = pd.read_csv('SenegalCodes/shapedata/citycoordinates.csv')
         country_gdf = gp.read_file('SenegalCodes/shapedata/WestAfricaADMN0/wca_adm0.shp')
         
-    
-    
     coord_df.index = coord_df['City Name']
     coord_df = coord_df[['Lat','Lon']]
-    
-    
-    
-    country_gdf = country_gdf.to_crs('epsg:4326')
-    country_gdf.index = country_gdf['admin0Name']
-    select_country_idx = ['Senegal','Gambia','Guinea','Guinea Bissau','Mauritania','Mali']
-    select_countries = country_gdf.loc[select_country_idx]
+
     
     #    plot map
     
@@ -165,13 +159,25 @@ def plot_map(link_matrix,  names, variable, country, save= False):
        
         
     fig1, ax1 = plt.subplots(1,1,figsize = (12,15))
+    lons, lats = [float(val[0]) for val in position_dict.values()] , [float(val[1]) for val in position_dict.values()]
     #blue: 607dab
     #grey: '#bfbfbf'
-    select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black")
-    lons, lats = [float(val[0]) for val in position_dict.values()] , [float(val[1]) for val in position_dict.values()]
-    buffer = 1
-    min_lon, max_lon = min(lons) - buffer, max(lons) + buffer
-    min_lat, max_lat = min(lats) - buffer,  max(lats) + buffer
+    if country.lower() == 'senegal':
+        country_gdf = country_gdf.to_crs('epsg:4326')
+        country_gdf.index = country_gdf['admin0Name']
+        select_country_idx = ['Senegal','Gambia','Guinea','Guinea Bissau','Mauritania','Mali']
+        select_countries = country_gdf.loc[select_country_idx]
+        select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black")
+        buffer = 1
+        min_lon, max_lon = min(lons) - buffer, max(lons) + buffer
+        min_lat, max_lat = min(lats) - buffer,  max(lats) + buffer
+    else:
+        all_countries = gp.read_file(gp.datasets.get_path('naturalearth_lowres'))
+        select_country = all_countries[all_countries['name'] == country]
+        select_country.plot(ax = ax1, facecolor='#bfbfbf', edgecolor="black")
+        min_lon, max_lon = float(select_country.geometry.bounds.minx), float(select_country.geometry.bounds.maxx)
+        min_lat, max_lat = float(select_country.geometry.bounds.miny), float(select_country.geometry.bounds.maxy)
+
     ax1.set_ylim(min_lat, max_lat)
     ax1.set_xlim(min_lon, max_lon)
     ax1.axis('on')
@@ -258,8 +264,15 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
              print_info = False, use_gee = True, print_graphs = True):
     
     s, e = pd.Timestamp(2007,1,1), pd.Timestamp(2021,4,1)
+    global study_data
     study_data = create_data(country, commodity, min_size = minimum_size)
     
+#    raise exception if no time series found, raise warning if <5 found
+    if study_data.shape[1] == 0:
+        raise Exception("No time series found for {} --> {} with minimum size of {}".format(country, commodity, minimum_size))
+    elif study_data.shape[1] < 5: #warn if less than 5 datasets
+        warnings.warn('''Only {} time series found for {} --> {} with minimum size of {}. Decrease minimum_size parameter or choose different country/commodity for better results'''
+                      .format(study_data.shape[1], commodity, country, minimum_size))
     
     if add_enviro and country == 'Senegal':
         
@@ -282,6 +295,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
     # month_mask = filter_months(adjusted_study_data, harvest_season, missing_flag = mssng)
     
 #   if using month and year conditions in the system
+    global m_y_data
     enviro_indices = []
     if m_y_conditioning: 
         m_y_data = study_data.copy()[s:e]
@@ -345,6 +359,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
                 alpha_level = alpha)
         
     pq_matrix = q_matrix if FDR_bool == True else results['p_matrix']
+    global link_matrix
     link_matrix = pcmci.return_significant_positive_links(pq_matrix = pq_matrix,
                             val_matrix=results['val_matrix'], alpha_level=alpha)['link_matrix']
     link_matrix = link_matrix[:-2,:-2,:]if m_y_conditioning == True else link_matrix
@@ -440,13 +455,17 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
 
 #country = 'Senegal'
 #commodity = 'Rice'
-#    
-##country = 'Mozambique'
-##commodity = 'Rice'
+    
+#country = 'Nigeria'
+#commodity = 'Rice'
+
+#country = 'Mozambique'
+#commodity = 'Rice'
 #
 #FDR_bool = False
 #min_lag, max_lag  = 1,4
 #add_enviro = False
+#minimum_size = 100
 #alpha = 0.05
 #m_y_conditioning = True 
 #interpolate = False
@@ -455,7 +474,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
 #print_info = False
 #
 #link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-#         max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
-
+#        minimum_size = minimum_size, max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+#
 
 

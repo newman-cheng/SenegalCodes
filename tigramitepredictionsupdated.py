@@ -10,6 +10,7 @@ Created on Thu Mar 11 13:07:34 2021
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import date
 #%matplotlib inline     
 ## use `%matplotlib notebook` for interactive figures
 #plt.style.use('ggplot')
@@ -42,12 +43,10 @@ from eeDataExtract import make_enviro_data
 #interpolate = True
 #inter_max_gap = 3
 #
-##allows for saving enviro data over multiple runs
-#if 'enviro_data_dict' not in dir():
-#    enviro_data_dict = {} 
+
 #
 #
-#s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(2020,2,28)
+
 ###------------import rice------------
 ##mkts_dict, fao_mkts_dict = get_rice_dict()
 ##
@@ -56,6 +55,9 @@ from eeDataExtract import make_enviro_data
 #max_lag = 4
 #min_lag = 1 #(tau_min)
 
+def denorm(z):
+
+    return (z*std) + mean
 
 #rice_dataframe = get_rice_df(fao_mkts_dict, None, 160, s, e)
 #
@@ -65,15 +67,19 @@ from eeDataExtract import make_enviro_data
 #
 #millet_prices = pd.DataFrame.from_dict(extract_giews(country = 'Senegal', commodity = 'Millet', min_size = minimum_size))
 
+#allows for saving enviro data over multiple runs
+if 'enviro_data_dict' not in dir():
+    enviro_data_dict = {} 
 
-def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_enviro, study_variables = None,  m_y_conditioning = True, 
-             interpolate = False, max_gap = 3, print_info = False,  use_gee = True, minimum_size = 160):
+def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_enviro, start,end,
+            shock_period = None, shock_values = None, study_variables = None,  m_y_conditioning = True, 
+             interpolate = True, max_gap = 3, print_info = False,  use_gee = True, minimum_size = 160):
     ''' 
     Code to run predictive test based on tigramite PCMCI network framework. 
     Optimized for use in Senegal with Rice and Millet but applicable to any country/commodity combination
     '''
     
-    
+    global data
     data = create_data(country, commodity,min_size = minimum_size)
     #  set up environmental dataframe if valid   
     if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth, 
@@ -95,23 +101,25 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     target = list(data.columns).index(study_market)
     
     #get stats for time series for later correction
-    mean = np.nanmean(data.iloc[:,target])
-    std = np.nanstd(data.iloc[:,target])
+#    global mean
+#    global std
+#    mean = np.nanmean(data.iloc[:,target])
+#    std = np.nanstd(data.iloc[:,target])
+#    def denorm(z):
+#        return (z*std) + mean
     
     #define function to "denormalize" data back to real values
-    def denorm(z):
-        return (z*std) + mean
     
 
-    
+
     #study_vars = millet_dataframe.columns
-    input_str = 'Millet - All markets and NDVI/Precip in Kaolack, Kaffrine, and Fatick' if commodity == 'millet' else 'Rice - Bangkok, Sao Paolo, Mumbai, and NDVI/Precip in SRV and Casamance'
-    
+#    input_str = 'Millet - All markets and NDVI/Precip in Kaolack, Kaffrine, and Fatick' if commodity == 'millet' else 'Rice - Bangkok, Sao Paolo, Mumbai, and NDVI/Precip in SRV and Casamance'
+#    
     mssng = 99999
     #data_clipped = data[s:e]
     
     #data_stationary = subtract_rolling_mean( adjust_seasonality( data.copy()))[s:e]
-
+   
     
     # if conditioning on month year
     if condition_on_my:
@@ -120,18 +128,50 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
         if add_enviro:
             m_y_data = pd.concat([m_y_data, enviro_df], axis = 1)
             enviro_indices = [m_y_data.columns.get_loc(x) for x in enviro_df.columns ]
+
+        t1 = m_y_data.copy()
             
         m_y_data['Month'] = m_y_data.index.month
         m_y_data['Year'] = m_y_data.index.year
         m_y_indices = [m_y_data.columns.get_loc('Month'), m_y_data.columns.get_loc('Year')]
-        m_y_data = m_y_data.interpolate(method='linear', limit=inter_max_gap) if interpolate == True else  m_y_data
-        data_filled = m_y_data.fillna(mssng)
+        m_y_data = m_y_data.interpolate(method='linear', limit=max_gap) if interpolate == True else  m_y_data
+        global data_sliced
+#        print(m_y_data[study_market].first_valid_index() , m_y_data[study_market].first_valid_index())
+        data_sliced = m_y_data[m_y_data[study_market].first_valid_index()  : m_y_data[study_market].last_valid_index()]
+    
+        data_filled = data_sliced.fillna(mssng)
+        
         
     else:
         pass
+    
+    
+      
+#        get proper date array which considers missing values
+#    bool_date_arr = np.ones((data_sliced.shape[0]), dtype=bool)
+#    bool_date_arr[:tau_max ] = False
+#    for i, row in enumerate(data_sliced.values):
+#        if np.isnan(row).any():
+#            prev_index = i - tau_max - 1 if i > tau_max + 1 else 0
+##            mark that date and dates all before within tau max as false
+#            bool_date_arr[prev_index : i + 1] = False
+#    global new_date_arr  
+#    new_date_arr = data_sliced.index[bool_date_arr]
+#    
+#    global dakar_new_dates
+#    dakar_new_dates = data_sliced.loc[new_date_arr].Dakar
+#            
+            
+            
+            
         
+
+            
         
     data_filled = data_filled[study_variables] if study_variables == True else data_filled   
+    global t3
+    t3 = data_filled
+    
     
     T, N = data_filled.shape
     
@@ -170,6 +210,21 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     
     train_indices = range(int(0.8*T))
     test_indices = range(int(0.8*T), T)
+    
+    global mean
+    global std
+    mean = np.nanmean(data_sliced.iloc[:,target])
+    std = np.nanstd(data_sliced.iloc[:,target])
+    def denorm(z):
+        return (z*std) + mean
+    
+    global train_mean
+    global train_std
+    
+    train_mean  = np.nanmean(data_sliced.iloc[:int(0.8*T),target])
+    train_std = np.nanstd(data_sliced.iloc[:int(0.8*T),target])
+    def train_denorm(z):
+        return (z*train_std) + train_mean
     
     pred = Prediction(dataframe=dataframe,
             cond_ind_test=ParCorr(),   #CMIknn ParCorr
@@ -216,6 +271,8 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
                       )
     
     
+    
+    
     print('\n\n#### Target Value Predictors: #### \n')
     print(*[str(data_filled.columns[tup[0]]) +', lag = '+ str(tup[1]) for tup in predictors[target]], sep = "\n")
     link_matrix = np.zeros((N, N, tau_max+1), dtype='bool')
@@ -243,50 +300,50 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     
     
     
+    
+    #    get date array to go with prediction arrays
+    bool_date_arr = np.ones((data_sliced.shape[0]), dtype=bool)
+    bool_date_arr[:tau_max ] = False
+    
+    for i, row in enumerate(data_sliced.values):
+        if np.isnan(row).any():
+            future_index = i + tau_max + 1
+            bool_date_arr[i : future_index] = False
+            
+#    updated date array for prediction
+    new_date_arr = data_sliced.index[bool_date_arr]
+    
+    
+    
+    
+#    APPLY SHOCKS
+    
     new_data_vals = data_filled[study_variables].copy() if study_variables == True else data_filled.copy()
     new_data_vals = new_data_vals.replace(mssng,np.nan)
     
     #-----adjustment for each variable --------
     # dict of form:   variable : [ z_shift (float),  steps back (int, how far back to apply shock) ]
     # z_shift is how many z-scores to shift data
-    steps_back = 12
-    adjustment_params = { var_name : [0, steps_back] for var_name in new_data_vals.columns}
-    
-    
-    #data is adjusted here:
-    
-    #------ increase environmental time series by half a z-score --------
-    #rice
-    if commodity.lower() == 'rice':
-    #    adjustment_params['NorthernRiverValley_NDVI'][0] = 0.5
-    #    adjustment_params['SouhternRainfedArea_NDVI'][0] = 0.5
-    #    adjustment_params['NorthernRiverValley_precip'][0] = 0.5
-    #    adjustment_params['SouhternRainfedArea_precip'][0] = 0.5
-        pass
-    
-    #millet
-    if commodity.lower() == 'millet':
-    #    #------ increase environmental time series by 20% --------
-        
-        e_list  = ['Kaffrine_ndvi','Kaolack_ndvi', 'Fatick_ndvi', 'Kaffrine_precip', 'Kaolack_precip',  'Fatick_precip']
-        all_vars = adjustment_params.keys()
-        for enviro_var in all_vars:
-            adjustment_params[enviro_var][0] = 0.5
+    if shock_values:
+        for var_item in shock_values.items():
+            var_name, (z_shift , steps_back) = var_item
+            try:
+                indices = [new_data_vals.columns.get_loc(var_name)]
+            except KeyError:
+                indices = [new_data_vals.columns.get_loc(x) for x in new_data_vals.columns if var_name.lower() in x.lower()]
+                
+            for index in indices:
+                new_data_vals.iloc[-steps_back:, index] = (new_data_vals.iloc[-steps_back:, index] + 
+                                  (z_shift * np.nanstd(new_data_vals.iloc[:, index]) ))
             
-            
-        
-    #---------------------------------------------------------
-    
-    for var_name in new_data_vals.columns:
-        z_shift , steps_back = adjustment_params[var_name]
-        index = new_data_vals.columns.get_loc(var_name)
-        print((z_shift * np.nanstd(new_data_vals.iloc[:, index]) ))
-        new_data_vals.iloc[-steps_back:, index] = new_data_vals.iloc[-steps_back:, index] + (z_shift * np.nanstd(new_data_vals.iloc[:, index]) )
     
     
+    
+    
+#    make new data array with shocks 
     new_data_filled = new_data_vals.fillna(mssng)
-    new_data = pp.DataFrame(new_data_filled.values, var_names = new_data_filled.columns, missing_flag = mssng)
     
+    new_data = pp.DataFrame(new_data_filled.values, var_names = new_data_filled.columns, missing_flag = mssng)
     predicted = pred.predict(target) #, new_data = )
     test = pred.get_test_array()[0]
     train = pred.get_train_array(target)[0]
@@ -303,38 +360,40 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     plt.ylabel('Predicted test data')
     plt.show()
     
-    #plt.scatter(true_data2, adjusted)
-    #plt.title(r"NRMSE = %.2f" % (np.abs(true_data - predicted).mean()/true_data.std()))
-    #plt.plot(true_data, true_data, 'k-')
-    #plt.xlabel('True test data')
-    #plt.ylabel('adjusted test data')
-    #plt.show()
     
     #---- plot time series- ---
     index = data_filled.index
     #train = pred.get_train_array(0)[0]
     #test = pred.get_test_array()[0]
+
     true_vals =  np.concatenate([train,test], axis = 0)
     train_range = list(range(0, train.size))
     predicted_range = list(range(train.size , train.size + test.size))
-    
-    predicted_range_adj = list(range(train_adjusted.size , train_adjusted.size + test_adjusted.size))
+#    print(train_range, predicted_range)
+#    predicted_range_adj = list(range(train_adjusted.size , train_adjusted.size + test_adjusted.size))
     
     # ------- set up axis -----
     f, ax1 = plt.subplots(1,1,figsize = (13,4))
     f.suptitle('Price Prediction - ' + study_market, fontsize = 14)
 #    ax1.set_title('Inputs: '
     ax1.set_xlabel('Month Number', fontsize= 14)
-    ax1.set_ylabel('Price z-score', fontsize = 14)
+    ax1.set_ylabel('Price ($/mt)', fontsize = 14)
     # ------ plotting -------          
-    #ax1.plot(train_range, denorm(train), color = '#75bdff', lw = 2, label = 'train values',alpha = 0.7)
+    
     #
-    ax1.plot(predicted_range, denorm(test), color = '#515ee8',lw = 2,  label = 'test values', alpha = 0.9, marker = '.')
+    ax1.plot(new_date_arr[predicted_range], denorm(test), color = '#515ee8',lw = 2,  label = 'test values', alpha = 0.9, marker = '.')
     #ax1.plot(predicted_range_adj, denorm (test_adjusted), color = '#FF8C00',lw = 2,  label = 'adjusted test values', alpha = 0.9, marker = '.')
-    ax1.plot(predicted_range, denorm(predicted), color = 'red',lw = 2, linestyle = '--', label = 'predicted (defualt)' , marker = '.')
-    ax1.plot(predicted_range_adj, denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
-    ax1.axvspan( predicted_range[-1] - 12 , predicted_range[-1], alpha=0.2, color='red')
+    ax1.plot(new_date_arr[predicted_range], denorm(predicted), color = 'red',lw = 2, linestyle = '--', label = 'predicted (defualt)' , marker = '.')
+    ax1.plot(new_date_arr[predicted_range], denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
+#    ax1.axvspan( new_date_arr[-] , new_date_arr[-1], alpha=0.2, color='red')
     ax1.legend()
+    
+    temp_fig = plt.gcf()
+    
+    plt.show()
+    ax1 = temp_fig.axes[0]
+    ax1.plot(new_date_arr[train_range], denorm(train), color = '#75bdff', lw = 2, label = 'train values',alpha = 0.7)
+    plt.show()
     
 
     
@@ -347,8 +406,15 @@ add_enviro = True # whether or not to add environmental variables to study. (cur
 use_gee =  True # use Google Earth Engine to obtain most up to date environmental time series.
                 # If True, requires valid Earth Engine login. 
                 # If False, data ends in April 2021.
+                
+#shock_values = {'Bangkok': (1,12), 'Mumbai':(1,12),
+#                'Sao Paolo': (1,12)}   
+
+shock_values = {'precip': (3,12), 'ndvi':(3,12)}
+                
 
 # ---- additional test parameters -----
+s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(date.today().year, date.today().month, 1) # start and end of calculation
 min_lag, max_lag  = 1,4  # minimum and maximum lag of causal links
 condition_on_my = True # whether to condition on month and year instead of directly correcting for these relations
 study_variables = [] # optional list of markets to include as manual predictors to PC test
@@ -362,9 +428,58 @@ minimum_size = 160 # minimum size of each price time series
 print_info = False # Whether or not to provide printed outputs for all steps of test
 #print_graphs = True # print spatial and link graph
 
-run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, 
-              study_variables = study_variables, m_y_conditioning = condition_on_my, 
-             interpolate = False, max_gap = 3, minimum_size = minimum_size, 
-              print_info = print_info,  use_gee = use_gee)
+#run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
+#              shock_values = shock_values,
+#              study_variables = study_variables, m_y_conditioning = condition_on_my, 
+#             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+#              print_info = print_info,  use_gee = use_gee)
+
+
+#ax1.plot(new_date_arr[train_indices], denorm(train), color = '#75bdff', lw = 2, label = 'train values',alpha = 0.7)
+##    ax1.plot(dakar_new_dates.values, color = '#515ee8', lw = 2, label = 'dak test',alpha = 0.7)
+#
+##
+#ax1.plot(new_date_arr[test_indices], denorm(test), color = '#515ee8',lw = 2,  label = 'test values', alpha = 0.9, marker = '.')
+##    ax1.plot(new_date_arr[test_indices], denorm(test_adjusted), color = '#FF8C00',lw = 2,  label = 'adjusted test values', alpha = 0.9, marker = '.')
+#ax1.plot(new_date_arr[test_indices], denorm(predicted), color = 'red',lw = 2, linestyle = '--', label = 'predicted (defualt)' , marker = '.')
+#ax1.plot(new_date_arr[test_indices], denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
     
 
+
+
+
+
+            
+#    steps_back = 12
+#    adjustment_params = { var_name : [0, steps_back] for var_name in new_data_vals.columns}     
+    
+    
+    #data is adjusted here:
+    
+    #------ increase environmental time series by half a z-score --------
+    #rice
+#    if commodity.lower() == 'rice':
+#    #    adjustment_params['NorthernRiverValley_NDVI'][0] = 0.5
+#    #    adjustment_params['SouhternRainfedArea_NDVI'][0] = 0.5
+#    #    adjustment_params['NorthernRiverValley_precip'][0] = 0.5
+#    #    adjustment_params['SouhternRainfedArea_precip'][0] = 0.5
+#        pass
+    
+    #millet
+#    if commodity.lower() == 'millet':
+#    #    #------ increase environmental time series by 20% --------
+#        
+#        e_list  = ['Kaffrine_ndvi','Kaolack_ndvi', 'Fatick_ndvi', 'Kaffrine_precip', 'Kaolack_precip',  'Fatick_precip']
+#        all_vars = adjustment_params.keys()
+#        for enviro_var in all_vars:
+#            adjustment_params[enviro_var][0] = 0.5
+            
+            
+        
+    #---------------------------------------------------------
+    
+#    for var_name in new_data_vals.columns:
+#        z_shift , steps_back = adjustment_params[var_name]
+#        index = new_data_vals.columns.get_loc(var_name)
+#        print((z_shift * np.nanstd(new_data_vals.iloc[:, index]) ))
+#        new_data_vals.iloc[-steps_back:, index] = new_data_vals.iloc[-steps_back:, index] + (z_shift * np.nanstd(new_data_vals.iloc[:, index]) )    
