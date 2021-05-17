@@ -9,6 +9,11 @@ Created on Tue Apr 20 12:03:11 2021
 import pandas as pd
 import ee
 from datetime import date
+import numpy as np
+from rpy2 import robjects as ro
+from rpy2.robjects import pandas2ri
+from rpy2.robjects.conversion import localconverter
+
 ee.Initialize()
 
 # ------ Assets -------------
@@ -23,10 +28,12 @@ CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
 #precip = CHIRPS.select('precipitation')
 GPM = ee.ImageCollection("NASA/GPM_L3/IMERG_MONTHLY_V06")
 precip = GPM.select('precipitation')
+# Total potential evapotranspiration
+petColl = ee.ImageCollection("MODIS/006/MOD16A2").select('PET')
 
 
 # Mapping Function
-def makeTS(enviro_param, fc, reindex = True):
+def makeTS(enviro_param, fc, reindex = True, scale = 1000, start = '2000-01-01'):
     '''
     Function to make environmental time series based on param and feature collection of geometries
     -------------------
@@ -37,7 +44,7 @@ def makeTS(enviro_param, fc, reindex = True):
     reindex (boolean), default: True
         whether or not to aggregate data monthly
     '''
-    start = pd.Timestamp('2000-01-01')
+    start = pd.Timestamp(start)
     end = pd.Timestamp(date.today().year, date.today().month, 1)
     
     
@@ -45,6 +52,8 @@ def makeTS(enviro_param, fc, reindex = True):
         imageCollection = modisVeg16 
     elif enviro_param.lower() == 'precipitation':
         imageCollection = precip
+    elif enviro_param.lower() == 'pet':
+        imageCollection = petColl
     else:
         raise ValueError('{} is not a valid environmetnal parameter'.format(enviro_param))
     
@@ -56,10 +65,11 @@ def makeTS(enviro_param, fc, reindex = True):
       
       def makeTSmapper(imageObj):
         image = ee.Image(imageObj)
-        meanVal = image.reduceRegion(reducer = ee.Reducer.mean(), geometry = geom, scale = 1000).values().get(0)
-        return ee.Feature(None,{'Name':ee.Feature(featureObj).get('Name'),  'Date':ee.Date(image.get('system:time_start')).format(), enviro_param :meanVal})
+        meanVal = image.reduceRegion(reducer = ee.Reducer.mean(), geometry = geom, scale = scale).values().get(0)
+        return ee.Feature(None,{'Name':ee.Feature(featureObj).get('Name'),  
+                        'Date':ee.Date(image.get('system:time_start')).format(), enviro_param :meanVal})
       
-      timeSeries = ee.FeatureCollection(collList.map(makeTSmapper))
+      timeSeries = ee.FeatureCollection(collList.map(makeTSmapper)).filterMetadata(enviro_param, 'not_equals', None)
       return timeSeries
 
     featuresLi  = fc.toList(fc.size()).getInfo()
@@ -86,50 +96,62 @@ def makeTS(enviro_param, fc, reindex = True):
     return ts_dict
 
 
-def make_enviro_data(commodity):
+def make_enviro_data(country, commodity):
     '''
     Function to create a pandas dataframe for environmental indices to pair with food price analyses
     -------------------
     Arguments:
-    
+    country (str) 
+        Country for study. If 'Senegal' custom zones will be chosen based on commodity, 
+            otherwise the whole country will be used
     commodity (str)
         'rice'  or 'millet', this sets the zones of growing over which to study
         
     '''
     
-    # ------- millet regions: Kaolack, Kaffrine and Fatick------
-    def map_millet(feature):
-        return feature.set('Name', feature.get('ADM1_FR'))
-    
-    milletRegions = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Kaolack'),
-              ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick'))).map(map_millet)
-    
-    # ----- Rice Regions: SRV, Casamance, Oriental, Sine Saloum ------
-    SRV = departments.filter(ee.Filter.Or(ee.Filter.eq('ADM2_FR', 'Dagana'),ee.Filter.eq('ADM2_FR', 'Saint-Louis'),
-        ee.Filter.eq('ADM2_FR', 'Podor'),ee.Filter.eq('ADM2_FR', 'Matam')))
-    
-    Casamance = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Ziguinchor'),
-           ee.Filter.eq('ADM1_FR', 'Kolda'), ee.Filter.eq('ADM1_FR', 'Sedhiou') ))
-                                            
-    Oriental = regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kedougou'), ee.Filter.eq('ADM1_FR', 'Tambacounda')))
-    
-    SineSaloum =  regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kaolack'),ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick')))
-    
-    
-      
-    riceGrowingZones = ee.FeatureCollection([ee.Feature(SRV.geometry(), {'Name':'SRV'}),
-                 ee.Feature(Casamance.geometry(), {'Name':'Casamance'}), 
-                 ee.Feature(Oriental.geometry().union(SineSaloum.geometry()), {'Name':'OrientalAndSineSaloum'}) ])
-    
-    if commodity.lower() == 'rice':
-        fc = riceGrowingZones
-    elif commodity.lower() == 'millet':
-        fc = milletRegions
+    if country.lower() == 'senegal':
+        scale = 1000
+        # ------- millet regions: Kaolack, Kaffrine and Fatick------
+        def map_millet(feature):
+            return feature.set('Name', feature.get('ADM1_FR'))
+        
+        milletRegions = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Kaolack'),
+                  ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick'))).map(map_millet)
+        
+        # ----- Rice Regions: SRV, Casamance, Oriental, Sine Saloum ------
+        SRV = departments.filter(ee.Filter.Or(ee.Filter.eq('ADM2_FR', 'Dagana'),ee.Filter.eq('ADM2_FR', 'Saint-Louis'),
+            ee.Filter.eq('ADM2_FR', 'Podor'),ee.Filter.eq('ADM2_FR', 'Matam')))
+        
+        Casamance = regions.filter(ee.Filter.Or(ee.Filter.eq('ADM1_FR', 'Ziguinchor'),
+               ee.Filter.eq('ADM1_FR', 'Kolda'), ee.Filter.eq('ADM1_FR', 'Sedhiou') ))
+                                                
+        Oriental = regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kedougou'), ee.Filter.eq('ADM1_FR', 'Tambacounda')))
+        
+        SineSaloum =  regions.filter(ee.Filter.Or( ee.Filter.eq('ADM1_FR', 'Kaolack'),ee.Filter.eq('ADM1_FR', 'Kaffrine'),ee.Filter.eq('ADM1_FR', 'Fatick')))
+        
+        
+          
+        riceGrowingZones = ee.FeatureCollection([ee.Feature(SRV.geometry(), {'Name':'SRV'}),
+                     ee.Feature(Casamance.geometry(), {'Name':'Casamance'})]) 
+                 #   ee.Feature(Oriental.geometry().union(SineSaloum.geometry()), {'Name':'OrientalAndSineSaloum'}) ])
+        
+        if commodity.lower() == 'rice':
+            fc = riceGrowingZones
+        elif commodity.lower() == 'millet':
+            fc = milletRegions
+        else:
+            raise ValueError('Invalid Commodity for Senegal')
     else:
-        raise ValueError('Invalid Commodity')
-    
-    ndvi_dict =   {key + '_ndvi' : value for key, value in makeTS('NDVI', fc).items() }
-    precip_dict =  {key + '_precip' : value for key, value in makeTS('precipitation', fc).items() }
+        scale = 5000
+        all_countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+        def add_name(feature):
+            return feature.set('Name',feature.get('country_na'))
+        study_country = all_countries.filterMetadata('country_na','equals',country).map(add_name)
+        fc= study_country
+        
+        
+    ndvi_dict =   {key + '_ndvi' : value for key, value in makeTS('NDVI', fc, scale = scale).items() }
+    precip_dict =  {key + '_precip' : value for key, value in makeTS('precipitation', fc, scale = scale).items() }
     df = pd.DataFrame.from_dict( {**ndvi_dict, **precip_dict}  )
     
     return df
@@ -140,6 +162,45 @@ def save_enviro_data(commodity, ):
     
 def update_enviro_data():
     pass
+    
+
+
+#country = 'Senegal'
+#all_countries = ee.FeatureCollection("USDOS/LSIB_SIMPLE/2017")
+#def add_name(feature):
+#            return feature.set('Name',feature.get('country_na'))
+#study_country = all_countries.filterMetadata('country_na','equals',country).map(add_name)
+#fc= study_country
+#
+#precip = makeTS('precipitation', fc, scale = 5000)
+#pet = makeTS('PET', fc, scale = 5000)
+#
+#waterbalance = {key : precip[key][precip[key].index.union(pet[key].index)] - pet[key][precip[key].index.union(pet[key].index)]
+#                      for key in np.union1d(list(precip.keys()), list(pet.keys()))}
+#test_waterbalance = waterbalance['Senegal'].dropna()
+#test_wb_dates = test_waterbalance.index
+#r_waterbalance = ro.vectors.FloatVector(test_waterbalance.values)
+#
+##waterbalance = {}
+##for key in np.union1d(precip.keys(), pet.keys()):
+##    union_index
+#
+#
+#
+#
+#
+##R_float_vec = ro.vectors.FloatVector(waterbalance['Senegal'].values)
+#
+#
+#def spei_extract(r_vector):
+#    path = 'SPEI/R/spei.R'
+#    r=ro.r
+#    r.source(path)
+#    p=r.spei(r_vector, 1)
+#    return p
+#
+#r_spei = spei_extract(r_waterbalance )
+
     
 
 

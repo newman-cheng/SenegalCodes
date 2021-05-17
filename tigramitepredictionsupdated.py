@@ -410,7 +410,7 @@ use_gee =  True # use Google Earth Engine to obtain most up to date environmenta
 #shock_values = {'Bangkok': (1,12), 'Mumbai':(1,12),
 #                'Sao Paolo': (1,12)}   
 
-shock_values = {'precip': (3,12), 'ndvi':(3,12)}
+shock_values = {'precip': (2,12), 'ndvi':(2,12)}
                 
 
 # ---- additional test parameters -----
@@ -428,11 +428,11 @@ minimum_size = 160 # minimum size of each price time series
 print_info = False # Whether or not to provide printed outputs for all steps of test
 #print_graphs = True # print spatial and link graph
 
-#run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
-#              shock_values = shock_values,
-#              study_variables = study_variables, m_y_conditioning = condition_on_my, 
-#             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
-#              print_info = print_info,  use_gee = use_gee)
+run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
+              shock_values = shock_values,
+              study_variables = study_variables, m_y_conditioning = condition_on_my, 
+             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+              print_info = print_info,  use_gee = use_gee)
 
 
 #ax1.plot(new_date_arr[train_indices], denorm(train), color = '#75bdff', lw = 2, label = 'train values',alpha = 0.7)

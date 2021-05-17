@@ -90,7 +90,7 @@ def filter_months(df, month_arr, missing_flag = None):
 
 
     
-def plot_map(link_matrix,  names, variable, country, save= False):
+def plot_map(link_matrix,mci_arr , names, variable, country, save= False):
     #upload coordinates
     
 #    ------ Senegal optimized plotting
@@ -103,18 +103,13 @@ def plot_map(link_matrix,  names, variable, country, save= False):
         
     coord_df.index = coord_df['City Name']
     coord_df = coord_df[['Lat','Lon']]
+    
+    all_countries = gp.read_file(gp.datasets.get_path('naturalearth_lowres'))
+    select_country = all_countries[all_countries['name'] == country]
 
     
     #    plot map
     
-    
-    
-    vmin, vmax = 0.0, 0.25
-    cmap = 'Reds'
-    
-    
-    
-                   
     matplotlib.rcParams['font.size'] = 12
     global  G
     G = nx.DiGraph()
@@ -129,6 +124,7 @@ def plot_map(link_matrix,  names, variable, country, save= False):
         
         
     #make N^2 matrix
+
     n_connections = 0
     all_tau_link = np.max(link_matrix, axis = 2)
     for i in range(all_tau_link.shape[0]):
@@ -138,25 +134,44 @@ def plot_map(link_matrix,  names, variable, country, save= False):
             j_name = names[j]
             if icausesj and i_name != j_name:
 #                print(names[i],' causes ' , names[j])
-                G.add_edge(i , j)
+                G.add_edge(i , j, weight = mci_arr[n_connections])
+                print(i_name, j_name)
                 G.nodes[i]['influenced_by'] += 1
                 n_connections +=1 
                 
+                
     scale_factor = 200
     position_dict = {}
+    
+    enviro_positions_made = 0  #number of times an environmental position has been created (non senegal)
     for i in range(len(names)):   
         name = names[i].replace('ã','a')
         try:
             lon, lat = coord_df.loc[name].Lon, coord_df.loc[name].Lat
+            print(name, lon ,lat)
         except KeyError:
+            print(name ,' not found')
             try:
                 query_results = nominatim.query('{}, {}'.format(name, country))._json
                 top_result = query_results[0]
                 lon, lat = float(top_result['lon']), float(top_result['lat'])
             except IndexError:
-                raise KeyError('{} cannot be found in Open Street Map'.format(name))
+                bounds = select_country.geometry.bounds
+                #off to right side
+                lon = float(bounds.maxx) + 1.5
+                lat = (float(bounds.maxy + bounds.miny) / 2 ) + (1 * enviro_positions_made - 0.5)
+#                bottom right corner
+                lon = float(bounds.maxx) - 0.5
+                lat = (float(bounds.maxy + (2*bounds.miny)) / 3 ) + (2 * enviro_positions_made - 1)
+                enviro_positions_made +=1
+                
+#                try:
+#                raise KeyError('{} cannot be found in Open Street Map'.format(name))
+        
         position_dict[i] = np.array([lon, lat])
+    
        
+    
         
     fig1, ax1 = plt.subplots(1,1,figsize = (12,15))
     lons, lats = [float(val[0]) for val in position_dict.values()] , [float(val[1]) for val in position_dict.values()]
@@ -167,32 +182,56 @@ def plot_map(link_matrix,  names, variable, country, save= False):
         country_gdf.index = country_gdf['admin0Name']
         select_country_idx = ['Senegal','Gambia','Guinea','Guinea Bissau','Mauritania','Mali']
         select_countries = country_gdf.loc[select_country_idx]
-        select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black")
-        buffer = 1
-        min_lon, max_lon = min(lons) - buffer, max(lons) + buffer
-        min_lat, max_lat = min(lats) - buffer,  max(lats) + buffer
+        select_countries.plot(ax = ax1,  facecolor='#bfbfbf', edgecolor="black", alpha = 0.6)
+#        buffer = 1
+#        min_lon, max_lon = min(lons) - buffer, max(lons) + buffer
+#        min_lat, max_lat = min(lats) - buffer,  max(lats) + buffer
+        test_lats, test_lons = lats, lons
     else:
-        all_countries = gp.read_file(gp.datasets.get_path('naturalearth_lowres'))
-        select_country = all_countries[all_countries['name'] == country]
         select_country.plot(ax = ax1, facecolor='#bfbfbf', edgecolor="black")
-        min_lon, max_lon = float(select_country.geometry.bounds.minx), float(select_country.geometry.bounds.maxx)
-        min_lat, max_lat = float(select_country.geometry.bounds.miny), float(select_country.geometry.bounds.maxy)
+        test_lons = lons + [float(select_country.geometry.bounds.minx), float(select_country.geometry.bounds.maxx)]
+        test_lats = lats + [float(select_country.geometry.bounds.miny), float(select_country.geometry.bounds.maxy)]
+#        min_lon, max_lon = float(select_country.geometry.bounds.minx), float(select_country.geometry.bounds.maxx)
+#        min_lat, max_lat = float(select_country.geometry.bounds.miny), float(select_country.geometry.bounds.maxy)
+        
+    buffer = 1
+    min_lon, max_lon = min(test_lons) - buffer, max(test_lons) + buffer
+    min_lat, max_lat = min(test_lats) - buffer,  max(test_lats) + buffer
 
     ax1.set_ylim(min_lat, max_lat)
     ax1.set_xlim(min_lon, max_lon)
-    ax1.axis('on')
+#    ax1.axis('on')
         
     # ax.set_title('Arrow represents causation, circle size represents relative importance of market')
 
 #    pos = nx.spring_layout(G)
 #    c = nx.drawing.layout.circular_layout(G)
-    
+    green = '#198c36'
+    dark_red = '#992c35'
+    light_red = '#e37b83'
     influenced_arr = scale_factor * (np.array([G.nodes[i]['influenced_by'] for i in range(len(G.nodes))]) + 1) - 100
+    color_arr = [green if (('ndvi' in names[i].lower()) or ('precip' in names[i].lower())) 
+                                        else light_red for i in range(len(G.nodes))]
 #    print(influenced_arr)
     label_dict = {i : G.nodes[i]['name'] for i in range(len(G.nodes)) }
 #    change enviro vars to better names:
+    edges,weights = zip(*nx.get_edge_attributes(G,'weight').items())
+    print(weights)
     
-    nx.draw(G, node_size = influenced_arr , with_labels = False, pos = position_dict, arrowsize = 30, alpha = 0.85,  ax = ax1)
+    vmin, vmax = 0.0, 0.6
+    nx.draw(G, node_size = influenced_arr , node_color = color_arr, with_labels = False, 
+            edge_color = weights,edge_cmap=  plt.cm.Reds, width=3.0, vmin = vmin, vmax = vmax,
+            pos = position_dict, arrowsize = 30, alpha = 0.85,  ax = ax1)
+    
+    norm = matplotlib.colors.Normalize(vmin = vmin, vmax = vmax)
+    cmap = 'Reds'
+    m = cm.ScalarMappable(norm=norm, cmap=cmap)
+    m.set_array(mci_arr)
+#    p = cm.ScalarMappable( norm = norm, cmap='Reds')
+#    cb = fig2.colorbar(p, ax = axs, shrink=0.5)
+    
+    fig1.colorbar(m, ax = [ax1], orientation = 'horizontal', label = "MCI (strength of relationship)" ,shrink = 0.3, pad = -0.01)
+    
 #    nx.draw_networkx_labels(G, pos = position_dict, labels = label_dict)
 #    print(n_connections , ' Connections')
     #G = nx.Graph()
@@ -202,9 +241,9 @@ def plot_map(link_matrix,  names, variable, country, save= False):
     
     texts = []
     for x, y, label in zip(lons, lats, names):
-        texts.append(ax1.text(x , y , label, fontsize = 14, ))# fontweight = 'bold'))
+        texts.append(ax1.text(x , y , label, fontsize = 14, ha = 'center'))# fontweight = 'bold'))
 
-    ax1.set_title(variable + " Causation Map")
+    ax1.set_title(country +' ' + variable + " Causation Map", fontsize =18)
 
     
     #    patch_col = axs[0].collections[0]
@@ -274,18 +313,22 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
         warnings.warn('''Only {} time series found for {} --> {} with minimum size of {}. Decrease minimum_size parameter or choose different country/commodity for better results'''
                       .format(study_data.shape[1], commodity, country, minimum_size))
     
-    if add_enviro and country == 'Senegal':
-        
-        if commodity in enviro_data_dict.keys():
-            enviro_df = enviro_data_dict[commodity]
+    if add_enviro:  #and country == 'Senegal':
+        if (country, commodity) in enviro_data_dict.keys():
+            enviro_df = enviro_data_dict[(country, commodity)]
         else:
             if use_gee:
-                enviro_df =  -  make_enviro_data(commodity) 
+                enviro_df =  -  make_enviro_data(country, commodity) 
             else:
-                enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
+                try:
+                    enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
+                except FileNotFoundError as e:
+                    print(e)
+                    raise ValueError('Enviro File Not Found, select use_gee to create file for this region/commodity')
+                    
                 enviro_df.index = pd.to_datetime(enviro_df.iloc[:,0], format = '%Y-%m-%d')
                 enviro_df = - enviro_df.drop(columns = enviro_df.columns[0])
-            enviro_data_dict[commodity] = enviro_df
+            enviro_data_dict[(country, commodity)] = enviro_df
         
     
     # --- Select Season -----
@@ -329,7 +372,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
 #        fill data with missing flag
     mssng = 99999
     filled_data = adjusted_study_data.fillna(mssng)
-        
+    
     global t
     t = filled_data.copy()
 #        create tigramite dataframe
@@ -395,7 +438,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
             i_name = names[i]
             j_name = names[j]
             if icausesj and i_name != j_name and True:
-                if print_info:
+                if print_info or True: # FIx remove TRUE!
                     print(names[i],' causes ' , names[j])
                 caused_by.append(i_name)
                 causes.append(j_name)
@@ -444,7 +487,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
         )
         plt.show()
         try:
-            plot_map(link_matrix, names, commodity, country, save= False)
+            plot_map(link_matrix,mci_arr, names, commodity, country, save= False)
         except KeyError as error:
             print('### Unable to plot map, likely missing market coordinates ###')
             print('Error message: {}'.format(error))
@@ -453,28 +496,28 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
     return link_df
 
 
-#country = 'Senegal'
+country = 'Senegal'
+commodity = 'Millet'
+#    
+#country = 'Niger'
 #commodity = 'Rice'
-    
-#country = 'Nigeria'
+#
+#country = 'Tanzania'
 #commodity = 'Rice'
 
-#country = 'Mozambique'
-#commodity = 'Rice'
-#
-#FDR_bool = False
-#min_lag, max_lag  = 1,4
-#add_enviro = False
-#minimum_size = 100
-#alpha = 0.05
-#m_y_conditioning = True 
-#interpolate = False
-#max_gap= 2
-#stationarity_method = 'firstdifference'
-#print_info = False
-#
-#link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-#        minimum_size = minimum_size, max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
-#
+FDR_bool = False
+min_lag, max_lag  = 1,4
+add_enviro = True
+minimum_size = 150
+alpha = 0.05
+m_y_conditioning = True 
+interpolate = True
+max_gap= 3
+stationarity_method = 'firstdifference'
+print_info = False
+
+link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+        minimum_size = minimum_size, max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+
 
 
