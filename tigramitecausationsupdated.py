@@ -496,28 +496,28 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
     return link_df
 
 
-country = 'Senegal'
-commodity = 'Millet'
-#    
-#country = 'Niger'
-#commodity = 'Rice'
+#country = 'Senegal'
+#commodity = 'Millet'
+##    
+##country = 'Niger'
+##commodity = 'Rice'
+##
+##country = 'Tanzania'
+##commodity = 'Rice'
 #
-#country = 'Tanzania'
-#commodity = 'Rice'
-
-FDR_bool = False
-min_lag, max_lag  = 1,4
-add_enviro = True
-minimum_size = 150
-alpha = 0.05
-m_y_conditioning = True 
-interpolate = True
-max_gap= 3
-stationarity_method = 'firstdifference'
-print_info = False
-
-link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
-        minimum_size = minimum_size, max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
+#FDR_bool = False
+#min_lag, max_lag  = 1,4
+#add_enviro = True
+#minimum_size = 150
+#alpha = 0.05
+#m_y_conditioning = True 
+#interpolate = True
+#max_gap= 3
+#stationarity_method = 'firstdifference'
+#print_info = False
+#
+#link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
+#        minimum_size = minimum_size, max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
 
 
 
