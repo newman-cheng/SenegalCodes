@@ -239,16 +239,98 @@ Created on Tue Apr 20 12:03:11 2021
 
 
 
-# ----------------------------
-import pandas as pd
+# ------------------------------------------------
 
+
+
+import pandas as pd
+import ee
 from datetime import date
 import numpy as np
 from rpy2 import robjects as ro
 from rpy2.robjects import pandas2ri
 from rpy2.robjects.conversion import localconverter
 
+ee.Initialize()
 
+# ------ Assets -------------
+regions = ee.FeatureCollection("users/mlt2177/SenegalAssets/regions")
+departments = ee.FeatureCollection("users/mlt2177/SenegalAssets/departments")
+# ------ NDVI Time Series ---------------
+terraVeg16 = ee.ImageCollection("MODIS/006/MOD13Q1")
+aquaVeg16 = ee.ImageCollection("MODIS/006/MYD13Q1")
+modisVeg16 = terraVeg16
+# ------ Precip Time Series -------------
+CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
+#precip = CHIRPS.select('precipitation')
+GPM = ee.ImageCollection("NASA/GPM_L3/IMERG_MONTHLY_V06")
+precip = GPM.select('precipitation')
+# Total potential evapotranspiration
+petColl = ee.ImageCollection("MODIS/006/MOD16A2").select('PET')
+
+
+# Mapping Function
+def makeTS(enviro_param, fc, reindex = True, scale = 1000, start = '2000-01-01'):
+    '''
+    Function to make environmental time series based on param and feature collection of geometries
+    -------------------
+    enviro_param (str) 
+        'NDVI' or 'precipitation'
+    fc (ee.FeatureCollection)
+        Feature Collection of regions over which to derive time series
+    reindex (boolean), default: True
+        whether or not to aggregate data monthly
+    '''
+    start = pd.Timestamp(start)
+    end = pd.Timestamp(date.today().year, date.today().month, 1)
+    
+    
+    if enviro_param == 'NDVI':
+        imageCollection = modisVeg16 
+    elif enviro_param.lower() == 'precipitation':
+        imageCollection = precip
+    elif enviro_param.lower() == 'pet':
+        imageCollection = petColl
+    else:
+        raise ValueError('{} is not a valid environmetnal parameter'.format(enviro_param))
+    
+    def mappingFunction(featureObj):
+      
+      geom = ee.Feature(featureObj).geometry()
+      filteredColl = imageCollection.filterDate(start,end).filterBounds(geom).select(enviro_param)
+      collList = filteredColl.toList(filteredColl.size())
+      
+      def makeTSmapper(imageObj):
+        image = ee.Image(imageObj)
+        meanVal = image.reduceRegion(reducer = ee.Reducer.mean(), geometry = geom, scale = scale).values().get(0)
+        return ee.Feature(None,{'Name':ee.Feature(featureObj).get('Name'),  
+                        'Date':ee.Date(image.get('system:time_start')).format(), enviro_param :meanVal})
+      
+      timeSeries = ee.FeatureCollection(collList.map(makeTSmapper)).filterMetadata(enviro_param, 'not_equals', None)
+      return timeSeries
+
+    featuresLi  = fc.toList(fc.size()).getInfo()
+    ts_dict = {}
+    print('--- ',enviro_param,' ---')
+    for i, feature in enumerate(featuresLi):
+        print(i+1,'/', len(featuresLi ))
+        feature = ee.Feature(feature)
+        ts = mappingFunction(feature)
+        name = feature.get('Name').getInfo()
+        dates = pd.to_datetime(ts.aggregate_array('Date').getInfo(),format = '%Y-%m-%dT%H:%M:%S')
+        param = ts.aggregate_array(enviro_param).getInfo()
+        series = pd.Series(data = param, index = dates, name = name)
+#        reindex monthly if specified
+        if reindex:
+            index = pd.date_range(start=start, end=end, freq='MS')
+            series = series.resample("MS").mean().reindex(index)
+        
+        
+        ts_dict[name] = series
+        
+#    TScoll = ee.FeatureCollection(featuresLi.map(mappingFunction)).flatten();
+    
+    return ts_dict
 
 
 def make_enviro_data(country, commodity):
@@ -263,90 +345,6 @@ def make_enviro_data(country, commodity):
         'rice'  or 'millet', this sets the zones of growing over which to study
         
     '''
-    
-    
-    import ee
-    ee.Initialize()
-    
-    # ------ Assets -------------
-    regions = ee.FeatureCollection("users/mlt2177/SenegalAssets/regions")
-    departments = ee.FeatureCollection("users/mlt2177/SenegalAssets/departments")
-    # ------ NDVI Time Series ---------------
-    terraVeg16 = ee.ImageCollection("MODIS/006/MOD13Q1")
-    aquaVeg16 = ee.ImageCollection("MODIS/006/MYD13Q1")
-    modisVeg16 = terraVeg16
-    # ------ Precip Time Series -------------
-    CHIRPS = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
-    #precip = CHIRPS.select('precipitation')
-    GPM = ee.ImageCollection("NASA/GPM_L3/IMERG_MONTHLY_V06")
-    precip = GPM.select('precipitation')
-    # Total potential evapotranspiration
-    petColl = ee.ImageCollection("MODIS/006/MOD16A2").select('PET')
-    
-    
-    # Mapping Function
-    def makeTS(enviro_param, fc, reindex = True, scale = 1000, start = '2000-01-01'):
-        '''
-        Function to make environmental time series based on param and feature collection of geometries
-        -------------------
-        enviro_param (str) 
-            'NDVI' or 'precipitation'
-        fc (ee.FeatureCollection)
-            Feature Collection of regions over which to derive time series
-        reindex (boolean), default: True
-            whether or not to aggregate data monthly
-        '''
-        start = pd.Timestamp(start)
-        end = pd.Timestamp(date.today().year, date.today().month, 1)
-        
-        
-        if enviro_param == 'NDVI':
-            imageCollection = modisVeg16 
-        elif enviro_param.lower() == 'precipitation':
-            imageCollection = precip
-        elif enviro_param.lower() == 'pet':
-            imageCollection = petColl
-        else:
-            raise ValueError('{} is not a valid environmetnal parameter'.format(enviro_param))
-        
-        def mappingFunction(featureObj):
-          
-          geom = ee.Feature(featureObj).geometry()
-          filteredColl = imageCollection.filterDate(start,end).filterBounds(geom).select(enviro_param)
-          collList = filteredColl.toList(filteredColl.size())
-          
-          def makeTSmapper(imageObj):
-            image = ee.Image(imageObj)
-            meanVal = image.reduceRegion(reducer = ee.Reducer.mean(), geometry = geom, scale = scale).values().get(0)
-            return ee.Feature(None,{'Name':ee.Feature(featureObj).get('Name'),  
-                            'Date':ee.Date(image.get('system:time_start')).format(), enviro_param :meanVal})
-          
-          timeSeries = ee.FeatureCollection(collList.map(makeTSmapper)).filterMetadata(enviro_param, 'not_equals', None)
-          return timeSeries
-    
-        featuresLi  = fc.toList(fc.size()).getInfo()
-        ts_dict = {}
-        print('--- ',enviro_param,' ---')
-        for i, feature in enumerate(featuresLi):
-            print(i+1,'/', len(featuresLi ))
-            feature = ee.Feature(feature)
-            ts = mappingFunction(feature)
-            name = feature.get('Name').getInfo()
-            dates = pd.to_datetime(ts.aggregate_array('Date').getInfo(),format = '%Y-%m-%dT%H:%M:%S')
-            param = ts.aggregate_array(enviro_param).getInfo()
-            series = pd.Series(data = param, index = dates, name = name)
-    #        reindex monthly if specified
-            if reindex:
-                index = pd.date_range(start=start, end=end, freq='MS')
-                series = series.resample("MS").mean().reindex(index)
-            
-            
-            ts_dict[name] = series
-            
-    #    TScoll = ee.FeatureCollection(featuresLi.map(mappingFunction)).flatten();
-        
-        return ts_dict
-    
     
     if country.lower() == 'senegal':
         scale = 1000
@@ -406,7 +404,15 @@ def update_enviro_data():
 
 
 
-# ----------------------------
+
+# ------------------------------------------------
+    
+
+
+
+
+
+
 
 
 
