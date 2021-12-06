@@ -406,69 +406,69 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     
 
     
-    # ---- key parameters ----
-study_market = 'Dakar' # market to predict the time series of
-country = 'Senegal' # country of study, optimized for senegal 
-                    # but can choose any country/commodity pair at FPMA portal: https://fpma.apps.fao.org/giews/food-prices/tool/public/#/dataset/domestic
-commodity = 'Rice' #commodity to study: optimized for 'Rice' or 'Millet' in Senegal 
-add_enviro = True # whether or not to add environmental variables to study. (currently only available for Senegal)
-use_gee =  True # use Google Earth Engine to obtain most up to date environmental time series.
-                # If True, requires valid Earth Engine login. 
-                # If False, data ends in April 2021.
+#     # ---- key parameters ----
+# study_market = 'Dakar' # market to predict the time series of
+# country = 'Senegal' # country of study, optimized for senegal 
+#                     # but can choose any country/commodity pair at FPMA portal: https://fpma.apps.fao.org/giews/food-prices/tool/public/#/dataset/domestic
+# commodity = 'Rice' #commodity to study: optimized for 'Rice' or 'Millet' in Senegal 
+# add_enviro = True # whether or not to add environmental variables to study. (currently only available for Senegal)
+# use_gee =  True # use Google Earth Engine to obtain most up to date environmental time series.
+#                 # If True, requires valid Earth Engine login. 
+#                 # If False, data ends in April 2021.
                 
-#shock_values = {'Bangkok': (1,12), 'Mumbai':(1,12),
-#                'Sao Paolo': (1,12)}   
+# #shock_values = {'Bangkok': (1,12), 'Mumbai':(1,12),
+# #                'Sao Paolo': (1,12)}   
 
 
-common_shift = (2,12)
-shock_values = {'precip': common_shift, 'ndvi':common_shift, 'spei':common_shift, 'pdsi':common_shift}
+# common_shift = (2,12)
+# shock_values = {'precip': common_shift, 'ndvi':common_shift, 'spei':common_shift, 'pdsi':common_shift}
                 
 
-# ---- additional test parameters -----
-s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(date.today().year, date.today().month, 1) # start and end of calculation
-min_lag, max_lag  = 1,4  # minimum and maximum lag of causal links
-condition_on_my = True # whether to condition on month and year instead of directly correcting for these relations
-study_variables = [] # optional list of markets to include as manual predictors to PC test
-restrict_positive = True #whether or not to restrict linear regression weights to only positive values (recommend True). 
-                          # (If so, environmental variables are multiplied by -1.)
-interpolate = True # Interpolate time series (recommended for prediction)
-max_gap= 3 # maximum gap to interpolate
-minimum_size = 160 # minimum size of each price time series
+# # ---- additional test parameters -----
+# s,e = pd.Timestamp(2007,1,1) , pd.Timestamp(date.today().year, date.today().month, 1) # start and end of calculation
+# min_lag, max_lag  = 1,4  # minimum and maximum lag of causal links
+# condition_on_my = True # whether to condition on month and year instead of directly correcting for these relations
+# study_variables = [] # optional list of markets to include as manual predictors to PC test
+# restrict_positive = True #whether or not to restrict linear regression weights to only positive values (recommend True). 
+#                           # (If so, environmental variables are multiplied by -1.)
+# interpolate = True # Interpolate time series (recommended for prediction)
+# max_gap= 3 # maximum gap to interpolate
+# minimum_size = 160 # minimum size of each price time series
 
-# ---- display parameters
-print_info = False # Whether or not to provide printed outputs for all steps of test
-#print_graphs = True # print spatial and link graph
+# # ---- display parameters
+# print_info = False # Whether or not to provide printed outputs for all steps of test
+# #print_graphs = True # print spatial and link graph
 
 
-#run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
-#             
-#              study_variables = study_variables, m_y_conditioning = condition_on_my, 
-#             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
-#              print_info = print_info,  use_gee = use_gee)
+# #run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
+# #             
+# #              study_variables = study_variables, m_y_conditioning = condition_on_my, 
+# #             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+# #              print_info = print_info,  use_gee = use_gee)
 
-# ------ Getting Average NRMSE ---------
-rice_markets = ['Dakar', 'Diourbel', 'Kaolack', 'SaintLouis', 'Tambacounda', 'Thies',  'Nouakchott']
-millet_markets = ['Dakar', 'Diourbel', 'Fatick', 'Kaolack', 'Kolda', 'Louga', 'Matam', 'SaintLouis', 'Tambacounda', 'Thies', 'Ziguinchor']
-millet_accuracies = []
-rice_accuracies = []
-for mkt in millet_markets:
-    nrmse = run_pred_test(country, 'Millet', mkt, min_lag,  max_lag, add_enviro, s,e,
-              study_variables = study_variables, m_y_conditioning = condition_on_my, 
-             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
-              print_info = print_info,  use_gee = use_gee)
-    millet_accuracies.append(nrmse)
+# # ------ Getting Average NRMSE ---------
+# rice_markets = ['Dakar', 'Diourbel', 'Kaolack', 'SaintLouis', 'Tambacounda', 'Thies',  'Nouakchott']
+# millet_markets = ['Dakar', 'Diourbel', 'Fatick', 'Kaolack', 'Kolda', 'Louga', 'Matam', 'SaintLouis', 'Tambacounda', 'Thies', 'Ziguinchor']
+# millet_accuracies = []
+# rice_accuracies = []
+# for mkt in millet_markets:
+#     nrmse = run_pred_test(country, 'Millet', mkt, min_lag,  max_lag, add_enviro, s,e,
+#               study_variables = study_variables, m_y_conditioning = condition_on_my, 
+#              interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+#               print_info = print_info,  use_gee = use_gee)
+#     millet_accuracies.append(nrmse)
     
-for mkt in rice_markets:
-    nrmse = run_pred_test(country, 'Rice', mkt, min_lag,  max_lag, add_enviro, s,e,
-              study_variables = study_variables, m_y_conditioning = condition_on_my, 
-             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
-              print_info = print_info,  use_gee = use_gee)
-    rice_accuracies.append(nrmse)
+# for mkt in rice_markets:
+#     nrmse = run_pred_test(country, 'Rice', mkt, min_lag,  max_lag, add_enviro, s,e,
+#               study_variables = study_variables, m_y_conditioning = condition_on_my, 
+#              interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+#               print_info = print_info,  use_gee = use_gee)
+#     rice_accuracies.append(nrmse)
     
-f, ( ax1, ax2) = plt.subplots(1,2,figsize = (10,5))
-ax1.hist(rice_accuracies, bins = 10)
-ax1.hist(millet_accuracies, bins = 10)
-# -------------------
+# f, ( ax1, ax2) = plt.subplots(1,2,figsize = (10,5))
+# ax1.hist(rice_accuracies, bins = 10)
+# ax1.hist(millet_accuracies, bins = 10)
+# # -------------------
 
 
     
