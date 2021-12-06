@@ -23,7 +23,7 @@ import networkx.drawing.layout as lyt
 import geopandas as gp
 
 from extractdata import extract_giews, get_attribute
-from eeDataExtract import make_enviro_data
+
 
 from OSMPythonTools.nominatim import Nominatim
 nominatim = Nominatim()
@@ -90,7 +90,7 @@ def filter_months(df, month_arr, missing_flag = None):
 
 
     
-def plot_map(link_matrix,mci_arr , names, variable, country, save= False):
+def plot_map(link_matrix,mci_arr , names, variable, country, save= False, enviro_pos = None):
     #upload coordinates
     
 #    ------ Senegal optimized plotting
@@ -158,11 +158,12 @@ def plot_map(link_matrix,mci_arr , names, variable, country, save= False):
             except IndexError:
                 bounds = select_country.geometry.bounds
                 #off to right side
-                lon = float(bounds.maxx) + 1.5
-                lat = (float(bounds.maxy + bounds.miny) / 2 ) + (1 * enviro_positions_made - 0.5)
+#                lon = float(bounds.maxx) + 1.5
+#                lat = (float(bounds.maxy + bounds.miny) / 2 ) + (1 * enviro_positions_made - 0.5)
 #                bottom right corner
                 lon = float(bounds.maxx) - 0.5
-                lat = (float(bounds.maxy + (2*bounds.miny)) / 3 ) + (2 * enviro_positions_made - 1)
+                enviro_padding_scale = 0.3
+                lat = (float(bounds.maxy + (2*bounds.miny)) / 3 ) + (enviro_padding_scale * enviro_positions_made - 1)
                 enviro_positions_made +=1
                 
 #                try:
@@ -230,13 +231,8 @@ def plot_map(link_matrix,mci_arr , names, variable, country, save= False):
 #    p = cm.ScalarMappable( norm = norm, cmap='Reds')
 #    cb = fig2.colorbar(p, ax = axs, shrink=0.5)
     
-    fig1.colorbar(m, ax = [ax1], orientation = 'horizontal', label = "MCI (strength of relationship)" ,shrink = 0.3, pad = -0.01)
+    fig1.colorbar(m, ax = [ax1], orientation = 'horizontal', label = "MCI (strength of relationship)" ,shrink = 0.5, pad = -0.01)
     
-#    nx.draw_networkx_labels(G, pos = position_dict, labels = label_dict)
-#    print(n_connections , ' Connections')
-    #G = nx.Graph()
-  
-   
     
     
     texts = []
@@ -245,18 +241,6 @@ def plot_map(link_matrix,mci_arr , names, variable, country, save= False):
 
     ax1.set_title(country +' ' + variable + " Causation Map", fontsize =18)
 
-    
-    #    patch_col = axs[0].collections[0]
-    #    pts = ax2.scatter(x_data, y_data, marker='s', c=data[x_data, y_data])
-#    norm = matplotlib.colors.Normalize(vmin = vmin, vmax = vmax)
-#    cmap = 'Reds'
-#    m = cm.ScalarMappable(norm=norm, cmap=cmap)
-#    m.set_array(gdf['Number Market Causes'])
-    #    p = cm.ScalarMappable( norm = norm, cmap='Reds')
-    #    cb = fig2.colorbar(p, ax = axs, shrink=0.5)
-    
-#    fig1.colorbar(m, ax = ax1, orientation = 'horizontal', label = "%" ,shrink = 0.5, pad = 0.01)
-    
     #plt.tightlayout()
     if save:
         plt.savefig('figures/TigramiteMap{}.png'.format(variable), dpi = 200, bbox_inches = 'tight')
@@ -264,10 +248,11 @@ def plot_map(link_matrix,mci_arr , names, variable, country, save= False):
          
         
     
-def create_data(country, commodity,min_size = 0):
+def create_data(country, commodity,min_size = 0, international_markets = True):
     if country == 'Senegal':
         if commodity.lower() == 'rice' :
             senegal_rice = extract_giews(country = 'Senegal', commodity = 'rice', min_size = min_size)
+
             thai_rice = extract_giews(country = 'Thailand', commodity = 'rice', min_size = min_size)
             india_rice = {'Mumbai': extract_giews(country = 'India', commodity = 'rice', min_size = min_size)['Mumbai']}
             brazil_rice = extract_giews(country = 'Brazil', commodity = 'rice', min_size = min_size)
@@ -301,6 +286,8 @@ if 'enviro_data_dict' not in dir():
 def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = True, 
              interpolate = False, max_gap = 3, minimum_size = 160, stationarity_method = 'firstdifference' , 
              print_info = False, use_gee = True, print_graphs = True):
+    if use_gee:
+        from eeDataExtract import make_enviro_data
     
     s, e = pd.Timestamp(2007,1,1), pd.Timestamp(2021,4,1)
     global study_data
@@ -318,17 +305,19 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
             enviro_df = enviro_data_dict[(country, commodity)]
         else:
             if use_gee:
-                enviro_df =  -  make_enviro_data(country, commodity) 
+                enviro_df =  make_enviro_data(country, commodity) 
             else:
                 try:
-                    enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
+                    enviro_df = pd.read_csv('envirodata/{}-{}-fullenviro.csv'.format(country.lower(), commodity.lower()) )
                 except FileNotFoundError as e:
                     print(e)
                     raise ValueError('Enviro File Not Found, select use_gee to create file for this region/commodity')
                     
                 enviro_df.index = pd.to_datetime(enviro_df.iloc[:,0], format = '%Y-%m-%d')
-                enviro_df = - enviro_df.drop(columns = enviro_df.columns[0])
+                enviro_df = enviro_df.drop(columns = enviro_df.columns[0])
             enviro_data_dict[(country, commodity)] = enviro_df
+        for column in enviro_df.columns:
+            enviro_df[column] =  - enviro_df[column] if 'pdsi' not in column else enviro_df[column]
         
     
     # --- Select Season -----
@@ -390,7 +379,12 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
         print_info = print_info)
 #    get results of pcmci
     global results
-    results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None, no_parents = enviro_indices, month_year_indices = m_y_indices)
+    international_names = ['Bangkok','Mumbai','São Paulo']
+    international_indices = [ list(filled_data.columns).index(x) for x in international_names if x in  list(filled_data.columns)]
+    print('--- international indices ---', international_indices)
+#    
+    results = pcmci.run_pcmci(tau_min = min_lag, tau_max=max_lag, pc_alpha=None,
+                              no_parents = international_indices + enviro_indices, month_year_indices = m_y_indices)
     #
     q_matrix = pcmci.get_corrected_pvalues(p_matrix=results['p_matrix'], fdr_method='fdr_bh')
     #
@@ -497,7 +491,7 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
 
 
 #country = 'Senegal'
-#commodity = 'Millet'
+#commodity = 'Rice'
 ##    
 ##country = 'Niger'
 ##commodity = 'Rice'
@@ -518,6 +512,6 @@ def run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, 
 #
 #link_df = run_test(country, commodity, FDR_bool, min_lag, max_lag, add_enviro, alpha, m_y_conditioning = m_y_conditioning, interpolate = interpolate,
 #        minimum_size = minimum_size, max_gap= max_gap, stationarity_method = 'firstdifference', print_info = False)
-
+#
 
 
