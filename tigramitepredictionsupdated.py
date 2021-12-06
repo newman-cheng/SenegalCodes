@@ -36,7 +36,7 @@ from eeDataExtract import make_enviro_data
 #
 ##whether or not to restrict linear regression weights to only positive values. 
 ##If so, environmental variables are multiplied by -1.
-restrict_positive = False
+
 #
 #condition_on_my = True
 #
@@ -78,7 +78,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     Code to run predictive test based on tigramite PCMCI network framework. 
     Optimized for use in Senegal with Rice and Millet but applicable to any country/commodity combination
     '''
-    
+    restrict_positive = False
     global data
     data = create_data(country, commodity,min_size = minimum_size)
     #  set up environmental dataframe if valid   
