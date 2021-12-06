@@ -84,16 +84,16 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     #  set up environmental dataframe if valid   
     if add_enviro: # make dataframe for NDVI and Precip over regions of commodity growth, 
                    # flip to negative if restricting lin regression to positive       
-        if commodity in enviro_data_dict.keys():
-            enviro_df = enviro_data_dict[commodity]
+        if (country, commodity) in enviro_data_dict.keys():
+            enviro_df = enviro_data_dict[(country, commodity)]
         else:
             if use_gee:
-                enviro_df =   make_enviro_data(commodity) 
+                enviro_df =   make_enviro_data(country, commodity) 
             else:
                 enviro_df = pd.read_csv('envirodata/{}-fullenviro.csv'.format(commodity.lower()) )
                 enviro_df.index = pd.to_datetime(enviro_df.iloc[:,0], format = '%Y-%m-%d')
                 enviro_df =  enviro_df.drop(columns = enviro_df.columns[0])
-            enviro_data_dict[commodity] = enviro_df
+            enviro_data_dict[(country, commodity)] = enviro_df
         enviro_df = - enviro_df if restrict_positive == True else enviro_df
         
         
@@ -139,13 +139,13 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
 #        print(m_y_data[study_market].first_valid_index() , m_y_data[study_market].first_valid_index())
         data_sliced = m_y_data[m_y_data[study_market].first_valid_index()  : m_y_data[study_market].last_valid_index()]
     
-        data_filled = data_sliced.fillna(mssng)
+        
         
         
     else:
         pass
     
-    
+    data_filled = data_sliced.fillna(mssng)
       
 #        get proper date array which considers missing values
 #    bool_date_arr = np.ones((data_sliced.shape[0]), dtype=bool)
@@ -169,8 +169,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
             
         
     data_filled = data_filled[study_variables] if study_variables == True else data_filled   
-    global t3
-    t3 = data_filled
+
     
     
     T, N = data_filled.shape
@@ -179,7 +178,8 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
                                     for j in range(N) if j != target ])) for i in range(N)}
     
     dataframe = pp.DataFrame(data_filled.values, var_names = data_filled.columns, missing_flag = mssng)
-    
+#    data_enviro_adjusted = 
+#    dataframe_enviro_adj = pp.DataFrame(data_filled.values, var_names = data_filled.columns, missing_flag = mssng)
     #links to study
     selected_links = {i : list(chain.from_iterable([ [(j,k) for k in range(-tau_max, -steps_ahead + 1)] 
                                     for j in range(N) if j != target ])) for i in range(N)}
@@ -262,6 +262,13 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     #selected_links = {target : list(chain.from_iterable([ [(j,k) for k in range(-tau_max, -steps_ahead + 1)] for j in range(pred.N) ])) }
         
         
+    predictors = pred.get_predictors(
+                      selected_targets=[target],
+                      selected_links = selected_links,
+                      steps_ahead=steps_ahead,
+                      tau_max=tau_max,
+                      pc_alpha=None
+                      )
     predictors = pred.get_predictors(
                       selected_targets=[target],
                       selected_links = selected_links,
@@ -352,7 +359,7 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     train_adjusted = pred.get_train_array(target)[0]
     test_adjusted = pred.get_test_array()[0][-predicted.size:]
     
-    
+    nrmse = (np.abs(test - predicted).mean()/test.std())
     plt.scatter(test, predicted)
     plt.title(r"NRMSE = %.2f" % (np.abs(test - predicted).mean()/test.std()))
     plt.plot(test, test, 'k-')
@@ -374,9 +381,9 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     
     # ------- set up axis -----
     f, ax1 = plt.subplots(1,1,figsize = (13,4))
-    f.suptitle('Price Prediction - ' + study_market, fontsize = 14)
+    f.suptitle('{} Price Prediction - {}'.format(commodity, study_market) , fontsize = 14)
 #    ax1.set_title('Inputs: '
-    ax1.set_xlabel('Month Number', fontsize= 14)
+    ax1.set_xlabel('Date', fontsize= 14)
     ax1.set_ylabel('Price ($/mt)', fontsize = 14)
     # ------ plotting -------          
     
@@ -384,10 +391,10 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     ax1.plot(new_date_arr[predicted_range], denorm(test), color = '#515ee8',lw = 2,  label = 'test values', alpha = 0.9, marker = '.')
     #ax1.plot(predicted_range_adj, denorm (test_adjusted), color = '#FF8C00',lw = 2,  label = 'adjusted test values', alpha = 0.9, marker = '.')
     ax1.plot(new_date_arr[predicted_range], denorm(predicted), color = 'red',lw = 2, linestyle = '--', label = 'predicted (defualt)' , marker = '.')
-    ax1.plot(new_date_arr[predicted_range], denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
+#    ax1.plot(new_date_arr[predicted_range], denorm(adjusted), color = '#327d61', lw = 2,  label = 'predicted (test scenario)', alpha = 0.9)
 #    ax1.axvspan( new_date_arr[-] , new_date_arr[-1], alpha=0.2, color='red')
     ax1.legend()
-    
+    print("DIFFERENCE ", np.max(denorm(adjusted)) - np.max(denorm(predicted)))
     temp_fig = plt.gcf()
     
     plt.show()
@@ -395,13 +402,15 @@ def run_pred_test(country, commodity, study_market, steps_ahead,  tau_max, add_e
     ax1.plot(new_date_arr[train_range], denorm(train), color = '#75bdff', lw = 2, label = 'train values',alpha = 0.7)
     plt.show()
     
+    return nrmse
+    
 
     
     # ---- key parameters ----
 study_market = 'Dakar' # market to predict the time series of
 country = 'Senegal' # country of study, optimized for senegal 
                     # but can choose any country/commodity pair at FPMA portal: https://fpma.apps.fao.org/giews/food-prices/tool/public/#/dataset/domestic
-commodity = 'Millet' #commodity to study: optimized for 'Rice' or 'Millet' in Senegal 
+commodity = 'Rice' #commodity to study: optimized for 'Rice' or 'Millet' in Senegal 
 add_enviro = True # whether or not to add environmental variables to study. (currently only available for Senegal)
 use_gee =  True # use Google Earth Engine to obtain most up to date environmental time series.
                 # If True, requires valid Earth Engine login. 
@@ -410,7 +419,9 @@ use_gee =  True # use Google Earth Engine to obtain most up to date environmenta
 #shock_values = {'Bangkok': (1,12), 'Mumbai':(1,12),
 #                'Sao Paolo': (1,12)}   
 
-shock_values = {'precip': (2,12), 'ndvi':(2,12)}
+
+common_shift = (2,12)
+shock_values = {'precip': common_shift, 'ndvi':common_shift, 'spei':common_shift, 'pdsi':common_shift}
                 
 
 # ---- additional test parameters -----
@@ -428,11 +439,39 @@ minimum_size = 160 # minimum size of each price time series
 print_info = False # Whether or not to provide printed outputs for all steps of test
 #print_graphs = True # print spatial and link graph
 
-run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
-              shock_values = shock_values,
+
+#run_pred_test(country, commodity, study_market, min_lag,  max_lag, add_enviro, s,e,
+#             
+#              study_variables = study_variables, m_y_conditioning = condition_on_my, 
+#             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+#              print_info = print_info,  use_gee = use_gee)
+
+# ------ Getting Average NRMSE ---------
+rice_markets = ['Dakar', 'Diourbel', 'Kaolack', 'SaintLouis', 'Tambacounda', 'Thies',  'Nouakchott']
+millet_markets = ['Dakar', 'Diourbel', 'Fatick', 'Kaolack', 'Kolda', 'Louga', 'Matam', 'SaintLouis', 'Tambacounda', 'Thies', 'Ziguinchor']
+millet_accuracies = []
+rice_accuracies = []
+for mkt in millet_markets:
+    nrmse = run_pred_test(country, 'Millet', mkt, min_lag,  max_lag, add_enviro, s,e,
               study_variables = study_variables, m_y_conditioning = condition_on_my, 
              interpolate = True, max_gap = 3, minimum_size = minimum_size, 
               print_info = print_info,  use_gee = use_gee)
+    millet_accuracies.append(nrmse)
+    
+for mkt in rice_markets:
+    nrmse = run_pred_test(country, 'Rice', mkt, min_lag,  max_lag, add_enviro, s,e,
+              study_variables = study_variables, m_y_conditioning = condition_on_my, 
+             interpolate = True, max_gap = 3, minimum_size = minimum_size, 
+              print_info = print_info,  use_gee = use_gee)
+    rice_accuracies.append(nrmse)
+    
+f, ( ax1, ax2) = plt.subplots(1,2,figsize = (10,5))
+ax1.hist(rice_accuracies, bins = 10)
+ax1.hist(millet_accuracies, bins = 10)
+# -------------------
+
+
+    
 
 
 #ax1.plot(new_date_arr[train_indices], denorm(train), color = '#75bdff', lw = 2, label = 'train values',alpha = 0.7)
