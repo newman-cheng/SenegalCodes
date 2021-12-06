@@ -36,7 +36,7 @@ from eeDataExtract import make_enviro_data
 #
 ##whether or not to restrict linear regression weights to only positive values. 
 ##If so, environmental variables are multiplied by -1.
-#restrict_positive = True
+restrict_positive = False
 #
 #condition_on_my = True
 #
